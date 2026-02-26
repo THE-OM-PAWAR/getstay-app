@@ -5,8 +5,8 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: '*',
-        allow: '/',
-        disallow: ['/api/', '/admin/', '/_next/'],
+        allow: ['/', '/_next/static/'], // Specifically allow static assets
+        disallow: ['/api/', '/admin/', '/_next/'], // Block everything else in _next
       },
     ],
     sitemap: 'https://getstay.in/sitemap.xml',
