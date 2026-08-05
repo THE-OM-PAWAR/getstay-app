@@ -13,7 +13,6 @@ import { SafetyGrid } from "@/components/hostel/safety-grid";
 import { AboutSection } from "@/components/hostel/about-section";
 import { GallerySection } from "@/components/hostel/gallery-section";
 import { HostelActionButtons } from "@/components/hostel/hostel-action-buttons";
-import { RelatedLinksSection } from "@/components/city/related-links-section";
 import { getHostelDetailBySlug, getHostelSlugsForSSG } from "@/services/hostel-detail.service";
 
 interface HostelPageProps {
@@ -492,15 +491,6 @@ export default async function HostelPage({ params }: HostelPageProps) {
             )}
           </div>
         </div>
-
-        {/* Related Links Section */}
-        {hostel.basicInfo.city && (
-          <RelatedLinksSection
-            cityName={hostel.basicInfo.city}
-            citySlug={hostel.basicInfo.city.toLowerCase().replace(/\s+/g, '-')}
-            state={hostel.basicInfo.state}
-          />
-        )}
       </main>
       
       <Footer />

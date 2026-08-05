@@ -77,18 +77,22 @@ export async function searchHostelsAndRooms(query: string): Promise<SearchResult
     await connectDB();
     
     const parsed = parseSearchQuery(query);
-    const lowerQuery = query.toLowerCase();
+    const lowerQuery = query.toLowerCase().trim();
+    const isWildcard = lowerQuery === 'all' || lowerQuery === '*';
     
     // Build hostel query
     const hostelQuery: any = {
       isOnlinePresenceEnabled: true,
-      $or: [
+    };
+    
+    if (!isWildcard) {
+      hostelQuery.$or = [
         { 'basicInfo.name': { $regex: query, $options: 'i' } },
         { 'basicInfo.description': { $regex: query, $options: 'i' } },
         { 'basicInfo.city': { $regex: query, $options: 'i' } },
         { 'basicInfo.address': { $regex: query, $options: 'i' } },
-      ],
-    };
+      ];
+    }
     
     // Add location filter
     if (parsed.location) {
@@ -112,9 +116,14 @@ export async function searchHostelsAndRooms(query: string): Promise<SearchResult
       const name = h.basicInfo.name.toLowerCase();
       const city = h.basicInfo.city?.toLowerCase() || '';
       
-      // Exact match bonus
-      if (name.includes(lowerQuery)) score += 10;
-      if (city.includes(lowerQuery)) score += 8;
+      // Exact match bonus (only if not wildcard)
+      if (!isWildcard) {
+        if (name.includes(lowerQuery)) score += 10;
+        if (city.includes(lowerQuery)) score += 8;
+      } else {
+        // Equal baseline relevance for wildcards
+        score += 5;
+      }
       
       // Location match
       if (parsed.location && city.includes(parsed.location.toLowerCase())) score += 15;

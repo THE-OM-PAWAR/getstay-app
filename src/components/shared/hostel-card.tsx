@@ -52,7 +52,7 @@ export function HostelCard({
             </div>
           </>
         )}
-        
+
         {/* Type badge */}
         <Badge
           className="absolute bottom-3 left-3 rounded-lg bg-background/95 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-foreground backdrop-blur-sm"
@@ -61,7 +61,7 @@ export function HostelCard({
           {displayType}
         </Badge>
       </div>
-      
+
       {/* Card content */}
       <CardContent className="p-4">
         <h3 className="mb-1 truncate text-base font-bold text-foreground">
@@ -70,7 +70,7 @@ export function HostelCard({
         <p className="mb-3 truncate text-xs font-light text-muted-foreground">
           {subtitle || 'Modern hostel with great amenities'}
         </p>
-        
+
         {/* Info row */}
         <div className="flex items-center justify-between text-xs">
           <div className="flex items-center gap-1.5 text-muted-foreground">

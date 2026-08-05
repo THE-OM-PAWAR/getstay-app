@@ -74,7 +74,7 @@ function SearchContent() {
 
     try {
       const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
-      
+
       if (!response.ok) {
         throw new Error('Search failed');
       }
@@ -101,142 +101,142 @@ function SearchContent() {
 
   return (
     <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        {/* Error State */}
-        {error && (
-          <div className="mx-auto max-w-2xl rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-600">
-            {error}
-          </div>
-        )}
+      {/* Error State */}
+      {error && (
+        <div className="mx-auto max-w-2xl rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-600">
+          {error}
+        </div>
+      )}
 
-        {/* Loading State */}
-        {isLoading && (
-          <div className="flex items-center justify-center py-12">
-            <Loader2 className="h-8 w-8 animate-spin text-brand-primary" />
-          </div>
-        )}
+      {/* Loading State */}
+      {isLoading && (
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin text-brand-primary" />
+        </div>
+      )}
 
-        {/* Results */}
-        {results && !isLoading && (
-          <div className="space-y-8">
-            {/* Search Info */}
+      {/* Results */}
+      {results && !isLoading && (
+        <div className="space-y-8">
+          {/* Search Info */}
+          <div>
+            <h1 className="mb-2 text-2xl font-bold">
+              Search Results for "{results.query}"
+            </h1>
+            <p className="text-sm font-light text-muted-foreground">
+              Found {results.hostels.length} hostels and {results.rooms.length} rooms
+              {results.parsedQuery.location && ` in ${results.parsedQuery.location}`}
+              {results.parsedQuery.roomType && ` • ${results.parsedQuery.roomType} sharing`}
+              {results.parsedQuery.accommodationType && ` • ${results.parsedQuery.accommodationType}`}
+            </p>
+          </div>
+
+          {/* Hostels Section */}
+          {results.hostels.length > 0 && (
             <div>
-              <h1 className="mb-2 text-2xl font-bold">
-                Search Results for "{results.query}"
-              </h1>
-              <p className="text-sm font-light text-muted-foreground">
-                Found {results.hostels.length} hostels and {results.rooms.length} rooms
-                {results.parsedQuery.location && ` in ${results.parsedQuery.location}`}
-                {results.parsedQuery.roomType && ` • ${results.parsedQuery.roomType} sharing`}
-                {results.parsedQuery.accommodationType && ` • ${results.parsedQuery.accommodationType}`}
-              </p>
-            </div>
-
-            {/* Hostels Section */}
-            {results.hostels.length > 0 && (
-              <div>
-                <div className="mb-4 flex items-center justify-between">
-                  <h2 className="text-xl font-bold">Top Hostels</h2>
-                  {results.hostels.length > 4 && (
-                    <div className="flex gap-2">
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={() => scroll('left', hostelScrollRef)}
-                      >
-                        <ChevronLeft className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={() => scroll('right', hostelScrollRef)}
-                      >
-                        <ChevronRight className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  )}
-                </div>
-                
-                <div
-                  ref={(el) => {
-                    if (el) hostelScrollRef = el;
-                  }}
-                  className="flex gap-5 overflow-x-auto pb-4 scrollbar-hide"
-                  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-                >
-                  {results.hostels.map((hostel) => (
-                    <div key={hostel._id} className="w-[280px] shrink-0">
-                      <HostelCard
-                        slug={hostel.slug}
-                        name={hostel.name}
-                        subtitle={hostel.description}
-                        city={hostel.city}
-                        state={hostel.state}
-                        totalRooms={hostel.totalRooms || 0}
-                        accommodationType={hostel.accommodationType || 'boys'}
-                        mainPhoto={hostel.mainPhoto}
-                      />
-                    </div>
-                  ))}
-                </div>
+              <div className="mb-4 flex items-center justify-between">
+                <h2 className="text-xl font-bold">Top Hostels</h2>
+                {results.hostels.length > 4 && (
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => scroll('left', hostelScrollRef)}
+                    >
+                      <ChevronLeft className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => scroll('right', hostelScrollRef)}
+                    >
+                      <ChevronRight className="h-4 w-4" />
+                    </Button>
+                  </div>
+                )}
               </div>
-            )}
 
-            {/* Rooms Section */}
-            {results.rooms.length > 0 && (
-              <div>
-                <h2 className="mb-4 text-xl font-bold">Available Rooms</h2>
-                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                  {results.rooms.map((room) => (
-                    <RoomLandingCard
-                      key={room._id}
-                      roomId={room._id}
-                      name={room.name}
-                      description={room.description}
-                      rent={room.rent}
-                      coverImage={room.coverImage}
-                      components={room.components}
-                      hostelName={room.hostelName}
-                      hostelCity={room.city}
-                      hostelState={room.state}
+              <div
+                ref={(el) => {
+                  if (el) hostelScrollRef = el;
+                }}
+                className="flex gap-5 overflow-x-auto pb-4 scrollbar-hide"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              >
+                {results.hostels.map((hostel) => (
+                  <div key={hostel._id} className="w-[280px] shrink-0">
+                    <HostelCard
+                      slug={hostel.slug}
+                      name={hostel.name}
+                      subtitle={hostel.description}
+                      city={hostel.city}
+                      state={hostel.state}
+                      totalRooms={hostel.totalRooms || 0}
+                      accommodationType={hostel.accommodationType || 'boys'}
+                      mainPhoto={hostel.mainPhoto}
                     />
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
-            )}
+            </div>
+          )}
 
-            {/* No Results */}
-            {results.hostels.length === 0 && results.rooms.length === 0 && (
-              <div className="py-12 text-center">
-                <p className="mb-2 text-lg font-medium">No results found</p>
-                <p className="text-sm text-muted-foreground">
-                  Try adjusting your search query or browse our{' '}
-                  <a href="/" className="text-brand-primary hover:underline">
-                    featured hostels
-                  </a>
-                </p>
+          {/* Rooms Section */}
+          {results.rooms.length > 0 && (
+            <div>
+              <h2 className="mb-4 text-xl font-bold">Available Rooms</h2>
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                {results.rooms.map((room) => (
+                  <RoomLandingCard
+                    key={room._id}
+                    roomId={room._id}
+                    name={room.name}
+                    description={room.description}
+                    rent={room.rent}
+                    coverImage={room.coverImage}
+                    components={room.components}
+                    hostelName={room.hostelName}
+                    hostelCity={room.city}
+                    hostelState={room.state}
+                  />
+                ))}
               </div>
-            )}
+            </div>
+          )}
 
-            {/* Popular Links Section */}
-            <PopularLinksSection />
-          </div>
-        )}
-
-        {/* Initial State */}
-        {!results && !isLoading && !error && (
-          <>
+          {/* No Results */}
+          {results.hostels.length === 0 && results.rooms.length === 0 && (
             <div className="py-12 text-center">
-              <p className="mb-2 text-lg font-medium">Start searching</p>
+              <p className="mb-2 text-lg font-medium">No results found</p>
               <p className="text-sm text-muted-foreground">
-                Use the search bar above to find hostels and rooms
+                Try adjusting your search query or browse our{' '}
+                <a href="/" className="text-brand-primary hover:underline">
+                  featured hostels
+                </a>
               </p>
             </div>
-            
-            {/* Popular Links Section */}
-            <PopularLinksSection />
-          </>
-        )}
-      </main>
+          )}
+
+          {/* Popular Links Section */}
+          <PopularLinksSection />
+        </div>
+      )}
+
+      {/* Initial State */}
+      {!results && !isLoading && !error && (
+        <>
+          <div className="py-12 text-center">
+            <p className="mb-2 text-lg font-medium">Start searching</p>
+            <p className="text-sm text-muted-foreground">
+              Use the search bar above to find hostels and rooms
+            </p>
+          </div>
+
+          {/* Popular Links Section */}
+          <PopularLinksSection />
+        </>
+      )}
+    </main>
   );
 }
 
