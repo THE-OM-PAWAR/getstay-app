@@ -1,5 +1,6 @@
 import { Globe, Smartphone } from "lucide-react";
 import Link from "next/link";
+import { ThemeToggle } from "@/components/theme/theme-toggle";
 
 export function Footer() {
   return (
@@ -46,7 +47,7 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/destinations" className="hover:text-brand-primary transition-colors">
+                <Link href="/explore" className="hover:text-brand-primary transition-colors">
                   Destinations
                 </Link>
               </li>
@@ -104,6 +105,12 @@ export function Footer() {
         {/* Bottom copyright */}
         <div className="flex flex-col md:flex-row items-center justify-between text-xs font-semibold text-gray-500 gap-4">
           <p>© 2026 getstay. All rights reserved. Designed for the global traveler.</p>
+          
+          {/* Theme Toggle */}
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-gray-500">Theme:</span>
+            <ThemeToggle />
+          </div>
         </div>
       </div>
     </footer>

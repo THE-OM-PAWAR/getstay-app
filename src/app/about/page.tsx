@@ -531,7 +531,7 @@ export default function AboutPage() {
 
                 <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
                   <Link
-                    href="/destinations"
+                    href="/explore"
                     className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-white text-[#3932d8] hover:bg-gray-100 px-8 py-4 text-sm font-extrabold shadow-lg transition-all"
                   >
                     <span>Browse All Accommodations</span>

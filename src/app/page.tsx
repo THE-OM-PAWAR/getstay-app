@@ -3,6 +3,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { HeroSection } from "@/components/landing-page/hero-section";
 import { PopularLocations } from "@/components/landing-page/popular-locations";
+import { FeaturedHostels } from "@/components/landing-page/featured-hostels";
 import { HostelsSection } from "@/components/landing-page/hostels-section";
 import { RoomsSection } from "@/components/landing-page/rooms-section";
 import { CtaPartner } from "@/components/landing-page/cta-partner";
@@ -163,6 +164,7 @@ export default async function Home() {
       <Header />
       <HeroSection />
       <PopularLocations cities={cities} />
+      <FeaturedHostels hostels={hostels.slice(0, 9)} />
       <HostelsSection hostels={hostels} />
       <RoomsSection initialRooms={rooms} />
       <CtaPartner />

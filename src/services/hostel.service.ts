@@ -2,6 +2,17 @@ import connectDB from '@/lib/mongoose/connection';
 import { HostelProfile } from '@/lib/mongoose/models/hostel-profile.model';
 import { RoomType } from '@/lib/mongoose/models/room-type.model';
 
+export interface RoomTypeBasic {
+  _id: string;
+  name: string;
+  rent: number;
+  images: Array<{
+    url: string;
+    title: string;
+    isCover?: boolean;
+  }>;
+}
+
 export interface HostelWithProfile {
   _id: string;
   name: string;
@@ -27,6 +38,7 @@ export interface HostelWithProfile {
     };
     minRent?: number;
     availableAmenities?: string[];
+    roomTypes?: RoomTypeBasic[];
   };
 }
 
@@ -43,13 +55,34 @@ export async function getHostels(): Promise<HostelWithProfile[]> {
 
     const hostelIds = hostelProfiles.map(p => p.hostel.toString());
     const roomTypes = await RoomType.find({ hostelId: { $in: hostelIds } })
-      .select('hostelId rent')
+      .select('hostelId name rent images')
       .lean();
 
     const rentMap = new Map<string, number>();
+    const roomTypesMap = new Map<string, RoomTypeBasic[]>();
+    
     roomTypes.forEach(rt => {
-      const current = rentMap.get(rt.hostelId) || Infinity;
-      rentMap.set(rt.hostelId, Math.min(current, rt.rent));
+      const hostelId = rt.hostelId.toString();
+      const current = rentMap.get(hostelId) || Infinity;
+      rentMap.set(hostelId, Math.min(current, rt.rent));
+      
+      if (!roomTypesMap.has(hostelId)) {
+        roomTypesMap.set(hostelId, []);
+      }
+      
+      // Convert images to plain objects
+      const plainImages = (rt.images || []).map((img: any) => ({
+        url: img.url,
+        title: img.title,
+        isCover: img.isCover || false,
+      }));
+      
+      roomTypesMap.get(hostelId)!.push({
+        _id: rt._id.toString(),
+        name: rt.name,
+        rent: rt.rent,
+        images: plainImages,
+      });
     });
 
     return hostelProfiles.map(profile => {
@@ -78,6 +111,7 @@ export async function getHostels(): Promise<HostelWithProfile[]> {
           },
           minRent: minRent !== undefined && minRent !== Infinity ? minRent : undefined,
           availableAmenities,
+          roomTypes: roomTypesMap.get(idStr) || [],
         },
       };
     });
@@ -180,13 +214,34 @@ export async function getFilteredHostels(filters: FilterOptions = {}): Promise<H
     const hostelIds = hostelProfiles.map((p: any) => p.hostel.toString());
     
     const roomTypes = await RoomType.find({ hostelId: { $in: hostelIds } })
-      .select('hostelId rent')
+      .select('hostelId name rent images')
       .lean();
 
     const rentMap = new Map<string, number>();
+    const roomTypesMap = new Map<string, RoomTypeBasic[]>();
+    
     roomTypes.forEach((rt: any) => {
-      const current = rentMap.get(rt.hostelId.toString()) || Infinity;
-      rentMap.set(rt.hostelId.toString(), Math.min(current, rt.rent));
+      const hostelId = rt.hostelId.toString();
+      const current = rentMap.get(hostelId) || Infinity;
+      rentMap.set(hostelId, Math.min(current, rt.rent));
+      
+      if (!roomTypesMap.has(hostelId)) {
+        roomTypesMap.set(hostelId, []);
+      }
+      
+      // Convert images to plain objects
+      const plainImages = (rt.images || []).map((img: any) => ({
+        url: img.url,
+        title: img.title,
+        isCover: img.isCover || false,
+      }));
+      
+      roomTypesMap.get(hostelId)!.push({
+        _id: rt._id.toString(),
+        name: rt.name,
+        rent: rt.rent,
+        images: plainImages,
+      });
     });
 
     let result = hostelProfiles.map((profile: any) => {
@@ -215,6 +270,7 @@ export async function getFilteredHostels(filters: FilterOptions = {}): Promise<H
           },
           minRent: minRent !== undefined && minRent !== Infinity ? minRent : undefined,
           availableAmenities,
+          roomTypes: roomTypesMap.get(idStr) || [],
         },
       };
     });

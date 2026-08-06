@@ -260,7 +260,7 @@ function HeaderContent({ pageTitle, showBackButton = false }: HeaderProps) {
               Home
             </Link>
             <Link
-              href="/destinations"
+              href="/explore"
               className={`text-sm font-medium transition-colors duration-300 ${isScrolled ? "text-gray-500 hover:text-brand-primary" : "text-white/80 hover:text-white"
                 }`}
             >
@@ -314,7 +314,7 @@ function HeaderContent({ pageTitle, showBackButton = false }: HeaderProps) {
                 Home
               </Link>
               <Link
-                href="/destinations"
+                href="/explore"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={`text-sm font-medium px-3 py-2 transition-colors ${isScrolled ? "text-gray-500 hover:text-brand-primary" : "text-white/80 hover:text-white"
                   }`}
@@ -454,7 +454,7 @@ function HeaderContent({ pageTitle, showBackButton = false }: HeaderProps) {
             {/* Navigation Links - Hidden on small screens */}
             {!showBackButton && (
               <nav className="hidden lg:flex items-center gap-6">
-                <Link href="/destinations" className="text-sm font-medium text-zinc-600 hover:text-brand-primary dark:text-zinc-300 dark:hover:text-brand-primary transition-colors">
+                <Link href="/explore" className="text-sm font-medium text-zinc-600 hover:text-brand-primary dark:text-zinc-300 dark:hover:text-brand-primary transition-colors">
                   Explore
                 </Link>
                 <Link href="/hostels" className="text-sm font-medium text-zinc-600 hover:text-brand-primary dark:text-zinc-300 dark:hover:text-brand-primary transition-colors">
@@ -520,7 +520,7 @@ function HeaderContent({ pageTitle, showBackButton = false }: HeaderProps) {
               Home
             </Link>
             <Link
-              href="/destinations"
+              href="/explore"
               onClick={() => setIsMobileMenuOpen(false)}
               className="text-sm font-semibold px-3 py-2 text-brand-primary bg-brand-primary/5 rounded-lg"
             >
