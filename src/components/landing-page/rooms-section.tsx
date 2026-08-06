@@ -96,7 +96,7 @@ export function RoomsSection({ initialRooms }: RoomsSectionProps) {
 
   return (
     <section className="bg-brand-white py-20 relative">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 lg:px-6">
         
         {/* Section Header */}
         <motion.div 

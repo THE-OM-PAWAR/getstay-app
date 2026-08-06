@@ -21,7 +21,7 @@ const itemVariants: Variants = {
 export function CtaPartner() {
   return (
     <section className="bg-brand-white py-24 relative overflow-hidden">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 lg:px-6">
         <div className="bg-brand-primary/10 rounded-[40px] overflow-visible relative flex flex-col lg:flex-row items-center border border-brand-primary/20">
 
           {/* Text Content */}

@@ -29,7 +29,7 @@ export function FeaturedHostels({ hostels }: FeaturedHostelsProps) {
 
   return (
     <section className="bg-white py-20 border-y border-gray-100">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 lg:px-6">
         
         {/* Section Header */}
         <motion.div 
@@ -68,7 +68,7 @@ export function FeaturedHostels({ hostels }: FeaturedHostelsProps) {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-50px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-12"
         >
           {displayHostels.map((hostel) => (
             <motion.div variants={cardVariants} key={hostel._id}>

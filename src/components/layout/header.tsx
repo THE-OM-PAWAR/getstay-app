@@ -1,10 +1,9 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { Search, X, ArrowLeft, Menu, User, LogOut, Bookmark, Settings, ChevronDown } from "lucide-react";
+import { useRouter, usePathname } from "next/navigation";
+import { X, ArrowLeft, Menu, User, LogOut, Bookmark, Settings, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -32,13 +31,8 @@ interface UserState {
 function HeaderContent({ pageTitle, showBackButton = false }: HeaderProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const isSearchPage = pathname === '/search';
   const isHomePage = pathname === '/';
-  const urlQuery = searchParams.get('q') || '';
 
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -87,37 +81,6 @@ function HeaderContent({ pageTitle, showBackButton = false }: HeaderProps) {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isHomePage]);
-
-  // Determine if we should show the search page behavior (expanded search bar with X)
-  const useSearchPageBehavior = isSearchPage && !showBackButton;
-
-  // Update search query when URL changes
-  useEffect(() => {
-    if (isSearchPage && urlQuery) {
-      setSearchQuery(urlQuery);
-      if (useSearchPageBehavior && window.innerWidth < 768) {
-        setIsMobileSearchOpen(true);
-      }
-    }
-  }, [isSearchPage, urlQuery, useSearchPageBehavior]);
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
-      if (!useSearchPageBehavior) {
-        setIsMobileSearchOpen(false);
-      }
-    }
-  };
-
-  const handleClose = () => {
-    if (useSearchPageBehavior) {
-      router.push('/');
-      setSearchQuery("");
-    }
-    setIsMobileSearchOpen(false);
-  };
 
   const handleBack = () => {
     router.back();
@@ -392,39 +355,12 @@ function HeaderContent({ pageTitle, showBackButton = false }: HeaderProps) {
     );
   }
 
-  // Fallback / Subpages Header with Search Bar
+  // Fallback / Subpages Header
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-200/50 dark:border-zinc-800/50 bg-white/70 dark:bg-zinc-950/70 backdrop-blur-xl shadow-sm transition-all duration-300">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-8">
-        {/* Mobile Search Expanded View */}
-        {isMobileSearchOpen && (
-          <div className="flex w-full items-center gap-2 md:hidden">
-            <form onSubmit={handleSearch} className="flex-1">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <Input
-                  type="text"
-                  placeholder="Search hostels or rooms..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="h-10 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/50 pl-10 pr-4 text-sm transition-all focus:border-brand-primary focus:bg-white dark:focus:bg-zinc-900 focus:ring-2 focus:ring-brand-primary/20 backdrop-blur-md"
-                  autoFocus={!isSearchPage}
-                />
-              </div>
-            </form>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={handleClose}
-              className="shrink-0 rounded-full"
-            >
-              <X className="h-5 w-5" />
-            </Button>
-          </div>
-        )}
-
         {/* Normal Header Layout */}
-        <div className={`flex w-full items-center justify-between ${isMobileSearchOpen ? 'hidden md:flex' : 'flex'}`}>
+        <div className="flex w-full items-center justify-between">
           {/* Left Section */}
           <div className="flex items-center gap-8 min-w-0">
             <div className="flex items-center gap-3">
@@ -469,28 +405,6 @@ function HeaderContent({ pageTitle, showBackButton = false }: HeaderProps) {
 
           {/* Right Section */}
           <div className="flex items-center gap-4 shrink-0">
-            {/* Desktop Search bar */}
-            <form onSubmit={handleSearch} className="relative hidden w-56 xl:w-72 md:flex">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                type="text"
-                placeholder="Search destinations..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="h-10 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white/60 dark:bg-zinc-900/60 pl-10 text-sm transition-all focus:border-brand-primary focus:bg-white dark:focus:bg-zinc-900 focus:ring-2 focus:ring-brand-primary/20 hover:bg-white dark:hover:bg-zinc-900"
-              />
-            </form>
-
-            {/* Mobile Search Icon */}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsMobileSearchOpen(true)}
-              className="md:hidden rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800"
-            >
-              <Search className="h-5 w-5" />
-            </Button>
-
             {/* Auth Buttons or User Dropdown */}
             {!showBackButton && renderUserDropdown(true)}
             

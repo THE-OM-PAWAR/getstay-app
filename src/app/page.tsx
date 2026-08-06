@@ -4,7 +4,7 @@ import { Footer } from "@/components/layout/footer";
 import { HeroSection } from "@/components/landing-page/hero-section";
 import { PopularLocations } from "@/components/landing-page/popular-locations";
 import { FeaturedHostels } from "@/components/landing-page/featured-hostels";
-import { HostelsSection } from "@/components/landing-page/hostels-section";
+import { RecommendedSection } from "@/components/landing-page/recommended-section";
 import { RoomsSection } from "@/components/landing-page/rooms-section";
 import { CtaPartner } from "@/components/landing-page/cta-partner";
 import { getHostels } from "@/services/hostel.service";
@@ -164,8 +164,8 @@ export default async function Home() {
       <Header />
       <HeroSection />
       <PopularLocations cities={cities} />
+      <RecommendedSection hostels={hostels} />
       <FeaturedHostels hostels={hostels.slice(0, 9)} />
-      <HostelsSection hostels={hostels} />
       <RoomsSection initialRooms={rooms} />
       <CtaPartner />
       <Footer />
