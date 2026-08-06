@@ -131,13 +131,12 @@ export function RecommendedSection({ hostels }: RecommendedSectionProps) {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-50px" }}
-          className="grid grid-flow-col auto-cols-[220px] sm:auto-cols-[240px] gap-3 md:gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide -mx-6 px-6 lg:-mx-8 lg:px-8 grid-rows-2"
+          className="grid grid-flow-col auto-cols-[220px] sm:auto-cols-[240px] gap-3 md:gap-4 overflow-x-auto pb-4 scrollbar-hide -mx-6 px-6 lg:-mx-8 lg:px-8 grid-rows-2"
         >
           {displayHostels.map((hostel) => (
             <motion.div 
               variants={cardVariants} 
               key={hostel.id}
-              className="snap-start"
             >
               <SmallHostelCard
                 id={hostel.id}
