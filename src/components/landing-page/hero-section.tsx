@@ -18,7 +18,7 @@ export function HeroSection() {
   };
 
   return (
-    <section className="relative overflow-hidden w-full min-h-[85vh] md:min-h-[750px] flex items-center justify-center pt-36 pb-20 px-6 bg-brand-dark -mt-20 z-10">
+    <section className="relative overflow-hidden w-full min-h-[40vh] md:min-h-[750px] flex items-center justify-center pt-20 pb-6 md:pt-36 md:pb-20 px-4 md:px-6 bg-brand-dark -mt-20 z-10">
       {/* Background image with parallax effect simulation */}
       <motion.div 
         initial={{ scale: 1.05 }}
@@ -43,9 +43,9 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-          className="mb-4 inline-flex items-center rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-sm font-medium text-white backdrop-blur-md"
+          className="mb-3 md:mb-4 inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3 py-1 md:px-4 md:py-1.5 text-xs md:text-sm font-medium text-white backdrop-blur-md"
         >
-          <span className="flex h-2 w-2 rounded-full bg-green-400 mr-2 animate-pulse"></span>
+          <span className="flex h-1.5 w-1.5 md:h-2 md:w-2 rounded-full bg-green-400 mr-2 animate-pulse"></span>
           Now operating in 15+ cities across India
         </motion.div>
 
@@ -53,7 +53,7 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-          className="text-5xl md:text-7xl font-extrabold text-white tracking-tight leading-[1.1] mb-6 drop-shadow-lg"
+          className="text-3xl md:text-7xl font-extrabold text-white tracking-tight leading-[1.15] md:leading-[1.1] mb-2 md:mb-6 drop-shadow-lg"
         >
           Elevate Your <br className="hidden md:block" />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary-light to-white">Hostel Experience</span>
@@ -63,7 +63,7 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-          className="text-lg md:text-xl text-brand-light font-medium mb-10 max-w-2xl drop-shadow-md"
+          className="text-sm md:text-xl text-brand-light font-medium mb-5 md:mb-10 max-w-2xl drop-shadow-md px-2 md:px-0"
         >
           Discover premium, safe, and vibrant accommodations tailored for students and young professionals.
         </motion.p>
@@ -74,24 +74,24 @@ export function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
           onSubmit={handleSearch}
-          className="flex items-center w-full max-w-2xl bg-white/10 backdrop-blur-lg border border-white/30 rounded-full p-2 shadow-2xl hover:bg-white/20 transition-all duration-300 group"
+          className="flex items-center w-full max-w-2xl bg-white/10 backdrop-blur-lg border border-white/30 rounded-full p-1.5 md:p-2 shadow-2xl hover:bg-white/20 transition-all duration-300 group"
         >
-          <div className="flex items-center gap-3 pl-5 flex-1">
-            <MapPin className="h-6 w-6 text-brand-primary-light shrink-0" />
+          <div className="flex items-center gap-2 md:gap-3 pl-3 md:pl-5 flex-1">
+            <MapPin className="h-5 w-5 md:h-6 md:w-6 text-brand-primary-light shrink-0" />
             <input
               type="text"
               placeholder="Search for a city or hostel..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-transparent border-none text-white placeholder-brand-light/70 focus:outline-none focus:ring-0 text-base md:text-lg py-2"
+              className="w-full bg-transparent border-none text-white placeholder-brand-light/70 focus:outline-none focus:ring-0 text-sm md:text-lg py-1.5 md:py-2"
             />
           </div>
           <button
             type="submit"
-            className="h-14 w-14 md:h-16 md:w-16 rounded-full bg-brand-primary text-white flex items-center justify-center hover:bg-brand-primary/90 hover:scale-105 transition-all active:scale-95 shadow-[0_0_20px_rgba(57,50,216,0.5)] shrink-0 cursor-pointer"
+            className="h-10 w-10 md:h-16 md:w-16 rounded-full bg-brand-primary text-white flex items-center justify-center hover:bg-brand-primary/90 hover:scale-105 transition-all active:scale-95 shadow-[0_0_20px_rgba(57,50,216,0.5)] shrink-0 cursor-pointer"
             aria-label="Search"
           >
-            <Search className="h-6 w-6 md:h-7 md:w-7" />
+            <Search className="h-4 w-4 md:h-7 md:w-7" />
           </button>
         </motion.form>
       </div>

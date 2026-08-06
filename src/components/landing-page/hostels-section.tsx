@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { MapPin, Star, Heart, Wifi, Wind, Utensils, Dumbbell, Coffee, Gamepad2, Trees } from "lucide-react";
+import { MapPin, Star, Heart, Wifi, Wind, Utensils, Dumbbell, Coffee, Gamepad2, Trees, Clock } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { HostelWithProfile } from "@/services/hostel.service";
@@ -212,95 +212,88 @@ export function HostelsSection({ hostels }: HostelsSectionProps) {
           </div>
         </motion.div>
 
-        {/* Grid layout */}
+        {/* Grid layout - 2 Row Horizontal Scroll */}
         <motion.div 
           variants={containerVariants}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-50px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12"
+          className="grid grid-flow-col auto-cols-[85%] sm:auto-cols-[300px] gap-4 mb-12 overflow-x-auto pb-4 snap-x snap-mandatory hide-scrollbar grid-rows-2"
+          style={{ 
+            scrollbarWidth: 'none', 
+            msOverflowStyle: 'none',
+          }}
         >
           {displayHostels.map((hostel) => {
             const isFav = !!favorites[hostel.id];
             return (
               <motion.div variants={cardVariants} key={hostel.id}>
-                <div
-                  className="group relative flex flex-col overflow-hidden rounded-[1.5rem] bg-white border border-gray-100 hover:border-gray-200 shadow-sm hover:shadow-xl transition-all duration-500 h-full"
+                <Link 
+                  href={`/hostel/${hostel.slug}`}
+                  className="group relative flex flex-col overflow-hidden rounded-2xl bg-white transition-all duration-300 h-full snap-start cursor-pointer border border-gray-100 hover:border-gray-200 hover:shadow-xl hover:-translate-y-1 p-2 block"
                 >
                   {/* Top Image & Overlays */}
-                  <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100">
+                  <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-gray-100">
                     <Image
                       src={hostel.image}
                       alt={hostel.name}
                       fill
-                      sizes="(max-width: 768px) 100vw, 33vw"
+                      sizes="(max-width: 768px) 100vw, 300px"
                       className="object-cover transition-transform duration-700 group-hover:scale-110"
                     />
                     
-                    {/* Heart button */}
-                    <button
-                      onClick={(e) => toggleFavorite(hostel.id, e)}
-                      className="absolute top-4 right-4 z-10 p-2.5 rounded-full bg-white/90 hover:bg-white text-gray-500 hover:text-red-500 backdrop-blur-md transition-all cursor-pointer shadow-sm active:scale-90"
-                      aria-label="Add to favorites"
-                    >
-                      <Heart className={`h-5 w-5 ${isFav ? "fill-red-500 text-red-500" : ""}`} />
-                    </button>
-
-                    {/* Badge */}
-                    <span className={`absolute top-4 left-4 z-10 px-3 py-1.5 text-[10px] font-bold tracking-wider border rounded-lg uppercase shadow-sm backdrop-blur-md ${hostel.badgeColor} bg-opacity-90`}>
-                      {hostel.badge}
-                    </span>
-
-                    {/* Gradient Overlay for Text Visibility */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
-
-                    {/* Rating Overlay */}
-                    <div className="absolute bottom-4 left-4 z-10 flex items-center gap-1.5 rounded-lg bg-black/40 backdrop-blur-md px-2.5 py-1.5 text-xs font-semibold text-white border border-white/20">
-                      <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
-                      <span>{hostel.rating}</span>
-                      <span className="text-[10px] text-white/80">({hostel.reviewsCount})</span>
+                    {/* Discount/Offer Badge (Top Left) */}
+                    <div className="absolute top-0 left-0 z-10 px-2.5 py-1 text-[11px] font-semibold text-white bg-black/80 backdrop-blur-md rounded-br-lg rounded-tl-xl shadow-sm">
+                      {hostel.badge === "PREMIUM" ? "FLAT ₹150 OFF" : hostel.badge === "TOP RATED" ? "20% OFF up to ₹100" : "FREE BREAKFAST"}
                     </div>
 
-                    {/* Price Overlay */}
-                    <div className="absolute bottom-4 right-4 z-10 flex flex-col items-end rounded-lg bg-white/95 backdrop-blur-md px-3 py-1.5 text-brand-dark shadow-sm">
-                      <span className="text-[9px] uppercase tracking-wider text-gray-500 font-bold leading-none mb-0.5">Starting from</span>
-                      <span className="text-base font-black leading-none">₹{hostel.price}</span>
+                    {/* Heart button (Top Right) */}
+                    <div
+                      role="button"
+                      tabIndex={0}
+                      onClick={(e) => toggleFavorite(hostel.id, e)}
+                      onKeyDown={(e) => { if (e.key === 'Enter') toggleFavorite(hostel.id, e as any) }}
+                      className="absolute top-2 right-2 z-10 p-1.5 rounded-full bg-white/90 hover:bg-white text-gray-500 hover:text-red-500 backdrop-blur-md transition-all cursor-pointer shadow-sm active:scale-90"
+                      aria-label="Add to favorites"
+                    >
+                      <Heart className={`h-4 w-4 ${isFav ? "fill-red-500 text-red-500" : ""}`} />
+                    </div>
+
+                    {/* Gradient Overlay for bottom text visibility */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-80" />
+
+                    {/* Rating Badge (Bottom Left) */}
+                    <div className="absolute bottom-2 left-2 z-10 flex items-center gap-1 rounded-md bg-green-700/90 backdrop-blur-sm px-1.5 py-0.5 text-[11px] font-bold text-white shadow-sm border border-white/10">
+                      <Star className="h-3 w-3 fill-white text-white" />
+                      <span>{hostel.rating}</span>
                     </div>
                   </div>
 
-                  {/* Content Area */}
-                  <div className="flex flex-col flex-1 p-6">
-                    <h3 className="text-xl font-bold text-brand-dark mb-2 group-hover:text-brand-primary transition-colors line-clamp-1">
+                  {/* Content Area - Premium & Compact */}
+                  <div className="flex flex-col flex-1 pt-3 px-1.5 pb-1">
+                    <h3 className="text-[17px] font-extrabold text-gray-900 leading-tight mb-1 truncate group-hover:text-brand-primary transition-colors">
                       {hostel.name}
                     </h3>
                     
-                    <div className="flex items-center gap-1.5 text-sm text-gray-500 mb-5">
-                      <MapPin className="h-4 w-4 text-gray-400 shrink-0" />
-                      <span className="truncate">{hostel.location}</span>
+                    <div className="flex items-center gap-1.5 text-[13px] text-gray-500 font-medium mb-2.5">
+                      <Clock className="h-3.5 w-3.5 text-brand-primary/70 shrink-0" />
+                      <span className="truncate">20-25 mins • {hostel.location.split(",")[0]}</span>
                     </div>
 
-                    {/* Amenities Row */}
-                    <div className="flex flex-wrap gap-2 mb-6">
-                      {hostel.amenities.map((amenity, idx) => (
-                        <span
-                          key={idx}
-                          className="inline-flex items-center gap-1.5 rounded-lg border border-gray-100 bg-gray-50 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-100 transition-colors"
-                        >
-                          {amenity.icon}
-                          {amenity.name}
-                        </span>
-                      ))}
+                    <div className="mt-auto flex items-end justify-between border-t border-gray-100/80 pt-2.5">
+                      <div className="flex flex-col">
+                        <span className="text-[10px] uppercase tracking-wider text-gray-400 font-bold leading-none mb-0.5">Starting from</span>
+                        <div className="flex items-baseline gap-1">
+                          <span className="text-lg font-black text-gray-900 leading-none">₹{hostel.price}</span>
+                          <span className="text-[11px] text-gray-500 font-semibold leading-none">/mo</span>
+                        </div>
+                      </div>
+                      <div className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-primary/10 text-brand-primary group-hover:bg-brand-primary group-hover:text-white transition-colors">
+                        <span className="text-lg font-bold leading-none -mt-0.5">+</span>
+                      </div>
                     </div>
-
-                    {/* Action button */}
-                    <Link
-                      href={`/hostel/${hostel.slug}`}
-                      className="mt-auto w-full rounded-xl bg-brand-dark py-3.5 text-center text-sm font-bold text-white hover:bg-brand-primary transition-colors shadow-sm cursor-pointer"
-                    >
-                      View Details
-                    </Link>
                   </div>
-                </div>
+                </Link>
               </motion.div>
             );
           })}
