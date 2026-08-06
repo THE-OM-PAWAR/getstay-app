@@ -111,7 +111,7 @@ export function SmallHostelCard({
   return (
     <Link
       href={`/hostel/${slug}`}
-      className="group relative flex flex-col overflow-hidden rounded-xl bg-white transition-all duration-300 h-full snap-start cursor-pointer border border-gray-100 hover:border-gray-200 hover:shadow-xl hover:-translate-y-1 p-1.5"
+      className="group relative flex flex-col overflow-hidden rounded-xl bg-white transition-all duration-300 h-full snap-start cursor-pointer border border-gray-100 hover:border-gray-200 hover:shadow-xl hover:-translate-y-1 p-2"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -130,7 +130,7 @@ export function SmallHostelCard({
                 src={img.url}
                 alt={img.label}
                 fill
-                sizes="(max-width: 768px) 100vw, 200px"
+                sizes="(max-width: 768px) 100vw, 240px"
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
                 priority={index === 0}
               />
@@ -140,7 +140,7 @@ export function SmallHostelCard({
 
         {/* Price indicator overlay - top left */}
         {currentImage && currentImage.price && (
-          <div className="absolute top-0 left-0 z-10 px-1.5 py-0.5 text-[9px] font-semibold text-white bg-black/80 backdrop-blur-md rounded-br-md rounded-tl-lg shadow-sm max-w-[calc(100%-2rem)] truncate">
+          <div className="absolute top-0 left-0 z-10 px-2 py-0.5 text-[10px] font-semibold text-white bg-black/80 backdrop-blur-md rounded-br-md rounded-tl-lg shadow-sm max-w-[calc(100%-2rem)] truncate">
             {currentImage.isHostel ? (
               `Starting ₹${currentImage.price}`
             ) : (
@@ -170,20 +170,22 @@ export function SmallHostelCard({
       </div>
 
       {/* Content Area */}
-      <div className="flex flex-col flex-1 pt-2 px-1 pb-0.5">
-        <h3 className="text-xs font-extrabold text-gray-900 leading-tight mb-0.5 truncate group-hover:text-brand-primary transition-colors">
+      <div className="flex flex-col flex-1 pt-2 px-1.5 pb-1">
+        <h3 className="text-sm font-extrabold text-gray-900 leading-tight mb-1 truncate group-hover:text-brand-primary transition-colors">
           {name}
         </h3>
 
         {/* Location & Room Types Section */}
         <div className="mt-auto border-t border-gray-100/80 pt-1.5">
           {/* Location */}
-          <div className="flex items-center gap-1">
-            <MapPin className="h-2.5 w-2.5 text-gray-400 flex-shrink-0" />
-            <span className="text-[10px] text-gray-600 font-medium truncate">
-              {location}
-            </span>
-          </div>
+          {location && (
+            <div className="flex items-center gap-1">
+              <MapPin className="h-3 w-3 text-gray-400 flex-shrink-0" />
+              <span className="text-[11px] text-gray-600 font-medium truncate">
+                {location}
+              </span>
+            </div>
+          )}
         </div>
       </div>
     </Link>

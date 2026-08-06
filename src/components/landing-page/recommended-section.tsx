@@ -51,25 +51,25 @@ const cardVariants: Variants = {
 };
 
 export function RecommendedSection({ hostels }: RecommendedSectionProps) {
-  // Map database hostels to the layout structure - ONLY AUTHENTIC DATA
-  const mappedHostels: HostelCardData[] = (hostels || []).map((hostel) => {
-    // Determine location string
+  // Map database hostels - render all without filtering
+  const displayHostels: HostelCardData[] = (hostels || []).map((hostel) => {
+    // Location
     const city = hostel.profile?.basicInfo?.city || "";
     const state = hostel.profile?.basicInfo?.state || "";
     const address = hostel.profile?.basicInfo?.address || "";
     const location = address 
       ? `${address.split(",")[0]}, ${city}`
-      : city && state ? `${city}, ${state}` : city || "";
+      : city && state ? `${city}, ${state}` : city || "Location";
 
-    // Price details
+    // Price
     const price = hostel.profile?.minRent || 0;
 
-    // Image URL - only use real data
+    // Image
     const image = hostel.profile?.media?.photos?.find(p => p.isMain)?.url ||
                   hostel.profile?.media?.photos?.[0]?.url ||
-                  "";
+                  "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=800&q=80";
 
-    // Room types with pricing and images
+    // Room types
     const roomTypes: RoomType[] = (hostel.profile?.roomTypes || [])
       .map((rt: any) => ({
         name: rt.name,
@@ -92,10 +92,7 @@ export function RecommendedSection({ hostels }: RecommendedSectionProps) {
       slug: hostel.slug || "",
       roomTypes,
     };
-  }).filter(h => h.image && h.location && h.price > 0); // Only show hostels with complete data
-
-  // Only use authentic database hostels - no fallbacks
-  const displayHostels = mappedHostels;
+  });
 
   return (
     <section className="bg-gray-50 py-10 md:py-14 border-y border-gray-100">
@@ -134,7 +131,7 @@ export function RecommendedSection({ hostels }: RecommendedSectionProps) {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-50px" }}
-          className="grid grid-flow-col auto-cols-[180px] sm:auto-cols-[200px] gap-3 md:gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide -mx-6 px-6 lg:-mx-8 lg:px-8 grid-rows-2"
+          className="grid grid-flow-col auto-cols-[220px] sm:auto-cols-[240px] gap-3 md:gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide -mx-6 px-6 lg:-mx-8 lg:px-8 grid-rows-2"
         >
           {displayHostels.map((hostel) => (
             <motion.div 

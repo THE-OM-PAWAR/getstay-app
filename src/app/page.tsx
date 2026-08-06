@@ -163,8 +163,8 @@ export default async function Home() {
 
       <Header />
       <HeroSection />
-      <PopularLocations cities={cities} />
-      <RecommendedSection hostels={hostels} />
+      {/* <PopularLocations cities={cities} /> */}
+      <RecommendedSection hostels={hostels.slice(0, 12)} />
       <FeaturedHostels hostels={hostels.slice(0, 9)} />
       <RoomsSection initialRooms={rooms} />
       <CtaPartner />

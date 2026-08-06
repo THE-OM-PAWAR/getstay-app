@@ -51,7 +51,7 @@ export async function getHostels(): Promise<HostelWithProfile[]> {
     })
       .select('hostel slug basicInfo propertyDetails media amenities')
       .lean()
-      .limit(8);
+      .limit(20);
 
     const hostelIds = hostelProfiles.map(p => p.hostel.toString());
     const roomTypes = await RoomType.find({ hostelId: { $in: hostelIds } })
