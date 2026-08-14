@@ -12,6 +12,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { toast } from "sonner";
@@ -114,19 +120,17 @@ function HeaderContent({ pageTitle, showBackButton = false }: HeaderProps) {
         <div className="hidden md:flex items-center gap-4">
           <Link
             href="/login"
-            className={`text-sm font-semibold transition-colors duration-300 ${
-              isDarkText ? "text-gray-700 hover:text-brand-primary dark:text-zinc-200" : "text-white hover:text-white/80"
-            }`}
+            className={`text-sm font-semibold transition-colors duration-300 ${isDarkText ? "text-gray-700 hover:text-brand-primary dark:text-zinc-200" : "text-white hover:text-white/80"
+              }`}
           >
             Login
           </Link>
           <Link
             href="/signup"
-            className={`rounded-full px-6 py-2.5 text-sm font-semibold shadow-sm hover:shadow transition-all duration-300 ${
-              isDarkText
-                ? "bg-brand-primary text-white hover:bg-brand-primary/95"
-                : "bg-white text-brand-primary hover:bg-white/95"
-            }`}
+            className={`rounded-full px-6 py-2.5 text-sm font-semibold shadow-sm hover:shadow transition-all duration-300 ${isDarkText
+              ? "bg-brand-primary text-white hover:bg-brand-primary/95"
+              : "bg-white text-brand-primary hover:bg-white/95"
+              }`}
           >
             Sign Up
           </Link>
@@ -139,11 +143,10 @@ function HeaderContent({ pageTitle, showBackButton = false }: HeaderProps) {
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
-            className={`relative flex items-center gap-2.5 rounded-full pl-2 pr-3 py-1.5 transition-all duration-200 ${
-              isDarkText
-                ? "bg-gray-100/80 hover:bg-gray-200/80 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white border border-gray-200/60 dark:border-zinc-700"
-                : "bg-white/15 hover:bg-white/25 text-white border border-white/20 backdrop-blur-md"
-            }`}
+            className={`relative flex items-center gap-2.5 rounded-full pl-2 pr-3 py-1.5 transition-all duration-200 ${isDarkText
+              ? "bg-gray-100/80 hover:bg-gray-200/80 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white border border-gray-200/60 dark:border-zinc-700"
+              : "bg-white/15 hover:bg-white/25 text-white border border-white/20 backdrop-blur-md"
+              }`}
           >
             <Avatar className="h-7 w-7 border-2 border-brand-primary/40">
               <AvatarFallback className="bg-brand-primary text-white text-xs font-black">
@@ -196,8 +199,8 @@ function HeaderContent({ pageTitle, showBackButton = false }: HeaderProps) {
   if (isHomePage) {
     return (
       <header className={`sticky top-0 z-50 border-b transition-all duration-300 ${isScrolled
-          ? "border-gray-100/50 dark:border-gray-800/50 bg-white/80 dark:bg-black/80 backdrop-blur-lg shadow-xs"
-          : "border-transparent bg-transparent"
+        ? "border-gray-100/50 dark:border-gray-800/50 bg-white/80 dark:bg-black/80 backdrop-blur-lg shadow-xs"
+        : "border-transparent bg-transparent"
         }`}>
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-8">
           {/* Left Section: Logo */}
@@ -216,8 +219,8 @@ function HeaderContent({ pageTitle, showBackButton = false }: HeaderProps) {
             <Link
               href="/"
               className={`relative text-sm font-semibold px-3 py-1.5 rounded-full border transition-all duration-300 ${isScrolled
-                  ? "text-brand-primary bg-brand-primary/5 border-brand-primary/10"
-                  : "text-white bg-white/10 border-white/20"
+                ? "text-brand-primary bg-brand-primary/5 border-brand-primary/10"
+                : "text-white bg-white/10 border-white/20"
                 }`}
             >
               Home
@@ -229,13 +232,7 @@ function HeaderContent({ pageTitle, showBackButton = false }: HeaderProps) {
             >
               Explore
             </Link>
-            <Link
-              href="/hostels"
-              className={`text-sm font-medium transition-colors duration-300 ${isScrolled ? "text-gray-500 hover:text-brand-primary" : "text-white/80 hover:text-white"
-                }`}
-            >
-              Hostels
-            </Link>
+
             <Link
               href="/about"
               className={`text-sm font-medium transition-colors duration-300 ${isScrolled ? "text-gray-500 hover:text-brand-primary" : "text-white/80 hover:text-white"
@@ -251,106 +248,123 @@ function HeaderContent({ pageTitle, showBackButton = false }: HeaderProps) {
           </div>
 
           {/* Mobile Menu Icon */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className={`rounded-lg p-2 transition-colors duration-300 md:hidden ${isScrolled ? "text-gray-500 hover:bg-gray-50" : "text-white hover:bg-white/10"
-              }`}
-            aria-label="Toggle menu"
-          >
-            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
+          <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+            <SheetTrigger asChild>
+              <button
+                className={`rounded-lg p-2 transition-colors duration-300 md:hidden ${isScrolled ? "text-gray-500 hover:bg-gray-50" : "text-white hover:bg-white/10"
+                  }`}
+                aria-label="Toggle menu"
+              >
+                <Menu className="h-6 w-6" />
+              </button>
+            </SheetTrigger>
+          </Sheet>
         </div>
 
         {/* Mobile Navigation Dropdown */}
-        {isMobileMenuOpen && (
-          <div className={`border-t px-6 py-4 md:hidden shadow-lg animate-in fade-in-50 duration-200 transition-all duration-300 ${isScrolled
-              ? "border-gray-150 dark:border-gray-800 bg-white/95 dark:bg-black/95 text-foreground"
-              : "border-white/10 bg-black/90 backdrop-blur-lg text-white"
-            }`}>
-            <div className="flex flex-col gap-4">
-              <Link
-                href="/"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={`text-sm font-semibold px-3 py-2 rounded-lg ${isScrolled ? "text-brand-primary bg-brand-primary/5" : "text-white bg-white/10"
-                  }`}
-              >
-                Home
-              </Link>
-              <Link
-                href="/explore"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={`text-sm font-medium px-3 py-2 transition-colors ${isScrolled ? "text-gray-500 hover:text-brand-primary" : "text-white/80 hover:text-white"
-                  }`}
-              >
-                Explore
-              </Link>
-              <Link
-                href="/hostels"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={`text-sm font-medium px-3 py-2 transition-colors ${isScrolled ? "text-gray-500 hover:text-brand-primary" : "text-white/80 hover:text-white"
-                  }`}
-              >
-                Hostels
-              </Link>
-              <Link
-                href="/about"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={`text-sm font-medium px-3 py-2 transition-colors ${isScrolled ? "text-gray-500 hover:text-brand-primary" : "text-white/80 hover:text-white"
-                  }`}
-              >
-                About Us
-              </Link>
-              <hr className={isScrolled ? "border-gray-150 dark:border-gray-800" : "border-white/10"} />
-              
-              {user ? (
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3 px-3 py-2 rounded-xl bg-brand-primary/10">
-                    <Avatar className="h-8 w-8 border-2 border-brand-primary">
-                      <AvatarFallback className="bg-brand-primary text-white text-xs font-black">
-                        {getUserInitials()}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="text-sm font-bold leading-none">{getUserFullName()}</p>
-                      <p className="text-xs opacity-75 leading-none mt-1">{user.email}</p>
+        <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+          <SheetContent side="right" className="w-[85vw] sm:w-[350px] border-l border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-black/95 backdrop-blur-xl pt-12 flex flex-col p-6 shadow-2xl">
+            <SheetTitle className="text-left font-bold text-xl mb-6 text-brand-primary">Menu</SheetTitle>
+            <div className="flex flex-col gap-6 flex-1">
+              <nav className="flex flex-col gap-4">
+                <Link
+                  href="/"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-base font-semibold px-4 py-3 rounded-xl text-brand-primary bg-brand-primary/5 hover:bg-brand-primary/10 transition-colors"
+                >
+                  Home
+                </Link>
+                <Link
+                  href="/explore"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-base font-medium px-4 py-3 rounded-xl text-zinc-600 hover:text-brand-primary hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800 transition-colors"
+                >
+                  Explore
+                </Link>
+                <Link
+                  href="/hostels"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-base font-medium px-4 py-3 rounded-xl text-zinc-600 hover:text-brand-primary hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800 transition-colors"
+                >
+                  Hostels
+                </Link>
+                <Link
+                  href="/about"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-base font-medium px-4 py-3 rounded-xl text-zinc-600 hover:text-brand-primary hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800 transition-colors"
+                >
+                  About Us
+                </Link>
+              </nav>
+
+              <div className="mt-auto">
+                <hr className="border-zinc-150 dark:border-zinc-800 mb-6" />
+                {user ? (
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-4 px-4 py-3 rounded-xl bg-brand-primary/5 border border-brand-primary/10 shadow-sm">
+                      <Avatar className="h-10 w-10 border-2 border-brand-primary">
+                        <AvatarFallback className="bg-brand-primary text-white text-sm font-black">
+                          {getUserInitials()}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex flex-col">
+                        <p className="text-sm font-bold text-zinc-900 dark:text-white leading-tight">{getUserFullName()}</p>
+                        <p className="text-xs text-muted-foreground truncate max-w-[150px]">{user.email}</p>
+                      </div>
                     </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <Link
+                        href="/profile"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="flex flex-col items-center justify-center gap-2 rounded-xl p-3 text-sm font-semibold bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 transition-colors"
+                      >
+                        <User className="h-5 w-5 text-brand-primary" />
+                        Profile
+                      </Link>
+                      <Link
+                        href="/bookings"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="flex flex-col items-center justify-center gap-2 rounded-xl p-3 text-sm font-semibold bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 transition-colors"
+                      >
+                        <Bookmark className="h-5 w-5 text-brand-primary" />
+                        Bookings
+                      </Link>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        setIsMobileMenuOpen(false);
+                        handleLogout();
+                      }}
+                      className="w-full flex items-center justify-center gap-2 rounded-xl py-3.5 text-sm font-bold bg-red-500/10 text-red-500 hover:bg-red-500/20 transition-all border border-red-500/10"
+                    >
+                      <LogOut className="h-4 w-4" />
+                      Log Out
+                    </button>
                   </div>
-                  <button
-                    onClick={() => {
-                      setIsMobileMenuOpen(false);
-                      handleLogout();
-                    }}
-                    className="w-full flex items-center justify-center gap-2 rounded-full py-2.5 text-sm font-semibold bg-red-500/10 text-red-500 hover:bg-red-500/20 transition-all"
-                  >
-                    <LogOut className="h-4 w-4" />
-                    Log Out
-                  </button>
-                </div>
-              ) : (
-                <>
-                  <Link
-                    href="/login"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={`text-sm font-semibold px-3 py-2 transition-colors ${isScrolled ? "text-gray-700 hover:text-brand-primary" : "text-white hover:text-white/80"
-                      }`}
-                  >
-                    Login
-                  </Link>
-                  <Link
-                    href="/signup"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={`rounded-full px-6 py-2.5 text-center text-sm font-semibold transition-all ${isScrolled
-                        ? "bg-brand-primary text-white hover:bg-brand-primary/95"
-                        : "bg-white text-brand-primary hover:bg-white/95"
-                      }`}
-                  >
-                    Sign Up
-                  </Link>
-                </>
-              )}
+                ) : (
+                  <div className="flex flex-col gap-3">
+                    <Link
+                      href="/login"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="rounded-xl px-6 py-3.5 text-center text-sm font-bold text-zinc-700 hover:text-brand-primary bg-zinc-100 hover:bg-zinc-200 dark:text-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 transition-all shadow-sm"
+                    >
+                      Login
+                    </Link>
+                    <Link
+                      href="/signup"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="rounded-xl bg-brand-primary px-6 py-3.5 text-center text-sm font-bold text-white transition-all hover:bg-brand-primary/95 shadow-md hover:shadow-lg"
+                    >
+                      Sign Up
+                    </Link>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        )}
+          </SheetContent>
+        </Sheet>
       </header>
     );
   }
@@ -407,99 +421,129 @@ function HeaderContent({ pageTitle, showBackButton = false }: HeaderProps) {
           <div className="flex items-center gap-4 shrink-0">
             {/* Auth Buttons or User Dropdown */}
             {!showBackButton && renderUserDropdown(true)}
-            
+
             {/* Mobile Menu Icon */}
             {!showBackButton && (
-              <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="rounded-full p-2 text-zinc-600 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800 transition-colors lg:hidden"
-                aria-label="Toggle menu"
-              >
-                {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-              </button>
+              <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+                <SheetTrigger asChild>
+                  <button
+                    className="rounded-full p-2 text-zinc-600 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800 transition-colors lg:hidden"
+                    aria-label="Toggle menu"
+                  >
+                    <Menu className="h-6 w-6" />
+                  </button>
+                </SheetTrigger>
+              </Sheet>
             )}
           </div>
         </div>
       </div>
 
       {/* Mobile Navigation Dropdown for Fallback Header */}
-      {isMobileMenuOpen && !showBackButton && (
-        <div className="border-t border-zinc-150 dark:border-zinc-800 bg-white/95 dark:bg-black/95 px-6 py-4 shadow-lg backdrop-blur-xl lg:hidden animate-in fade-in-50 duration-200">
-          <div className="flex flex-col gap-4">
-            <Link
-              href="/"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="text-sm font-medium px-3 py-2 text-zinc-600 hover:text-brand-primary dark:text-zinc-300 transition-colors"
-            >
-              Home
-            </Link>
-            <Link
-              href="/explore"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="text-sm font-semibold px-3 py-2 text-brand-primary bg-brand-primary/5 rounded-lg"
-            >
-              Explore
-            </Link>
-            <Link
-              href="/hostels"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="text-sm font-medium px-3 py-2 text-zinc-600 hover:text-brand-primary dark:text-zinc-300 transition-colors"
-            >
-              Hostels
-            </Link>
-            <Link
-              href="/about"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="text-sm font-medium px-3 py-2 text-zinc-600 hover:text-brand-primary dark:text-zinc-300 transition-colors"
-            >
-              About Us
-            </Link>
-            <hr className="border-zinc-150 dark:border-zinc-800" />
-            
-            {user ? (
-              <div className="space-y-3">
-                <div className="flex items-center gap-3 px-3 py-2 rounded-xl bg-brand-primary/10">
-                  <Avatar className="h-8 w-8 border-2 border-brand-primary">
-                    <AvatarFallback className="bg-brand-primary text-white text-xs font-black">
-                      {getUserInitials()}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <p className="text-sm font-bold text-zinc-900 dark:text-white leading-none">{getUserFullName()}</p>
-                    <p className="text-xs text-muted-foreground leading-none mt-1">{user.email}</p>
+      {!showBackButton && (
+        <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+          <SheetContent side="right" className="w-[85vw] sm:w-[350px] border-l border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-black/95 backdrop-blur-xl pt-12 flex flex-col p-6 shadow-2xl z-[100]">
+            <SheetTitle className="text-left font-bold text-xl mb-6 text-brand-primary">Menu</SheetTitle>
+            <div className="flex flex-col gap-6 flex-1">
+              <nav className="flex flex-col gap-4">
+                <Link
+                  href="/"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-base font-semibold px-4 py-3 rounded-xl text-zinc-600 hover:text-brand-primary hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800 transition-colors"
+                >
+                  Home
+                </Link>
+                <Link
+                  href="/explore"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-base font-medium px-4 py-3 rounded-xl text-brand-primary bg-brand-primary/5 hover:bg-brand-primary/10 transition-colors"
+                >
+                  Explore
+                </Link>
+                <Link
+                  href="/hostels"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-base font-medium px-4 py-3 rounded-xl text-zinc-600 hover:text-brand-primary hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800 transition-colors"
+                >
+                  Hostels
+                </Link>
+                <Link
+                  href="/about"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-base font-medium px-4 py-3 rounded-xl text-zinc-600 hover:text-brand-primary hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800 transition-colors"
+                >
+                  About Us
+                </Link>
+              </nav>
+
+              <div className="mt-auto">
+                <hr className="border-zinc-150 dark:border-zinc-800 mb-6" />
+                {user ? (
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-4 px-4 py-3 rounded-xl bg-brand-primary/5 border border-brand-primary/10 shadow-sm">
+                      <Avatar className="h-10 w-10 border-2 border-brand-primary">
+                        <AvatarFallback className="bg-brand-primary text-white text-sm font-black">
+                          {getUserInitials()}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex flex-col">
+                        <p className="text-sm font-bold text-zinc-900 dark:text-white leading-tight">{getUserFullName()}</p>
+                        <p className="text-xs text-muted-foreground truncate max-w-[150px]">{user.email}</p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <Link
+                        href="/profile"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="flex flex-col items-center justify-center gap-2 rounded-xl p-3 text-sm font-semibold bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 transition-colors"
+                      >
+                        <User className="h-5 w-5 text-brand-primary" />
+                        Profile
+                      </Link>
+                      <Link
+                        href="/bookings"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="flex flex-col items-center justify-center gap-2 rounded-xl p-3 text-sm font-semibold bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 transition-colors"
+                      >
+                        <Bookmark className="h-5 w-5 text-brand-primary" />
+                        Bookings
+                      </Link>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        setIsMobileMenuOpen(false);
+                        handleLogout();
+                      }}
+                      className="w-full flex items-center justify-center gap-2 rounded-xl py-3.5 text-sm font-bold bg-red-500/10 text-red-500 hover:bg-red-500/20 transition-all border border-red-500/10"
+                    >
+                      <LogOut className="h-4 w-4" />
+                      Log Out
+                    </button>
                   </div>
-                </div>
-                <button
-                  onClick={() => {
-                    setIsMobileMenuOpen(false);
-                    handleLogout();
-                  }}
-                  className="w-full flex items-center justify-center gap-2 rounded-full py-2.5 text-sm font-semibold bg-red-500/10 text-red-500 hover:bg-red-500/20 transition-all"
-                >
-                  <LogOut className="h-4 w-4" />
-                  Log Out
-                </button>
+                ) : (
+                  <div className="flex flex-col gap-3">
+                    <Link
+                      href="/login"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="rounded-xl px-6 py-3.5 text-center text-sm font-bold text-zinc-700 hover:text-brand-primary bg-zinc-100 hover:bg-zinc-200 dark:text-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 transition-all shadow-sm"
+                    >
+                      Login
+                    </Link>
+                    <Link
+                      href="/signup"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="rounded-xl bg-brand-primary px-6 py-3.5 text-center text-sm font-bold text-white transition-all hover:bg-brand-primary/95 shadow-md hover:shadow-lg"
+                    >
+                      Sign Up
+                    </Link>
+                  </div>
+                )}
               </div>
-            ) : (
-              <>
-                <Link
-                  href="/login"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-sm font-semibold px-3 py-2 text-zinc-700 hover:text-brand-primary dark:text-zinc-200 transition-colors"
-                >
-                  Login
-                </Link>
-                <Link
-                  href="/signup"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="rounded-full bg-brand-primary px-6 py-2.5 text-center text-sm font-semibold text-white transition-all hover:bg-brand-primary/95"
-                >
-                  Sign Up
-                </Link>
-              </>
-            )}
-          </div>
-        </div>
+            </div>
+          </SheetContent>
+        </Sheet>
       )}
     </header>
   );

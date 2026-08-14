@@ -21,7 +21,7 @@ interface RoomPageProps {
 
 export async function generateStaticParams() {
   const roomIds = await getAllRoomIds();
-  
+
   return roomIds.map((id) => ({
     id,
   }));
@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: RoomPageProps): Promise<Metad
   }
 
   const coverImage = room.images.find(img => img.isCover)?.url || room.images[0]?.url;
-  const location = room.hostel.city && room.hostel.state 
+  const location = room.hostel.city && room.hostel.state
     ? `${room.hostel.city}, ${room.hostel.state}`
     : room.hostel.city || room.hostel.state || '';
 
@@ -99,7 +99,7 @@ export default async function RoomPage({ params }: RoomPageProps) {
 
   const coverImage = room.images.find(img => img.isCover);
   const otherImages = room.images.filter(img => !img.isCover);
-  const location = room.hostel.city && room.hostel.state 
+  const location = room.hostel.city && room.hostel.state
     ? `${room.hostel.city}, ${room.hostel.state}`
     : room.hostel.city || room.hostel.state || '';
 
@@ -161,7 +161,7 @@ export default async function RoomPage({ params }: RoomPageProps) {
       />
 
       <Header pageTitle={room.name} showBackButton={false} />
-      
+
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         {/* Hero Section with Room Info */}
         <div className="mb-6 overflow-hidden rounded-xl border border-border hover:border-brand-primary/50 transition-colors">
@@ -184,9 +184,9 @@ export default async function RoomPage({ params }: RoomPageProps) {
               <h1 className="mb-2 text-2xl font-light sm:text-3xl lg:text-4xl">
                 {room.name}
               </h1>
-              
+
               <div className="flex flex-wrap items-center gap-2 mb-2">
-                <Link 
+                <Link
                   href={`/hostel/${room.hostel.slug}`}
                   className="flex items-center gap-1.5 text-sm font-light text-muted-foreground hover:text-brand-primary transition-colors"
                 >
@@ -270,7 +270,7 @@ export default async function RoomPage({ params }: RoomPageProps) {
                     </div>
                   </div>
                 )}
-                
+
                 <CardHeader className="p-4 sm:p-6">
                   <div className="flex items-start justify-between gap-4">
                     <div>
@@ -463,16 +463,9 @@ export default async function RoomPage({ params }: RoomPageProps) {
           </div>
         )}
 
-        {/* Related Links Section */}
-        {room.hostel.city && (
-          <RelatedLinksSection
-            cityName={room.hostel.city}
-            citySlug={room.hostel.city.toLowerCase().replace(/\s+/g, '-')}
-            state={room.hostel.state}
-          />
-        )}
+
       </main>
-      
+
       <Footer />
     </div>
   );

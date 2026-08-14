@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,10 @@ const AMENITIES = ["WiFi", "AC", "Food/Mess", "Laundry", "Power Backup", "CCTV",
 
 export function FilterSidebar({ filters, onChange, onClose }: FilterSidebarProps) {
   const [localFilters, setLocalFilters] = useState<ExploreParams>(filters);
+
+  useEffect(() => {
+    setLocalFilters(filters);
+  }, [filters]);
 
   const updateFilter = (key: keyof ExploreParams, value: any) => {
     setLocalFilters(prev => ({ ...prev, [key]: value }));
@@ -130,7 +134,7 @@ export function FilterSidebar({ filters, onChange, onClose }: FilterSidebarProps
                   type="radio"
                   name="accommodationType"
                   value={type.id}
-                  checked={!localFilters.accommodationType || localFilters.accommodationType === type.id}
+                  checked={type.id === 'all' ? !localFilters.accommodationType : localFilters.accommodationType === type.id}
                   onChange={() => updateFilter('accommodationType', type.id === 'all' ? undefined : type.id)}
                   className="w-4 h-4 text-brand-primary focus:ring-brand-primary accent-brand-primary"
                 />
