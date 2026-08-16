@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin, Phone, Mail, IndianRupee, Building2 } from "lucide-react";
+import { MapPin, Phone, Mail, IndianRupee, Building2, Bookmark } from "lucide-react";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -21,7 +21,7 @@ interface RoomPageProps {
 
 export async function generateStaticParams() {
   const roomIds = await getAllRoomIds();
-  
+
   return roomIds.map((id) => ({
     id,
   }));
@@ -38,12 +38,12 @@ export async function generateMetadata({ params }: RoomPageProps): Promise<Metad
   }
 
   const coverImage = room.images.find(img => img.isCover)?.url || room.images[0]?.url;
-  const location = room.hostel.city && room.hostel.state 
+  const location = room.hostel.city && room.hostel.state
     ? `${room.hostel.city}, ${room.hostel.state}`
     : room.hostel.city || room.hostel.state || '';
 
   const title = `${room.name} at ${room.hostel.name} - ₹${room.rent.toLocaleString('en-IN')}/month | GetStay`;
-  const description = `${room.description.slice(0, 150)}... Book this room at ${room.hostel.name} in ${location}. Monthly rent: ₹${room.rent.toLocaleString('en-IN')}. Includes: ${room.components.slice(0, 3).map(c => c.name).join(', ')}.`;
+  const description = `${room.description.slice(0, 150)}... View this room at ${room.hostel.name} in ${location}. Monthly rent: ₹${room.rent.toLocaleString('en-IN')}. Includes: ${room.components.slice(0, 3).map(c => c.name).join(', ')}.`;
 
   return {
     title,
@@ -99,7 +99,7 @@ export default async function RoomPage({ params }: RoomPageProps) {
 
   const coverImage = room.images.find(img => img.isCover);
   const otherImages = room.images.filter(img => !img.isCover);
-  const location = room.hostel.city && room.hostel.state 
+  const location = room.hostel.city && room.hostel.state
     ? `${room.hostel.city}, ${room.hostel.state}`
     : room.hostel.city || room.hostel.state || '';
 
@@ -161,7 +161,7 @@ export default async function RoomPage({ params }: RoomPageProps) {
       />
 
       <Header pageTitle={room.name} showBackButton={false} />
-      
+
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         {/* Hero Section with Room Info */}
         <div className="mb-6 overflow-hidden rounded-xl border border-border hover:border-brand-primary/50 transition-colors">
@@ -184,9 +184,9 @@ export default async function RoomPage({ params }: RoomPageProps) {
               <h1 className="mb-2 text-2xl font-light sm:text-3xl lg:text-4xl">
                 {room.name}
               </h1>
-              
+
               <div className="flex flex-wrap items-center gap-2 mb-2">
-                <Link 
+                <Link
                   href={`/hostel/${room.hostel.slug}`}
                   className="flex items-center gap-1.5 text-sm font-light text-muted-foreground hover:text-brand-primary transition-colors"
                 >
@@ -270,7 +270,7 @@ export default async function RoomPage({ params }: RoomPageProps) {
                     </div>
                   </div>
                 )}
-                
+
                 <CardHeader className="p-4 sm:p-6">
                   <div className="flex items-start justify-between gap-4">
                     <div>
@@ -319,10 +319,10 @@ export default async function RoomPage({ params }: RoomPageProps) {
 
           {/* Sidebar */}
           <div className="space-y-4">
-            {/* Booking Card */}
+            {/* Rent Details Card */}
             <Card className="rounded-xl border border-border hover:border-brand-primary/50 transition-colors">
               <CardHeader className="p-4">
-                <CardTitle className="text-base font-bold sm:text-lg">Book This Room</CardTitle>
+                <CardTitle className="text-base font-bold sm:text-lg">Rent Details</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3 p-4 pt-0">
                 <div className="rounded-lg border border-brand-primary/20 bg-brand-primary/5 p-3">
@@ -335,11 +335,9 @@ export default async function RoomPage({ params }: RoomPageProps) {
                   </div>
                   <p className="text-xs font-light text-muted-foreground">Inclusive of all taxes</p>
                 </div>
-                <Button className="w-full bg-brand-primary text-brand-white hover:bg-brand-primary/90 font-bold" size="lg">
-                  Book Now
-                </Button>
-                <Button variant="outline" className="w-full border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-brand-white font-bold" size="lg">
-                  Schedule Visit
+                <Button className="w-full bg-brand-primary text-brand-white hover:bg-brand-primary/90 font-bold flex items-center justify-center gap-2" size="lg">
+                  <Bookmark className="h-4 w-4" />
+                  Save
                 </Button>
               </CardContent>
             </Card>
@@ -463,16 +461,9 @@ export default async function RoomPage({ params }: RoomPageProps) {
           </div>
         )}
 
-        {/* Related Links Section */}
-        {room.hostel.city && (
-          <RelatedLinksSection
-            cityName={room.hostel.city}
-            citySlug={room.hostel.city.toLowerCase().replace(/\s+/g, '-')}
-            state={room.hostel.state}
-          />
-        )}
+
       </main>
-      
+
       <Footer />
     </div>
   );

@@ -18,14 +18,14 @@ export async function generateMetadata({
   const title = query
     ? `Search: ${query} - GetStay`
     : city
-    ? `Hostels in ${city} - GetStay`
-    : 'Explore Hostels & PGs - GetStay';
+      ? `Hostels in ${city} - GetStay`
+      : 'Explore Hostels & PGs - GetStay';
 
   const description = query
     ? `Find hostels and PGs matching "${query}". Browse verified accommodations with photos, prices, and amenities.`
     : city
-    ? `Discover the best hostels and PG accommodations in ${city}. Safe, affordable, and verified stays.`
-    : 'Explore and find the perfect hostel or PG accommodation. Filter by city, price, amenities, and more.';
+      ? `Discover the best hostels and PG accommodations in ${city}. Safe, affordable, and verified stays.`
+      : 'Explore and find the perfect hostel or PG accommodation. Filter by city, price, amenities, and more.';
 
   return {
     title,

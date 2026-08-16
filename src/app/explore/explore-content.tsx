@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Loader2, Filter, Search } from "lucide-react";
 import { HostelCard } from "@/components/shared/hostel-card";
+import { RoomLandingCard } from "@/components/shared/room-landing-card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -151,7 +152,7 @@ export function ExploreContent({ initialData, initialParams }: ExploreContentPro
 
           {/* Desktop Sidebar */}
           <aside className="hidden md:block w-80 shrink-0">
-            <div className="bg-white dark:bg-zinc-900 p-6 rounded-2xl sticky top-24 shadow-sm">
+            <div className="bg-white dark:bg-zinc-900 p-6 rounded-2xl sticky top-24 shadow-sm h-[calc(100vh-8rem)] flex flex-col">
               <FilterSidebar filters={filters} onChange={handleFilterChange} />
             </div>
           </aside>
@@ -223,6 +224,27 @@ export function ExploreContent({ initialData, initialParams }: ExploreContentPro
                       ))}
                     </div>
                   )}
+                  {results.rooms.length > 0 && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-6 border-t border-border">
+                      <div className="col-span-full">
+                        <h3 className="text-xl font-bold mb-2">Available Rooms</h3>
+                      </div>
+                      {results.rooms.map(room => (
+                        <RoomLandingCard
+                          key={room._id}
+                          roomId={room._id}
+                          name={room.name}
+                          description={room.description}
+                          rent={room.rent}
+                          coverImage={room.coverImage}
+                          components={room.components}
+                          hostelName={room.hostelName}
+                          hostelCity={room.city}
+                          hostelState={room.state}
+                        />
+                      ))}
+                    </div>
+                  )}
                 </TabsContent>
 
                 <TabsContent value="hostels">
@@ -247,9 +269,28 @@ export function ExploreContent({ initialData, initialParams }: ExploreContentPro
                 </TabsContent>
 
                 <TabsContent value="rooms">
-                  <div className="text-center py-8 text-muted-foreground">
-                    Room listings coming soon
-                  </div>
+                  {results.rooms.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {results.rooms.map(room => (
+                        <RoomLandingCard
+                          key={room._id}
+                          roomId={room._id}
+                          name={room.name}
+                          description={room.description}
+                          rent={room.rent}
+                          coverImage={room.coverImage}
+                          components={room.components}
+                          hostelName={room.hostelName}
+                          hostelCity={room.city}
+                          hostelState={room.state}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-8 text-muted-foreground">
+                      No rooms found matching your criteria
+                    </div>
+                  )}
                 </TabsContent>
               </Tabs>
             )}

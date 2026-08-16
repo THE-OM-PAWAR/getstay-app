@@ -140,13 +140,12 @@ export function HostelCard({
 
   const cardContent = (
     <div 
-      className="group overflow-hidden rounded-2xl border-0 bg-background shadow-md hover:shadow-xl transition-all duration-300 h-full flex flex-col"
+      className="group rounded-[24px] bg-white shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)] transition-all duration-300 h-full flex flex-col p-3"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Image section with slideshow */}
-      <div className="p-2">
-      <div className="relative h-48 md:h-56 overflow-hidden bg-muted rounded-2xl ">
+      <div className="relative h-48 md:h-52 w-full overflow-hidden bg-muted rounded-[16px]">
         {hasImages ? (
           <>
             {/* Image with fade animation */}
@@ -186,36 +185,16 @@ export function HostelCard({
               </div>
             )}
 
-            {/* Price indicator overlay - bottom right style */}
+            {/* Price indicator overlay - removed to match image style */}
+
+            {/* Price badge - top left (From XXXX) */}
             {currentImage.price && (
-              <div className="absolute bottom-2 right-2 z-10 flex flex-col items-end rounded-lg bg-white dark:bg-background px-2 py-1 shadow-md">
-                {currentImage.isHostel ? (
-                  <>
-                    <span className="text-[8px] text-muted-foreground font-medium uppercase tracking-wide leading-none mb-0.5">
-                      Starting from
-                    </span>
-                    <span className="text-sm md:text-base font-black text-foreground leading-none">₹{currentImage.price.toLocaleString()}</span>
-                  </>
-                ) : (
-                  <>
-                    <span className="text-[9px] text-foreground font-semibold leading-none mb-0.5 line-clamp-1">
-                      {currentImage.label}
-                    </span>
-                    <span className="text-[10px] text-muted-foreground font-medium leading-none">
-                      at <span className="text-sm font-black text-foreground">₹{currentImage.price.toLocaleString()}</span>
-                    </span>
-                  </>
-                )}
+              <div className="absolute top-3 left-3 z-10 rounded-full bg-black/70 backdrop-blur-md px-4 py-1.5 text-sm font-semibold text-white shadow-sm">
+                From {currentImage.price.toLocaleString()}
               </div>
             )}
 
-            {/* Type badge - top left */}
-            <Badge
-              className="absolute top-2 left-2 z-10 rounded-lg bg-white dark:bg-background px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-foreground shadow-md"
-              variant="secondary"
-            >
-              {displayType}
-            </Badge>
+            {/* Type badge - moved or hidden, maybe keep small on top right if needed, but let's hide to match image exactly or keep it if necessary. Let's keep the heart. */}
 
             {/* Heart button - top right */}
             <button
@@ -248,35 +227,33 @@ export function HostelCard({
           </>
         )}
       </div>
-      </div>
 
       {/* Card content */}
-      <CardContent className="p-2.5 flex flex-col gap-2">
-        {/* Title */}
-        <div>
-          <h3 className="text-sm md:text-base font-bold text-foreground leading-tight mb-0.5 line-clamp-1">
-            {name}
-          </h3>
-          {/* Location */}
-          <div className="flex items-center gap-1 text-muted-foreground mb-0.5">
-            <MapPin className="h-3 w-3 shrink-0" />
-            <span className="text-[10px] truncate">{location}</span>
+      <div className="pt-3 pb-2 px-1 flex flex-col gap-2">
+        <div className="flex justify-between items-start gap-4">
+          <div className="flex-1 min-w-0">
+            <h3 className="text-sm md:text-base font-bold text-foreground leading-tight line-clamp-1 mb-0.5">
+              {name}
+            </h3>
+            <div className="flex items-center gap-1 text-muted-foreground">
+              <MapPin className="h-3 w-3 shrink-0" />
+              <span className="text-[10px] truncate">{location}</span>
+            </div>
           </div>
-          {/* Description */}
-          {subtitle && (
-            <p className="text-[10px] text-muted-foreground line-clamp-2 leading-relaxed">
-              {subtitle}
-            </p>
+          {currentImage?.price && (
+            <div className="text-sm md:text-base font-bold text-foreground shrink-0 leading-tight whitespace-nowrap">
+              ₹{currentImage.price.toLocaleString()}
+            </div>
           )}
         </div>
 
         {/* Amenities */}
         {topAmenities.length > 0 && (
-          <div className="flex flex-wrap gap-1">
+          <div className="flex flex-wrap gap-1.5 mt-1">
             {topAmenities.map((amenity, idx) => (
               <div
                 key={idx}
-                className="inline-flex items-center gap-1 rounded-md bg-muted/60 px-2 py-1 text-[10px] font-medium text-foreground"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-gray-100 px-2.5 py-1.5 text-[11px] font-medium text-gray-700"
               >
                 {getAmenityIcon(amenity)}
                 <span className="truncate max-w-[80px]">{amenity}</span>
@@ -284,7 +261,7 @@ export function HostelCard({
             ))}
           </div>
         )}
-      </CardContent>
+      </div>
     </div>
   );
 

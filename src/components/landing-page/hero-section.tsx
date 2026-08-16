@@ -20,7 +20,7 @@ export function HeroSection() {
   return (
     <section className="relative overflow-hidden w-full min-h-[40vh] md:min-h-[750px] flex items-center justify-center pt-20 pb-6 md:pt-36 md:pb-20 px-4 md:px-6 bg-brand-dark -mt-20 z-10">
       {/* Background image with parallax effect simulation */}
-      <motion.div 
+      <motion.div
         initial={{ scale: 1.05 }}
         animate={{ scale: 1 }}
         transition={{ duration: 1.5, ease: "easeOut" }}
@@ -36,7 +36,7 @@ export function HeroSection() {
         {/* Enhanced gradient overlay for depth */}
         <div className="absolute inset-0 bg-gradient-to-b from-brand-dark/70 via-brand-dark/40 to-brand-dark/90 backdrop-blur-[2px]" />
       </motion.div>
-      
+
       {/* Content overlay */}
       <div className="relative z-10 flex flex-col items-center text-center max-w-4xl w-full">
         <motion.div
@@ -46,10 +46,10 @@ export function HeroSection() {
           className="mb-3 md:mb-4 inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3 py-1 md:px-4 md:py-1.5 text-xs md:text-sm font-medium text-white backdrop-blur-md"
         >
           <span className="flex h-1.5 w-1.5 md:h-2 md:w-2 rounded-full bg-green-400 mr-2 animate-pulse"></span>
-          Now operating in 15+ cities across India
+          Find your comfort space
         </motion.div>
 
-        <motion.h1 
+        <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
@@ -58,8 +58,8 @@ export function HeroSection() {
           Elevate Your <br className="hidden md:block" />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary-light to-white">Hostel Experience</span>
         </motion.h1>
-        
-        <motion.p 
+
+        <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
@@ -69,7 +69,7 @@ export function HeroSection() {
         </motion.p>
 
         {/* Search Pill Form - Glassmorphism */}
-        <motion.form 
+        <motion.form
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
