@@ -46,9 +46,9 @@ export const metadata: Metadata = {
 };
 
 const stats = [
-  { value: "500+", label: "Verified Hostels", subtext: "Strictly Audited", icon: Building2 },
-  { value: "10,000+", label: "Happy Residents", subtext: "Trusted Nationwide", icon: Users },
-  { value: "4.8 / 5", label: "Average Resident Rating", subtext: "Over 8,500+ Reviews", icon: Star },
+  { value: "50+", label: "Verified Properties", subtext: "Strictly Audited", icon: Building2 },
+  { value: "1,000+", label: "Students", subtext: "Trusted Nationwide", icon: Users },
+  // { value: "4.8 / 5", label: "Average Resident Rating", subtext: "Over 8,500+ Reviews", icon: Star },
   { value: "99.8%", label: "Verified Occupancy", subtext: "Zero Scam Guarantee", icon: ShieldCheck },
 ];
 
@@ -112,56 +112,6 @@ const team = [
     bio: "Ex-tier-1 tech lead architecting GetStay's real-time booking engine, interactive virtual tours, and automated property management suite.",
     initials: "RG",
     gradient: "from-[#3932d8] via-[#0ea5e9] to-[#38bdf8]",
-  },
-  {
-    name: "Sneha Patel",
-    role: "Head of Partnerships",
-    bio: "Forges alliances with top hostel chains and educational institutes, ensuring GetStay users receive exclusive rates and priority room allocation.",
-    initials: "SP",
-    gradient: "from-[#10b981] via-[#059669] to-[#3932d8]",
-  },
-];
-
-const milestones = [
-  {
-    year: "2023",
-    title: "Genesis & Prototype",
-    description:
-      "Identified critical gaps in student housing transparency in Bhopal. Built the initial pilot matching 100 MANIT students with audited local PGs.",
-    icon: Sparkles,
-    metric: "100 Initial Pilot Stays",
-    gradient: "from-[#3932d8] to-[#6c63ff]",
-    badgeColor: "bg-[#3932d8]/10 text-[#3932d8] border-[#3932d8]/20",
-  },
-  {
-    year: "2024 Q1",
-    title: "City Expansion & 50+ Partners",
-    description:
-      "Expanded across major student hubs in Bhopal (MP Nagar, Indrapuri, Kolar). Onboarded 50+ verified hostels and 1,000+ active residents.",
-    icon: Building2,
-    metric: "50+ Verified Stays",
-    gradient: "from-[#0ea5e9] to-[#38bdf8]",
-    badgeColor: "bg-[#0ea5e9]/10 text-[#0ea5e9] border-[#0ea5e9]/20",
-  },
-  {
-    year: "2024 Q4",
-    title: "10,000 Residents & Regional Leader",
-    description:
-      "Crossed 10,000+ successful bookings with a 4.8-star satisfaction rate. Expanded service coverage to Indore & Jabalpur.",
-    icon: Users,
-    metric: "10k+ Residents",
-    gradient: "from-[#10b981] to-[#059669]",
-    badgeColor: "bg-[#10b981]/10 text-[#059669] border-[#10b981]/20",
-  },
-  {
-    year: "2025",
-    title: "Mobile Platform & National Vision",
-    description:
-      "Launched the next-gen GetStay iOS/Android ecosystem. Scaling tech-enabled student stays across 10 major academic hubs in India.",
-    icon: Compass,
-    metric: "10 Academic Hubs",
-    gradient: "from-[#f59e0b] to-[#d97706]",
-    badgeColor: "bg-[#f59e0b]/10 text-[#d97706] border-[#f59e0b]/20",
   },
 ];
 
@@ -235,10 +185,10 @@ export default function AboutPage() {
 
                 <div className="space-y-4">
                   <h1 className="text-4xl font-black tracking-[-0.04em] text-[#111827] sm:text-5xl lg:text-6xl">
-                    Safe, verified stays for students and professionals.
+                    A better way to find a place you can call home.
                   </h1>
-                  <p className="max-w-xl text-base leading-7 text-gray-700 sm:text-lg">
-                    GetStay combines ground-level verification with seamless digital booking to deliver safe, modern, and transparent accommodation across India.
+                  <p className="max-w-xl text-base leading-7 text-gray-700 sm:text-lg ">
+                    GetStay makes it easier for students and professionals to find safe, verified, and reliable hostels and PGs. We bring trusted accommodation options together in one place—making the search simpler, safer, and more transparent for residents while helping property owners reach the right audience
                   </p>
                 </div>
 
@@ -281,7 +231,7 @@ export default function AboutPage() {
                 </div>
                 <div className="absolute -bottom-5 left-6 rounded-2xl border border-[#111827]/10 bg-white/95 px-4 py-3 shadow-lg backdrop-blur-sm">
                   <div className="text-[10px] font-black uppercase tracking-[0.2em] text-[#3932d8]">Verified Stays</div>
-                  <div className="mt-1 text-2xl font-black text-[#111827]">500+ Hostels</div>
+                  <div className="mt-1 text-2xl font-black text-[#111827]">50+ Hostels</div>
                 </div>
               </div>
             </div>
@@ -332,23 +282,17 @@ export default function AboutPage() {
 
                 <div className="mt-8 grid gap-5 sm:grid-cols-2">
                   <div className="rounded-2xl border border-[#111827]/10 bg-[#f9fafb] p-5">
-                    <div className="text-2xl font-black text-[#111827]">40+</div>
-                    <div className="mt-2 text-[10px] font-black uppercase tracking-[0.2em] text-gray-700">Master blends</div>
+                    <div className="text-2xl font-black text-[#111827]">15+</div>
+                    <div className="mt-2 text-[10px] font-black uppercase tracking-[0.2em] text-gray-700">At Locations</div>
                   </div>
                   <div className="rounded-2xl border border-[#111827]/10 bg-[#f9fafb] p-5">
-                    <div className="text-2xl font-black text-[#111827]">10,000+</div>
-                    <div className="mt-2 text-[10px] font-black uppercase tracking-[0.2em] text-gray-700">Happy residents</div>
+                    <div className="text-2xl font-black text-[#111827]">800+</div>
+                    <div className="mt-2 text-[10px] font-black uppercase tracking-[0.2em] text-gray-700">Rooms Available</div>
                   </div>
                 </div>
 
                 <div className="mt-8">
-                  <a
-                    href="#full-story"
-                    className="inline-flex items-center gap-2 border-b-2 border-[#111827] pb-1 text-[11px] font-black uppercase tracking-[0.18em] text-[#111827] transition-colors hover:border-[#3932d8] hover:text-[#3932d8]"
-                  >
-                    Read our full story
-                    <ArrowRight className="h-4 w-4" />
-                  </a>
+                 <div className="inline-flex items-center gap-2 rounded-full border border-[#3932d8]/15 bg-[#f1f3ff] px-3.5 py-1 text-[11px] font-black uppercase tracking-[0.22em] text-[#3932d8]">Getstay</div>
                 </div>
               </div>
             </div>
@@ -370,14 +314,6 @@ export default function AboutPage() {
                   Built from the ground up to solve real accommodation problems with technology and human accountability.
                 </p>
 
-                <div className="mt-8">
-                  <a
-                    href="#why-choose-us"
-                    className="inline-flex items-center justify-center rounded-full bg-[#1a1a1a] px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-black"
-                  >
-                    View all
-                  </a>
-                </div>
               </div>
 
               <div className="lg:col-span-7">
@@ -409,84 +345,6 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* ─── Interactive Journey Timeline (Compressed & Animated) ─── */}
-        <section className="relative py-20 md:py-24 px-6 bg-[#0a0d14] text-white overflow-hidden">
-          {/* Glowing Ambient Mesh Background */}
-          <div className="absolute top-1/3 left-1/4 w-[500px] h-[300px] bg-[#3932d8]/15 blur-[140px] rounded-full pointer-events-none" />
-          <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[250px] bg-[#0ea5e9]/10 blur-[130px] rounded-full pointer-events-none" />
-
-          <div className="relative mx-auto max-w-5xl z-10">
-            <div className="text-center mb-14 md:mb-16">
-              <span className="inline-flex items-center gap-2 text-[11px] font-black tracking-[0.25em] text-[#38bdf8] uppercase px-3.5 py-1 rounded-full bg-[#0ea5e9]/10 border border-[#0ea5e9]/20 mb-3 shadow-inner">
-                <Sparkles className="h-3.5 w-3.5" /> Our Journey
-              </span>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
-                The GetStay Timeline
-              </h2>
-              <p className="mt-3 max-w-lg mx-auto text-gray-400 text-sm sm:text-base font-normal">
-                From a local student accommodation pilot to nationwide hostel management.
-              </p>
-            </div>
-
-            <div className="relative">
-              {/* Central Glowing Track */}
-              <div className="hidden md:block absolute left-1/2 top-4 bottom-4 w-0.5 bg-linear-to-b from-[#3932d8] via-[#0ea5e9] to-[#f59e0b] transform -translate-x-1/2 opacity-70 shadow-[0_0_12px_rgba(57,50,216,0.6)]" />
-
-              <div className="space-y-8 md:space-y-10">
-                {milestones.map((m, i) => {
-                  const Icon = m.icon;
-                  return (
-                    <div
-                      key={m.year}
-                      className={`relative flex flex-col md:flex-row items-center ${i % 2 === 0 ? "md:flex-row-reverse" : ""
-                        } group`}
-                    >
-                      {/* Central Milestone Icon Node */}
-                      <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 w-11 h-11 rounded-xl bg-[#111625] border border-white/15 shadow-xl items-center justify-center z-20 group-hover:scale-110 group-hover:border-[#38bdf8] transition-all duration-300">
-                        <div className={`w-8 h-8 rounded-lg bg-linear-to-br ${m.gradient} text-white flex items-center justify-center shadow-md`}>
-                          <Icon className="h-4 w-4" />
-                        </div>
-                      </div>
-
-                      {/* Content Card */}
-                      <div className="w-full md:w-[calc(50%-2.5rem)]">
-                        <div className="relative bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/10 shadow-lg transition-all duration-500 group-hover:-translate-y-1 group-hover:bg-white/10 group-hover:border-white/20 hover:shadow-[0_15px_35px_rgba(57,50,216,0.2)] overflow-hidden">
-                          {/* Accent Gradient Border Line */}
-                          <div className={`absolute top-0 inset-x-0 h-1 bg-linear-to-r ${m.gradient} opacity-80 group-hover:opacity-100 transition-opacity`} />
-
-                          <div className="flex items-center justify-between gap-3 mb-3">
-                            <span className={`inline-flex items-center gap-1.5 text-[11px] font-black tracking-wider px-3 py-0.5 rounded-full border ${m.badgeColor}`}>
-                              {m.year}
-                            </span>
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
-                              {m.metric}
-                            </span>
-                          </div>
-
-                          <h3 className="text-xl font-bold text-white mb-2 tracking-tight group-hover:text-[#38bdf8] transition-colors">
-                            {m.title}
-                          </h3>
-                          <p className="text-gray-300 text-xs sm:text-sm leading-relaxed font-normal">
-                            {m.description}
-                          </p>
-
-                          <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-bold text-gray-400">
-                            <span>Milestone 0{i + 1}</span>
-                            <div className="flex items-center gap-1 text-[#38bdf8] opacity-0 group-hover:opacity-100 transform translate-x-1 group-hover:translate-x-0 transition-all duration-300">
-                              <span>Verified</span>
-                              <ArrowRight className="h-3 w-3" />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* ─── Team Leadership Section ─── */}
         <section className="relative py-24 md:py-32 bg-[#f4f5fa] text-[#111827] px-6 overflow-hidden">
           {/* Subtle Ambient Radial Glow */}
@@ -505,7 +363,7 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-7 max-w-6xl mx-auto">
               {team.map((member) => (
                 <div
                   key={member.name}
@@ -544,9 +402,7 @@ export default function AboutPage() {
                   <div className="mt-8 pt-5 border-t border-gray-100 flex items-center justify-between">
                     <span className="text-[11px] font-bold text-gray-500 tracking-wider">GetStay Core</span>
                     <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-full bg-[#f1f3ff] flex items-center justify-center text-[#3932d8] group-hover:bg-[#3932d8] group-hover:text-white transition-all shadow-xs">
-                        <ArrowRight className="h-4 w-4 transform group-hover:translate-x-0.5 transition-transform" />
-                      </div>
+                     
                     </div>
                   </div>
                 </div>
