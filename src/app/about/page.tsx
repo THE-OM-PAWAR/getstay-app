@@ -128,24 +128,40 @@ const milestones = [
     title: "Genesis & Prototype",
     description:
       "Identified critical gaps in student housing transparency in Bhopal. Built the initial pilot matching 100 MANIT students with audited local PGs.",
+    icon: Sparkles,
+    metric: "100 Initial Pilot Stays",
+    gradient: "from-[#3932d8] to-[#6c63ff]",
+    badgeColor: "bg-[#3932d8]/10 text-[#3932d8] border-[#3932d8]/20",
   },
   {
     year: "2024 Q1",
     title: "City Expansion & 50+ Partners",
     description:
       "Expanded across major student hubs in Bhopal (MP Nagar, Indrapuri, Kolar). Onboarded 50+ verified hostels and 1,000+ active residents.",
+    icon: Building2,
+    metric: "50+ Verified Stays",
+    gradient: "from-[#0ea5e9] to-[#38bdf8]",
+    badgeColor: "bg-[#0ea5e9]/10 text-[#0ea5e9] border-[#0ea5e9]/20",
   },
   {
     year: "2024 Q4",
     title: "10,000 Residents & Regional Leader",
     description:
       "Crossed 10,000+ successful bookings with a 4.8-star satisfaction rate. Expanded service coverage to Indore & Jabalpur.",
+    icon: Users,
+    metric: "10k+ Residents",
+    gradient: "from-[#10b981] to-[#059669]",
+    badgeColor: "bg-[#10b981]/10 text-[#059669] border-[#10b981]/20",
   },
   {
     year: "2025",
     title: "Mobile Platform & National Vision",
     description:
       "Launched the next-gen GetStay iOS/Android ecosystem. Scaling tech-enabled student stays across 10 major academic hubs in India.",
+    icon: Compass,
+    metric: "10 Academic Hubs",
+    gradient: "from-[#f59e0b] to-[#d97706]",
+    badgeColor: "bg-[#f59e0b]/10 text-[#d97706] border-[#f59e0b]/20",
   },
 ];
 
@@ -207,110 +223,131 @@ export default function AboutPage() {
 
       <main className="overflow-hidden">
         {/* ─── Hero Section ─── */}
-        <section className="pt-8 pb-12 bg-white">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            {/* Banner Card */}
-            <div className="relative w-full h-[320px] sm:h-[400px] md:h-[450px] rounded-2xl md:rounded-3xl overflow-hidden shadow-md">
-              {/* Background Image */}
-              <img
-                src="/about-hero-bg.jpg"
-                alt="About Us background"
-                className="w-full h-full object-cover object-center"
-              />
+        <section className="relative overflow-hidden bg-[#f7f6f3] pt-8 pb-12 md:pb-16">
+          <div className="absolute inset-x-0 top-0 h-24 bg-linear-to-b from-[#efeae1] to-transparent" />
+          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_1fr]">
+              <div className="space-y-6">
+                <span className="inline-flex items-center gap-2 rounded-full border border-[#3932d8]/15 bg-white px-3 py-1 text-[10px] font-black uppercase tracking-[0.25em] text-[#3932d8] shadow-sm">
+                  <Sparkles className="h-3.5 w-3.5" />
+                  About GetStay
+                </span>
 
-              {/* Dark Overlay for Text Contrast */}
-              <div className="absolute inset-0 bg-black/35 flex items-center justify-center">
-                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight text-center drop-shadow-md">
-                  About Us
-                </h1>
+                <div className="space-y-4">
+                  <h1 className="text-4xl font-black tracking-[-0.04em] text-[#111827] sm:text-5xl lg:text-6xl">
+                    Safe, verified stays for students and professionals.
+                  </h1>
+                  <p className="max-w-xl text-base leading-7 text-gray-700 sm:text-lg">
+                    GetStay combines ground-level verification with seamless digital booking to deliver safe, modern, and transparent accommodation across India.
+                  </p>
+                </div>
+
+                <div className="flex flex-col gap-3 sm:flex-row">
+                  <Link
+                    href="/explore"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[#3932d8] px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#3932d8]/20 transition-transform duration-200 hover:-translate-y-0.5"
+                  >
+                    Explore stays
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                  <Link
+                    href="/signup"
+                    className="inline-flex items-center justify-center rounded-full border border-[#1f2937]/15 bg-white px-6 py-3.5 text-sm font-bold text-[#1f2937] transition-colors hover:border-[#3932d8]/30 hover:text-[#3932d8]"
+                  >
+                    Create account
+                  </Link>
+                </div>
+
+                <div className="flex flex-wrap gap-4 pt-2">
+                  {stats.slice(0, 3).map(({ value, label, icon: Icon }) => (
+                    <div key={label} className="rounded-2xl border border-[#111827]/10 bg-white/80 px-4 py-3 shadow-sm backdrop-blur-sm">
+                      <div className="mb-2 flex items-center gap-2 text-[#3932d8]">
+                        <Icon className="h-4 w-4" />
+                        <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-gray-600">{label}</span>
+                      </div>
+                      <div className="text-xl font-black text-[#111827]">{value}</div>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
 
-            {/* Sub-header text & watermark row */}
-            <div className="mt-8 sm:mt-12 flex flex-col md:flex-row md:items-start justify-between gap-6">
-              {/* Description Text */}
-              <div className="max-w-2xl">
-                <p className="text-gray-800 text-lg sm:text-xl font-normal leading-relaxed">
-                  GetStay combines ground-level verification with seamless digital booking to deliver safe, modern, and transparent accommodation across India.
-                </p>
-              </div>
-
-              {/* GetStay Tag & Divider Line */}
-              <div className="flex items-center gap-3 self-end md:self-start pt-2">
-                <span className="text-sm font-medium text-gray-700">Getstay</span>
-                <div className="w-28 sm:w-36 h-[1.5px] bg-gray-800" />
+              <div className="relative lg:pl-2">
+                <div className="relative overflow-hidden rounded-[30px] border border-[#111827]/10 bg-white p-2 shadow-[0_30px_70px_rgba(17,24,39,0.12)]">
+                  <img
+                    src="https://images.unsplash.com/photo-1730322330871-967267cb819c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    alt="GetStay hostel exterior"
+                    className="h-110 w-full rounded-[24px] object-cover object-center md:h-130 transition-transform duration-700 hover:scale-105"
+                  />
+                </div>
+                <div className="absolute -bottom-5 left-6 rounded-2xl border border-[#111827]/10 bg-white/95 px-4 py-3 shadow-lg backdrop-blur-sm">
+                  <div className="text-[10px] font-black uppercase tracking-[0.2em] text-[#3932d8]">Verified Stays</div>
+                  <div className="mt-1 text-2xl font-black text-[#111827]">500+ Hostels</div>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
         {/* ─── Our Heritage Section ─── */}
-        <section className="py-16 md:py-24 bg-white">
+        <section className="bg-white py-16 md:py-24">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-              {/* Left Image & Quote Card Column */}
-              <div className="lg:col-span-5 relative">
-                {/* Main Artisan Image */}
-                <div className="relative w-full aspect-[4/5] rounded-xl overflow-hidden shadow-lg">
-                  <img
-                    src="/heritage-artisan.jpg"
-                    alt="Our Heritage Artisan"
-                    className="w-full h-full object-cover object-center"
-                  />
-                </div>
-
-                {/* Overlapping Floating Quote Card */}
-                <div className="absolute -bottom-10 right-0 sm:-right-6 md:right-4 w-[85%] sm:w-[320px] bg-white p-6 rounded-2xl shadow-xl border border-gray-100/80 backdrop-blur-sm">
-                  <p className="text-gray-800 italic text-base sm:text-lg font-serif leading-snug">
-                    &ldquo;Each stick is a prayer, each scent a journey.&rdquo;
-                  </p>
-                  <p className="text-gray-500 text-xs sm:text-sm font-medium mt-3">
-                    &mdash; Master Artisan, Kanchipuram
-                  </p>
+            <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
+              <div className="lg:col-span-5">
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <div className="overflow-hidden rounded-[28px] border border-[#111827]/10 bg-[#f8f8f8] shadow-[0_18px_54px_rgba(17,24,39,0.08)] sm:col-span-2">
+                    <img
+                      src="/hostel-building.jpg"
+                      alt="Modern urban living exterior"
+                      className="h-70 w-full object-cover object-center sm:h-85 hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                  <div className="overflow-hidden rounded-[24px] border border-[#111827]/10 bg-[#f8f8f8] shadow-[0_18px_54px_rgba(17,24,39,0.08)]">
+                    <img
+                      src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=900&q=80"
+                      alt="Comfortable room interior"
+                      className="h-56 w-full object-cover object-center"
+                    />
+                  </div>
+                  <div className="flex items-center justify-center rounded-[24px] border border-[#111827]/10 bg-[#f1f3ff] p-6 shadow-[0_18px_54px_rgba(17,24,39,0.08)]">
+                    <div className="text-center">
+                      <div className="text-3xl font-black text-[#3932d8]">100%</div>
+                      <div className="mt-2 text-[10px] font-black uppercase tracking-[0.22em] text-gray-700">Verified</div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {/* Right Content Column */}
-              <div className="lg:col-span-7 pt-8 lg:pt-0 lg:pl-6">
-                <span className="text-xs font-bold tracking-[0.2em] text-gray-700 uppercase">
-                  OUR HERITAGE
+              <div className="lg:col-span-7 lg:pl-2">
+                <span className="inline-block text-[11px] font-black uppercase tracking-[0.24em] text-[#3932d8]">
+                  Our Heritage
                 </span>
 
-                <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight leading-[1.15] mt-4 mb-6">
+                <h2 className="mt-4 text-3xl font-black tracking-[-0.04em] text-[#111827] sm:text-4xl lg:text-5xl">
                   Bridging the gap between housing & trust.
                 </h2>
 
-                <p className="text-gray-600 text-base sm:text-lg leading-relaxed mb-10">
+                <p className="mt-6 max-w-2xl text-base leading-8 text-gray-700 sm:text-lg">
                   In most cities, students and young professionals encounter inaccurate listings, undisclosed brokerage fees, unsafe environments, and non-responsive management. GetStay was established to eliminate this friction entirely. We combine verified ground-level auditing with intuitive technology, providing accurate photos, 360&deg; virtual tours, transparent pricing breakdowns, and guaranteed resident support.
                 </p>
 
-                {/* Stats Grid */}
-                <div className="grid grid-cols-2 gap-8 mb-10">
-                  <div>
-                    <div className="text-xl sm:text-2xl font-bold text-gray-900">
-                      100%
-                    </div>
-                    <div className="text-xs sm:text-sm font-bold tracking-wider text-gray-700 uppercase mt-1">
-                      NATURAL ESSENCE
-                    </div>
+                <div className="mt-8 grid gap-5 sm:grid-cols-2">
+                  <div className="rounded-2xl border border-[#111827]/10 bg-[#f9fafb] p-5">
+                    <div className="text-2xl font-black text-[#111827]">40+</div>
+                    <div className="mt-2 text-[10px] font-black uppercase tracking-[0.2em] text-gray-700">Master blends</div>
                   </div>
-                  <div>
-                    <div className="text-xl sm:text-2xl font-bold text-gray-900">
-                      40+
-                    </div>
-                    <div className="text-xs sm:text-sm font-bold tracking-wider text-gray-700 uppercase mt-1">
-                      MASTER BLENDS
-                    </div>
+                  <div className="rounded-2xl border border-[#111827]/10 bg-[#f9fafb] p-5">
+                    <div className="text-2xl font-black text-[#111827]">10,000+</div>
+                    <div className="mt-2 text-[10px] font-black uppercase tracking-[0.2em] text-gray-700">Happy residents</div>
                   </div>
                 </div>
 
-                {/* Read Full Story Link */}
-                <div>
+                <div className="mt-8">
                   <a
                     href="#full-story"
-                    className="inline-block text-xs sm:text-sm font-bold tracking-[0.15em] text-gray-900 uppercase border-b-2 border-gray-900 pb-1 hover:text-gray-600 hover:border-gray-600 transition-colors"
+                    className="inline-flex items-center gap-2 border-b-2 border-[#111827] pb-1 text-[11px] font-black uppercase tracking-[0.18em] text-[#111827] transition-colors hover:border-[#3932d8] hover:text-[#3932d8]"
                   >
-                    READ OUR FULL STORY
+                    Read our full story
+                    <ArrowRight className="h-4 w-4" />
                   </a>
                 </div>
               </div>
@@ -318,143 +355,199 @@ export default function AboutPage() {
           </div>
         </section>
 
-
-
         {/* ─── Why Choose Us Section ─── */}
-        <section className="py-20 bg-[#f4f4f4] px-6 md:px-12 lg:px-20">
+        <section className="bg-[#f4f4f4] px-6 py-20 md:px-12 lg:px-20">
           <div className="mx-auto max-w-7xl">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-
-              {/* Left Column: Heading, Subtitle & Action */}
-              <div className="lg:col-span-5 pr-0 lg:pr-4">
-                <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight uppercase">
-                  WHY CHOOSE US
+            <div className="grid items-center gap-12 lg:grid-cols-12">
+              <div className="lg:col-span-5">
+                <span className="inline-block text-[11px] font-black uppercase tracking-[0.24em] text-[#3932d8]">
+                  Why choose us
+                </span>
+                <h2 className="mt-4 text-3xl font-black tracking-[-0.04em] text-[#111827] sm:text-4xl md:text-5xl">
+                  Built for trust, comfort, and convenience.
                 </h2>
-
-                <p className="mt-4 text-gray-700 text-base sm:text-lg leading-relaxed max-w-md">
+                <p className="mt-4 max-w-md text-base leading-7 text-gray-700 sm:text-lg">
                   Built from the ground up to solve real accommodation problems with technology and human accountability.
                 </p>
 
                 <div className="mt-8">
                   <a
                     href="#why-choose-us"
-                    className="inline-flex items-center justify-center bg-[#1a1a1a] hover:bg-black text-white text-xs sm:text-sm font-semibold px-6 py-3 rounded-xs transition-colors shadow-sm"
+                    className="inline-flex items-center justify-center rounded-full bg-[#1a1a1a] px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-black"
                   >
                     View all
                   </a>
                 </div>
               </div>
 
-              {/* Right Column: 2x2 Clean White Quote Cards Grid */}
               <div className="lg:col-span-7">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  {bentoHighlights.map((item) => (
-                    <div
-                      key={item.title}
-                      className="bg-white p-7 rounded-none shadow-md border border-gray-100 flex flex-col justify-between"
-                    >
-                      <p className="text-gray-800 italic text-base sm:text-lg font-serif leading-snug">
-                        &ldquo;{item.description}&rdquo;
-                      </p>
-                      <p className="text-gray-500 text-xs sm:text-sm font-medium mt-4">
-                        &mdash; {item.title}
-                      </p>
-                    </div>
-                  ))}
+                <div className="grid gap-5 sm:grid-cols-2">
+                  {bentoHighlights.map((item) => {
+                    const Icon = item.icon;
+                    return (
+                      <div
+                        key={item.title}
+                        className="group flex min-h-55 flex-col justify-between rounded-[24px] border border-[#111827]/10 bg-white p-6 shadow-[0_20px_50px_rgba(17,24,39,0.06)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_28px_60px_rgba(57,50,216,0.12)]"
+                      >
+                        <div className="flex items-center justify-between gap-2">
+                          <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${item.badgeColor}`}>
+                            <Icon className="h-5 w-5" />
+                          </div>
+                          <span className="text-[10px] font-black uppercase tracking-[0.18em] text-gray-500">{item.tag}</span>
+                        </div>
+
+                        <div>
+                          <h3 className="mt-5 text-xl font-black text-[#111827]">{item.title}</h3>
+                          <p className="mt-3 text-sm leading-6 text-gray-700">{item.description}</p>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
-
             </div>
           </div>
         </section>
 
-        {/* ─── Interactive Journey Timeline ─── */}
-        <section className="py-32 px-6">
-          <div className="mx-auto max-w-5xl">
-            <div className="text-center mb-20">
-              <span className="inline-block text-xs font-black tracking-widest text-[#3932d8] uppercase mb-3">
-                Our Growth
+        {/* ─── Interactive Journey Timeline (Compressed & Animated) ─── */}
+        <section className="relative py-20 md:py-24 px-6 bg-[#0a0d14] text-white overflow-hidden">
+          {/* Glowing Ambient Mesh Background */}
+          <div className="absolute top-1/3 left-1/4 w-[500px] h-[300px] bg-[#3932d8]/15 blur-[140px] rounded-full pointer-events-none" />
+          <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[250px] bg-[#0ea5e9]/10 blur-[130px] rounded-full pointer-events-none" />
+
+          <div className="relative mx-auto max-w-5xl z-10">
+            <div className="text-center mb-14 md:mb-16">
+              <span className="inline-flex items-center gap-2 text-[11px] font-black tracking-[0.25em] text-[#38bdf8] uppercase px-3.5 py-1 rounded-full bg-[#0ea5e9]/10 border border-[#0ea5e9]/20 mb-3 shadow-inner">
+                <Sparkles className="h-3.5 w-3.5" /> Our Journey
               </span>
-              <h2 className="text-4xl sm:text-5xl font-black text-[#010105] tracking-tight">
-                The GetStay Journey
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
+                The GetStay Timeline
               </h2>
+              <p className="mt-3 max-w-lg mx-auto text-gray-400 text-sm sm:text-base font-normal">
+                From a local student accommodation pilot to nationwide hostel management.
+              </p>
             </div>
 
             <div className="relative">
-              {/* Center Line */}
-              <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#3932d8] via-[#b7b4f0] to-transparent transform -translate-x-1/2" />
+              {/* Central Glowing Track */}
+              <div className="hidden md:block absolute left-1/2 top-4 bottom-4 w-0.5 bg-linear-to-b from-[#3932d8] via-[#0ea5e9] to-[#f59e0b] transform -translate-x-1/2 opacity-70 shadow-[0_0_12px_rgba(57,50,216,0.6)]" />
 
-              <div className="space-y-12">
-                {milestones.map((m, i) => (
-                  <div
-                    key={m.year}
-                    className={`relative flex flex-col md:flex-row items-center ${i % 2 === 0 ? "md:flex-row-reverse" : ""
-                      }`}
-                  >
-                    {/* Node Dot */}
-                    <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-[#3932d8] text-white items-center justify-center font-bold text-xs shadow-lg ring-4 ring-white">
-                      {i + 1}
-                    </div>
+              <div className="space-y-8 md:space-y-10">
+                {milestones.map((m, i) => {
+                  const Icon = m.icon;
+                  return (
+                    <div
+                      key={m.year}
+                      className={`relative flex flex-col md:flex-row items-center ${i % 2 === 0 ? "md:flex-row-reverse" : ""
+                        } group`}
+                    >
+                      {/* Central Milestone Icon Node */}
+                      <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 w-11 h-11 rounded-xl bg-[#111625] border border-white/15 shadow-xl items-center justify-center z-20 group-hover:scale-110 group-hover:border-[#38bdf8] transition-all duration-300">
+                        <div className={`w-8 h-8 rounded-lg bg-linear-to-br ${m.gradient} text-white flex items-center justify-center shadow-md`}>
+                          <Icon className="h-4 w-4" />
+                        </div>
+                      </div>
 
-                    {/* Content Card */}
-                    <div className="w-full md:w-[calc(50%-2.5rem)]">
-                      <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-md hover:shadow-lg transition-all">
-                        <span className="inline-block text-xs font-black tracking-wider text-[#3932d8] bg-[#3932d8]/10 px-3.5 py-1 rounded-full mb-3">
-                          {m.year}
-                        </span>
-                        <h3 className="text-xl font-extrabold text-[#010105] mb-2">
-                          {m.title}
-                        </h3>
-                        <p className="text-gray-600 text-sm leading-relaxed font-normal">
-                          {m.description}
-                        </p>
+                      {/* Content Card */}
+                      <div className="w-full md:w-[calc(50%-2.5rem)]">
+                        <div className="relative bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/10 shadow-lg transition-all duration-500 group-hover:-translate-y-1 group-hover:bg-white/10 group-hover:border-white/20 hover:shadow-[0_15px_35px_rgba(57,50,216,0.2)] overflow-hidden">
+                          {/* Accent Gradient Border Line */}
+                          <div className={`absolute top-0 inset-x-0 h-1 bg-linear-to-r ${m.gradient} opacity-80 group-hover:opacity-100 transition-opacity`} />
+
+                          <div className="flex items-center justify-between gap-3 mb-3">
+                            <span className={`inline-flex items-center gap-1.5 text-[11px] font-black tracking-wider px-3 py-0.5 rounded-full border ${m.badgeColor}`}>
+                              {m.year}
+                            </span>
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                              {m.metric}
+                            </span>
+                          </div>
+
+                          <h3 className="text-xl font-bold text-white mb-2 tracking-tight group-hover:text-[#38bdf8] transition-colors">
+                            {m.title}
+                          </h3>
+                          <p className="text-gray-300 text-xs sm:text-sm leading-relaxed font-normal">
+                            {m.description}
+                          </p>
+
+                          <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-bold text-gray-400">
+                            <span>Milestone 0{i + 1}</span>
+                            <div className="flex items-center gap-1 text-[#38bdf8] opacity-0 group-hover:opacity-100 transform translate-x-1 group-hover:translate-x-0 transition-all duration-300">
+                              <span>Verified</span>
+                              <ArrowRight className="h-3 w-3" />
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>
         </section>
 
         {/* ─── Team Leadership Section ─── */}
-        <section className="py-28 bg-[#010105] text-white px-6">
-          <div className="mx-auto max-w-7xl">
-            <div className="text-center max-w-2xl mx-auto mb-16">
-              <span className="inline-block text-xs font-black tracking-widest text-[#b7b4f0] uppercase mb-3">
-                Leadership
+        <section className="relative py-24 md:py-32 bg-[#f4f5fa] text-[#111827] px-6 overflow-hidden">
+          {/* Subtle Ambient Radial Glow */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-[#3932d8]/5 blur-[140px] rounded-full pointer-events-none" />
+
+          <div className="relative mx-auto max-w-7xl z-10">
+            <div className="text-center max-w-3xl mx-auto mb-16 md:mb-20">
+              <span className="inline-flex items-center gap-2 text-xs font-black tracking-[0.25em] text-[#3932d8] uppercase px-4 py-1.5 rounded-full bg-[#3932d8]/10 border border-[#3932d8]/15 mb-4 shadow-xs">
+                <Award className="h-3.5 w-3.5" /> Visionaries Behind GetStay
               </span>
-              <h2 className="text-4xl sm:text-5xl font-black text-white tracking-tight">
-                Meet the minds building GetStay
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#111827] tracking-tight leading-tight">
+                Meet Executive Leadership
               </h2>
-              <p className="mt-4 text-gray-400 text-base">
-                A dedicated team combining domain expertise in tech, operations, hospitality, and real estate.
+              <p className="mt-4 text-gray-600 text-base sm:text-lg leading-relaxed font-normal max-w-2xl mx-auto">
+                Combining deep expertise across prop-tech, scalable cloud architecture, hospitality excellence, and strategic partnerships.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7">
               {team.map((member) => (
                 <div
                   key={member.name}
-                  className="group relative bg-white/5 border border-white/10 rounded-3xl p-6 hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between"
+                  className="group relative rounded-3xl border border-[#111827]/10 bg-white p-7 shadow-[0_15px_45px_rgba(17,24,39,0.06)] hover:shadow-[0_25px_60px_rgba(57,50,216,0.15)] hover:border-[#3932d8]/30 transition-all duration-500 hover:-translate-y-2 flex flex-col justify-between overflow-hidden"
                 >
+                  {/* Decorative Corner Light Gradient */}
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-linear-to-bl from-[#3932d8]/10 to-transparent rounded-tr-3xl rounded-bl-full pointer-events-none group-hover:from-[#3932d8]/20 transition-all duration-500" />
+
                   <div>
-                    {/* Gradient Avatar */}
-                    <div
-                      className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${member.gradient} flex items-center justify-center text-white font-black text-xl mb-5 shadow-lg group-hover:scale-105 transition-transform duration-300`}
-                    >
-                      {member.initials}
+                    {/* Header: Avatar + Status */}
+                    <div className="flex items-start justify-between mb-6">
+                      <div
+                        className={`w-16 h-16 rounded-2xl bg-linear-to-br ${member.gradient} flex items-center justify-center text-white font-black text-xl shadow-lg ring-4 ring-[#f4f5fa] group-hover:scale-105 transition-all duration-300`}
+                      >
+                        {member.initials}
+                      </div>
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
+                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                        Core
+                      </span>
                     </div>
 
-                    <h3 className="text-xl font-bold text-white mb-0.5">
+                    {/* Info */}
+                    <h3 className="text-xl font-black text-[#111827] tracking-tight mb-1 group-hover:text-[#3932d8] transition-colors">
                       {member.name}
                     </h3>
-                    <p className="text-xs font-extrabold text-[#b7b4f0] mb-4">
+                    <p className="text-xs font-black uppercase tracking-widest text-[#3932d8] mb-4">
                       {member.role}
                     </p>
-                    <p className="text-gray-400 text-xs sm:text-sm leading-relaxed font-normal">
+                    <p className="text-gray-600 text-xs sm:text-sm leading-relaxed font-normal">
                       {member.bio}
                     </p>
+                  </div>
+
+                  {/* Footer Action */}
+                  <div className="mt-8 pt-5 border-t border-gray-100 flex items-center justify-between">
+                    <span className="text-[11px] font-bold text-gray-500 tracking-wider">GetStay Core</span>
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-full bg-[#f1f3ff] flex items-center justify-center text-[#3932d8] group-hover:bg-[#3932d8] group-hover:text-white transition-all shadow-xs">
+                        <ArrowRight className="h-4 w-4 transform group-hover:translate-x-0.5 transition-transform" />
+                      </div>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -494,7 +587,7 @@ export default function AboutPage() {
                   </div>
 
                   <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#3932d8] to-[#6c63ff] text-white flex items-center justify-center text-xs font-black">
+                    <div className="w-10 h-10 rounded-full bg-linear-to-br from-[#3932d8] to-[#6c63ff] text-white flex items-center justify-center text-xs font-black">
                       {t.initials}
                     </div>
                     <div>
@@ -513,39 +606,62 @@ export default function AboutPage() {
         </section>
 
         {/* ─── Call To Action ─── */}
-        <section className="py-28 px-6">
-          <div className="mx-auto max-w-5xl">
-            <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-[#010105] via-[#090824] to-[#3932d8] p-10 sm:p-16 text-white text-center shadow-2xl border border-white/10">
+        <section className="relative py-24 md:py-32 px-6 bg-[#f7f6f3] overflow-hidden">
+          {/* Subtle Ambient Radial Glows */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-[#3932d8]/8 blur-[140px] rounded-full pointer-events-none" />
 
-              {/* Background Glow */}
-              <div className="absolute -top-24 -left-24 w-72 h-72 bg-[#3932d8]/50 rounded-full blur-3xl pointer-events-none" />
-              <div className="absolute -bottom-24 -right-24 w-72 h-72 bg-[#6c63ff]/40 rounded-full blur-3xl pointer-events-none" />
+          <div className="relative mx-auto max-w-6xl z-10">
+            <div className="relative overflow-hidden rounded-[36px] border border-[#111827]/10 bg-white p-8 sm:p-14 lg:p-20 shadow-[0_30px_90px_rgba(17,24,39,0.08)]">
+              {/* Decorative Brand Accent Stripe */}
+              <div className="absolute top-0 inset-x-0 h-2 bg-linear-to-r from-[#3932d8] via-[#6c63ff] to-[#0ea5e9]" />
 
-              <div className="relative z-10 max-w-2xl mx-auto">
-                <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
-                  Ready to experience a better stay?
-                </h2>
-                <p className="mt-4 text-gray-300 text-base sm:text-lg font-normal">
-                  Explore top-rated, verified hostels and PGs in your city today.
-                </p>
+              <div className="grid items-center gap-10 lg:grid-cols-12">
+                <div className="lg:col-span-7 space-y-6 text-left">
+                  <span className="inline-flex items-center gap-2 rounded-full border border-[#3932d8]/15 bg-[#f1f3ff] px-3.5 py-1 text-[11px] font-black uppercase tracking-[0.22em] text-[#3932d8]">
+                    <Sparkles className="h-3.5 w-3.5" /> Start Your Stays Journey
+                  </span>
 
-                <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+                  <h2 className="text-3xl sm:text-5xl lg:text-5xl font-black text-[#111827] tracking-tight leading-[1.15]">
+                    Ready to experience a better stay?
+                  </h2>
+
+                  <p className="max-w-xl text-base sm:text-lg text-gray-700 leading-relaxed font-normal">
+                    Explore top-rated, 100% ground-audited hostels and student PGs in your city today with zero broker fees.
+                  </p>
+
+                  <div className="pt-2 flex flex-wrap items-center gap-6 text-xs font-bold text-gray-600">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-[#3932d8]" />
+                      <span>Zero Brokerage</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-[#3932d8]" />
+                      <span>100% Audited Media</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-[#3932d8]" />
+                      <span>Instant Booking</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="lg:col-span-5 flex flex-col sm:flex-row lg:flex-col justify-center items-stretch gap-4">
                   <Link
                     href="/explore"
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-white text-[#3932d8] hover:bg-gray-100 px-8 py-4 text-sm font-extrabold shadow-lg transition-all"
+                    className="inline-flex items-center justify-center gap-3 rounded-full bg-[#3932d8] px-8 py-4 text-sm font-black text-white shadow-xl shadow-[#3932d8]/25 transition-all duration-300 hover:-translate-y-1 hover:bg-[#2e28b8]"
                   >
                     <span>Browse All Accommodations</span>
                     <ArrowRight className="h-4 w-4" />
                   </Link>
+
                   <Link
                     href="/signup"
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-white/10 border border-white/20 text-white hover:bg-white/20 px-8 py-4 text-sm font-semibold backdrop-blur-md transition-all"
+                    className="inline-flex items-center justify-center rounded-full border border-[#111827]/15 bg-white px-8 py-4 text-sm font-bold text-[#111827] transition-all duration-300 hover:border-[#3932d8]/40 hover:text-[#3932d8] hover:shadow-md"
                   >
                     Create Account
                   </Link>
                 </div>
               </div>
-
             </div>
           </div>
         </section>

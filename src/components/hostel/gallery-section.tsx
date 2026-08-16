@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, ChevronLeft, ChevronRight, Images } from 'lucide-react'
@@ -139,7 +139,7 @@ export function GallerySection({ photos }: GallerySectionProps) {
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
                   sizes={idx === 0 ? "(max-width: 768px) 50vw, 33vw" : "(max-width: 768px) 25vw, 16vw"}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-brand-dark/80 via-brand-dark/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 dark:from-brand-primary-light/80 dark:via-brand-primary-light/30">
+                <div className="absolute inset-0 bg-linear-to-t from-brand-dark/80 via-brand-dark/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 dark:from-brand-primary-light/80 dark:via-brand-primary-light/30">
                   <div className="absolute bottom-0 left-0 right-0 p-3">
                     <Badge variant="secondary" className="mb-1 bg-brand-primary text-brand-white dark:bg-brand-white dark:text-brand-dark text-xs">
                       {getTypeLabel(photo.type)}
@@ -243,11 +243,11 @@ export function GallerySection({ photos }: GallerySectionProps) {
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.2 }}
                 className="relative flex flex-col mb-20 items-end justify-end"
-                onClick={(e) => e.stopPropagation()}
+                onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
               >
                 {/* Image - Lazy loaded */}
                 <div className="relative w-full overflow-hidden rounded-xl bg-brand-light dark:bg-brand-dark p-1 shadow-2xl flex border border-border">
-                  <div className="relative w-full aspect-[3/5]">
+                  <div className="relative w-full aspect-3/5">
                     {loadedImages.has(selectedImage) ? (
                       <Image
                         src={photos[selectedImage].url}

@@ -9,10 +9,11 @@ import { getExploreResults, ExploreParams } from "@/services/explore.service";
 export async function generateMetadata({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }): Promise<Metadata> {
-  const query = typeof searchParams.query === 'string' ? searchParams.query : '';
-  const city = typeof searchParams.city === 'string' ? searchParams.city : '';
+  const resolvedSearchParams = await searchParams;
+  const query = typeof resolvedSearchParams.query === 'string' ? resolvedSearchParams.query : '';
+  const city = typeof resolvedSearchParams.city === 'string' ? resolvedSearchParams.city : '';
 
   const title = query
     ? `Search: ${query} - GetStay`
@@ -57,9 +58,10 @@ function parseSearchParams(searchParams: { [key: string]: string | string[] | un
 export default async function ExplorePage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-  const params = parseSearchParams(searchParams);
+  const resolvedSearchParams = await searchParams;
+  const params = parseSearchParams(resolvedSearchParams);
   const initialData = await getExploreResults(params);
 
   return (
