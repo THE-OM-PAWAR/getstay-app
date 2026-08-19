@@ -7,9 +7,9 @@ import { Footer } from "@/components/layout/footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { WhyChooseCity } from "@/components/city/why-choose-city";
 import { CityFAQSection } from "@/components/city/city-faq-section";
-import { AreaSection } from "@/components/city/area-section";
 import { ExploreLinks } from "@/components/shared/explore-links";
 import { BhopalExploreLinks } from "@/components/city/bhopal-explore-links";
+import { CityEditorialIntro } from "@/components/city/city-editorial-intro";
 import { ExploreContent } from "@/app/explore/explore-content";
 import { getCityBySlug, getHostelsByCity, getCitiesWithHostels } from "@/services/city.service";
 import { getExploreResults, ExploreParams } from "@/services/explore.service";
@@ -95,26 +95,10 @@ export default async function CityPage({ params }: CityPageProps) {
 
   const hostels = await getHostelsByCity(citySlug, undefined, 50);
   const faqs = getCityFAQs(city.name);
-  const isBhopal = city.name.toLowerCase() === 'bhopal';
 
   // Initial params and results for the Explore Experience
   const exploreParams: ExploreParams = { city: city.name };
   const initialExploreData = await getExploreResults(exploreParams);
-
-  // Group hostels by area for Bhopal
-  const areaHostels = isBhopal ? {
-    'MP Nagar': hostels.filter(h => h.name.toLowerCase().includes('mp nagar') || h.description?.toLowerCase().includes('mp nagar')),
-    'Near MANIT': hostels.filter(h => h.name.toLowerCase().includes('manit') || h.description?.toLowerCase().includes('manit')),
-    'Kolar Road': hostels.filter(h => h.name.toLowerCase().includes('kolar') || h.description?.toLowerCase().includes('kolar')),
-    'Near Railway Station': hostels.filter(h => h.name.toLowerCase().includes('railway') || h.description?.toLowerCase().includes('railway station')),
-    'Near LNCT': hostels.filter(h => h.name.toLowerCase().includes('lnct') || h.description?.toLowerCase().includes('lnct')),
-  } : {
-    'MP Nagar': [],
-    'Near MANIT': [],
-    'Kolar Road': [],
-    'Near Railway Station': [],
-    'Near LNCT': [],
-  };
 
   // JSON-LD Structured Data
   const structuredData = {
@@ -210,8 +194,11 @@ export default async function CityPage({ params }: CityPageProps) {
           </div>
         </div>
 
+        {/* City Editorial Intro Guide */}
+        <CityEditorialIntro cityName={city.name} stateName={city.state} />
+
         {/* Compact Internal-Link Section */}
-        <BhopalExploreLinks cityName={city.name} citySlug={citySlug} isBhopal={isBhopal} />
+        <BhopalExploreLinks cityName={city.name} citySlug={citySlug} />
 
         {/* Explore Experience */}
         <div className="mb-12">
@@ -222,68 +209,14 @@ export default async function CityPage({ params }: CityPageProps) {
               </div>
             }
           >
-            <ExploreContent initialData={initialExploreData} initialParams={exploreParams} />
+            <ExploreContent initialData={initialExploreData} initialParams={exploreParams} isEmbedded={true} />
           </Suspense>
         </div>
 
         {/* Why Choose City Section */}
         <WhyChooseCity cityName={city.name} />
 
-        {/* Area-Based Sections for Bhopal */}
-        {isBhopal && (
-          <div className="mb-8 mt-12">
-            <h2 className="mb-6 text-2xl font-bold sm:text-3xl">
-              Hostels by <span className="text-brand-primary">Area</span> in Bhopal
-            </h2>
-            
-            {areaHostels['MP Nagar'].length > 0 && (
-              <AreaSection
-                areaName="MP Nagar"
-                description="MP Nagar is the commercial and business hub of Bhopal, offering excellent connectivity, shopping centers, restaurants, and entertainment options. Ideal for working professionals and students who prefer a vibrant urban lifestyle."
-                hostels={areaHostels['MP Nagar']}
-                citySlug={citySlug}
-              />
-            )}
-
-            {areaHostels['Near MANIT'].length > 0 && (
-              <AreaSection
-                areaName="Near MANIT"
-                description="Perfect for MANIT (Maulana Azad National Institute of Technology) students, these hostels offer easy access to the campus with good connectivity to other parts of the city. The area has essential facilities like shops, medical stores, and eateries."
-                hostels={areaHostels['Near MANIT']}
-                citySlug={citySlug}
-              />
-            )}
-
-            {areaHostels['Kolar Road'].length > 0 && (
-              <AreaSection
-                areaName="Kolar Road"
-                description="Kolar Road is known for affordable hostel options with good transport connectivity. The area has a mix of residential and commercial establishments, making it convenient for daily needs. Popular among students and budget-conscious individuals."
-                hostels={areaHostels['Kolar Road']}
-                citySlug={citySlug}
-              />
-            )}
-
-            {areaHostels['Near Railway Station'].length > 0 && (
-              <AreaSection
-                areaName="Near Railway Station"
-                description="Hostels near Bhopal Railway Station offer excellent connectivity for students and professionals who travel frequently. The area is well-connected to all parts of the city via local transport and has good availability of essential services."
-                hostels={areaHostels['Near Railway Station']}
-                citySlug={citySlug}
-              />
-            )}
-
-            {areaHostels['Near LNCT'].length > 0 && (
-              <AreaSection
-                areaName="Near LNCT"
-                description="Located near LNCT (Lakshmi Narain College of Technology), these hostels are popular among engineering students. The area offers a peaceful environment conducive to studies with easy access to the college campus and basic amenities."
-                hostels={areaHostels['Near LNCT']}
-                citySlug={citySlug}
-              />
-            )}
-          </div>
-        )}
-
-        {/* FAQ Section */}
+        {/* FAQ Section (4 Concise High-Intent Questions) */}
         <CityFAQSection cityName={city.name} faqs={faqs} />
 
         {/* SEO Context */}

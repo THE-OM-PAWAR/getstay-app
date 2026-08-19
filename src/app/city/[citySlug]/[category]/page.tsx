@@ -7,6 +7,7 @@ import { Footer } from "@/components/layout/footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { ExploreLinks } from "@/components/shared/explore-links";
+import { BhopalExploreLinks } from "@/components/city/bhopal-explore-links";
 import { ExploreContent } from "@/app/explore/explore-content";
 import { 
   getCityBySlug, 
@@ -77,8 +78,15 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
 
   const info = categoryInfo[category];
   const categoryTitle = info.title;
-  
-  const title = `${categoryTitle} in ${city.name}, ${city.state} | GetStay`;
+
+  const categoryMetaTitles: Record<CategoryType, (c: string, s: string) => string> = {
+    "girls-hostel": (c, s) => `Girls Hostels in ${c}, ${s} | Safe Stays with Security & Mess | GetStay`,
+    "boys-hostel": (c, s) => `Boys Hostels in ${c}, ${s} | Verified Student Rooms & PGs | GetStay`,
+    "affordable": (c, s) => `Affordable Hostels in ${c}, ${s} | Budget Stays starting ₹3,999 | GetStay`,
+    "best": (c, s) => `Top Rated Hostels in ${c}, ${s} | Best Student Accommodations | GetStay`,
+  };
+
+  const title = categoryMetaTitles[category] ? categoryMetaTitles[category](city.name, city.state) : `${categoryTitle} in ${city.name}, ${city.state} | GetStay`;
   const description = `Find the best ${categoryTitle.toLowerCase()} in ${city.name}, ${city.state}. ${info.description}. Book verified student accommodation on GetStay.`;
 
   return {
@@ -122,7 +130,6 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   }
 
   const info = categoryInfo[category];
-  const IconComponent = info.icon;
 
   // Map category to explore params
   const categoryParamsMap: Record<CategoryType, ExploreParams> = {
@@ -205,26 +212,27 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           ]}
         />
 
-        {/* Sleek Hero Header */}
-        <div className="mb-8 p-6 md:p-8 rounded-2xl bg-gray-50/80 border border-gray-100 shadow-xs">
-          <div className="flex items-start gap-4">
-            <div className={`p-3.5 rounded-2xl border ${info.color} shrink-0`}>
-              <IconComponent className="h-7 w-7" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-extrabold text-brand-dark sm:text-4xl tracking-tight">
-                {info.title} in <span className="text-brand-primary">{city.name}</span>
-              </h1>
-              <div className="mt-2 flex items-center gap-2 text-muted-foreground font-medium text-sm">
-                <MapPin className="h-4 w-4 text-brand-primary" />
-                <span>{city.state}, India</span>
-              </div>
-              <p className="mt-3 text-sm md:text-base text-gray-600 max-w-3xl leading-relaxed">
-                {info.description}
-              </p>
-            </div>
+        {/* Hero Section */}
+        <div className="mb-4">
+          <h1 className="mb-2 text-3xl font-extrabold tracking-tight sm:text-4xl">
+            {info.title} in <span className="text-brand-primary">{city.name}</span>
+          </h1>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs md:text-sm font-medium text-gray-500">
+            <span className="inline-flex items-center gap-1 text-gray-700 dark:text-zinc-300 font-semibold">
+              <MapPin className="h-4 w-4 text-brand-primary shrink-0" />
+              {city.state}, India
+            </span>
+            <span className="text-gray-300 select-none">•</span>
+            <span>{city.hostelCount}+ verified hostels</span>
+            <span className="text-gray-300 select-none">•</span>
+            <span>{city.boysHostelCount} boys hostels</span>
+            <span className="text-gray-300 select-none">•</span>
+            <span>{city.girlsHostelCount} girls hostels</span>
           </div>
         </div>
+
+        {/* Compact Internal-Link Section */}
+        <BhopalExploreLinks cityName={city.name} citySlug={citySlug} />
 
         {/* Explore Experience */}
         <div className="mb-12">
@@ -235,7 +243,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
               </div>
             }
           >
-            <ExploreContent initialData={initialExploreData} initialParams={exploreParams} />
+            <ExploreContent initialData={initialExploreData} initialParams={exploreParams} isEmbedded={true} />
           </Suspense>
         </div>
 

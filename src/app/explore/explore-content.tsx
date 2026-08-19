@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { Loader2, Filter, Search } from "lucide-react";
 import { HostelCard } from "@/components/shared/hostel-card";
 import { RoomLandingCard } from "@/components/shared/room-landing-card";
@@ -17,11 +17,11 @@ import { SortDropdown } from "@/components/explore/sort-dropdown";
 interface ExploreContentProps {
   initialData: ExploreResults;
   initialParams: ExploreParams;
+  isEmbedded?: boolean;
 }
 
-export function ExploreContent({ initialData, initialParams }: ExploreContentProps) {
+export function ExploreContent({ initialData, initialParams, isEmbedded = false }: ExploreContentProps) {
   const router = useRouter();
-  const searchParams = useSearchParams();
   
   const [results, setResults] = useState<ExploreResults>(initialData);
   const [filters, setFilters] = useState<ExploreParams>(initialParams);
@@ -102,16 +102,14 @@ export function ExploreContent({ initialData, initialParams }: ExploreContentPro
   };
 
   const handleSortChange = (sortBy: string) => {
-    handleFilterChange({ ...filters, sortBy: sortBy as any });
+    handleFilterChange({ ...filters, sortBy: sortBy as ExploreParams['sortBy'] });
   };
 
   const totalResults = results.total.hostels + results.total.rooms;
 
-  return (
-    <main className="flex-1 bg-gray-50/50 dark:bg-black">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        
-        {/* Search Bar */}
+  const innerContent = (
+    <div className="w-full">
+      {/* Search Bar */}
         <form onSubmit={handleSearch} className="mb-6">
           <div className="relative">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
@@ -303,7 +301,7 @@ export function ExploreContent({ initialData, initialParams }: ExploreContentPro
                 </div>
                 <h3 className="text-xl font-bold mb-2">No results found</h3>
                 <p className="text-muted-foreground mb-6">
-                  We couldn't find any accommodations matching your criteria. Try adjusting your filters.
+                  We couldn&apos;t find any accommodations matching your criteria. Try adjusting your filters.
                 </p>
                 <Button variant="outline" onClick={handleClearAll}>
                   Clear All Filters
@@ -312,6 +310,17 @@ export function ExploreContent({ initialData, initialParams }: ExploreContentPro
             )}
           </div>
         </div>
+    </div>
+  );
+
+  if (isEmbedded) {
+    return innerContent;
+  }
+
+  return (
+    <main className="flex-1 bg-gray-50/50 dark:bg-black">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {innerContent}
       </div>
     </main>
   );
