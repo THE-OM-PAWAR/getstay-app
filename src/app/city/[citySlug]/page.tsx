@@ -44,16 +44,52 @@ export async function generateMetadata({ params }: CityPageProps): Promise<Metad
 
   const isBhopal = city.name.toLowerCase() === 'bhopal';
   const title = isBhopal 
-    ? `Best Hostels in Bhopal, MP - ${city.hostelCount}+ Boys & Girls PG | GetStay`
-    : `Hostels in ${city.name}, ${city.state} - ${city.hostelCount}+ Options | GetStay`;
+    ? `Hostels in Bhopal | Best Boys & Girls PG & Student Accommodation | GetStay`
+    : `Hostels in ${city.name}, ${city.state} | Student Accommodations & PGs | GetStay`;
   
   const description = isBhopal
-    ? `Discover the best hostels and PG accommodations in Bhopal, Madhya Pradesh. ${city.hostelCount}+ verified hostels including ${city.boysHostelCount} boys hostels and ${city.girlsHostelCount} girls hostels. Modern amenities, WiFi, food, safe environment. Book affordable student and working professional accommodation in Bhopal with GetStay.`
-    : `Find the best hostels in ${city.name}, ${city.state}. ${city.hostelCount}+ verified hostels with ${city.boysHostelCount} boys hostels and ${city.girlsHostelCount} girls hostels. Book affordable PG accommodation on GetStay.`;
+    ? `Find verified hostels in Bhopal, PGs, and student accommodation. Compare ${city.hostelCount}+ boys and girls hostels near RGPV, MANIT, MP Nagar, and Kolar Road with food, WiFi, and 24/7 security on GetStay.`
+    : `Find verified hostels in ${city.name}, ${city.state}. Compare ${city.hostelCount}+ boys and girls hostels with food, WiFi, and safe amenities on GetStay.`;
+
+  const keywords = isBhopal
+    ? [
+        "hostels in Bhopal",
+        "hostel in Bhopal",
+        "student hostels in Bhopal",
+        "student accommodation in Bhopal",
+        "PG in Bhopal",
+        "PGs in Bhopal",
+        "student PG in Bhopal",
+        "accommodation for students in Bhopal",
+        "student housing in Bhopal",
+        "boys hostel in Bhopal",
+        "girls hostel in Bhopal",
+        "affordable hostel in Bhopal",
+        "cheap hostel in Bhopal",
+        "hostel for students in Bhopal",
+        "hostel near college in Bhopal",
+        "hostel with food in Bhopal",
+        "hostel with WiFi in Bhopal",
+        "hostels near RGPV",
+        "hostels near MANIT Bhopal",
+        "hostels in MP Nagar",
+        "hostels in Kolar Road",
+      ]
+    : [
+        `hostels in ${city.name}`,
+        `hostel in ${city.name}`,
+        `student hostels in ${city.name}`,
+        `student accommodation in ${city.name}`,
+        `PG in ${city.name}`,
+        `PGs in ${city.name}`,
+        `boys hostel in ${city.name}`,
+        `girls hostel in ${city.name}`,
+      ];
 
   return {
     title,
     description,
+    keywords,
     authors: [{ name: "GetStay" }],
     openGraph: {
       title,

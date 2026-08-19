@@ -11,20 +11,39 @@ import { getHostels } from "@/services/hostel.service";
 import { getRoomsForLanding } from "@/services/room-landing.service";
 
 export const metadata: Metadata = {
-  title: "GetStay | Student Accommodation, Hostels & PGs in Bhopal",
+  title: "GetStay | Student Accommodation Platform - Find Hostels & PGs",
   description:
-    "Discover and compare verified student accommodation, hostels, and PGs in Bhopal. Modern amenities, transparent pricing, safe environment starting at ₹3,999/month.",
+    "GetStay is India's student accommodation platform. Discover verified hostels, PGs, and student housing with modern amenities, transparent pricing, and safe environments.",
+  keywords: [
+    "student accommodation",
+    "student accommodation platform",
+    "student housing",
+    "student housing platform",
+    "student hostels",
+    "hostels for students",
+    "student PG",
+    "PG for students",
+    "accommodation for students",
+    "affordable student accommodation",
+    "student rooms",
+    "accommodation for college students",
+    "GetStay",
+    "GetStay student accommodation",
+    "GetStay hostels",
+    "GetStay PG",
+    "student accommodation in Bhopal",
+  ],
   authors: [{ name: "GetStay" }],
   openGraph: {
-    title: "GetStay | Student Accommodation, Hostels & PGs in Bhopal",
+    title: "GetStay | Student Accommodation Platform - Find Hostels & PGs",
     description:
-      "Discover and compare verified student accommodation, hostels, and PGs in Bhopal. Modern amenities, transparent pricing, safe environment starting at ₹3,999/month.",
+      "GetStay is India's student accommodation platform. Discover verified hostels, PGs, and student housing with modern amenities, transparent pricing, and safe environments.",
     images: [
       {
         url: "https://getstay.in/banners/BANNER1.png",
         width: 1200,
         height: 630,
-        alt: "GetStay - Student Accommodation, Hostels & PGs in Bhopal",
+        alt: "GetStay - Student Accommodation Platform",
       },
     ],
     type: "website",
@@ -34,9 +53,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "GetStay | Student Accommodation, Hostels & PGs in Bhopal",
+    title: "GetStay | Student Accommodation Platform - Find Hostels & PGs",
     description:
-      "Discover and compare verified student accommodation, hostels, and PGs in Bhopal. Book safe student stays online.",
+      "Discover & compare verified student accommodation, hostels, and PGs across top student hubs.",
     images: ["https://getstay.in/banners/BANNER1.png"],
     site: "@GetStay",
   },

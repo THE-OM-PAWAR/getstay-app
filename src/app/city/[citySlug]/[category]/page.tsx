@@ -80,18 +80,54 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
   const categoryTitle = info.title;
 
   const categoryMetaTitles: Record<CategoryType, (c: string, s: string) => string> = {
-    "girls-hostel": (c, s) => `Girls Hostels in ${c}, ${s} | Safe Stays with Security & Mess | GetStay`,
-    "boys-hostel": (c, s) => `Boys Hostels in ${c}, ${s} | Verified Student Rooms & PGs | GetStay`,
-    "affordable": (c, s) => `Affordable Hostels in ${c}, ${s} | Budget Stays starting ₹3,999 | GetStay`,
-    "best": (c, s) => `Top Rated Hostels in ${c}, ${s} | Best Student Accommodations | GetStay`,
+    "girls-hostel": (c, s) => `Girls Hostels in ${c}, ${s} | Safe Girls PG & Student Stays | GetStay`,
+    "boys-hostel": (c, s) => `Boys Hostels in ${c}, ${s} | Verified Boys PG & Student Rooms | GetStay`,
+    "affordable": (c, s) => `Affordable Hostels in ${c}, ${s} | Cheap PG starting ₹3,999 | GetStay`,
+    "best": (c, s) => `Best Hostels in ${c}, ${s} | Top Rated Student Accommodation | GetStay`,
+  };
+
+  const categoryKeywords: Record<CategoryType, (c: string) => string[]> = {
+    "girls-hostel": (c) => [
+      `girls hostel in ${c}`,
+      `girls hostels in ${c}`,
+      `hostel for girls in ${c}`,
+      `girls PG in ${c}`,
+      `student hostel for girls ${c}`,
+      `safe girls PG ${c}`,
+      `hostel for female students ${c}`,
+    ],
+    "boys-hostel": (c) => [
+      `boys hostel in ${c}`,
+      `boys hostels in ${c}`,
+      `hostel for boys in ${c}`,
+      `boys PG in ${c}`,
+      `student hostel for boys ${c}`,
+      `hostel for male students ${c}`,
+    ],
+    "affordable": (c) => [
+      `affordable hostel in ${c}`,
+      `cheap hostel in ${c}`,
+      `budget PG in ${c}`,
+      `low cost student accommodation ${c}`,
+      `cheap student rooms ${c}`,
+    ],
+    "best": (c) => [
+      `best hostels in ${c}`,
+      `top hostels in ${c}`,
+      `best PG in ${c}`,
+      `top rated student accommodation ${c}`,
+      `premium hostels ${c}`,
+    ],
   };
 
   const title = categoryMetaTitles[category] ? categoryMetaTitles[category](city.name, city.state) : `${categoryTitle} in ${city.name}, ${city.state} | GetStay`;
   const description = `Find the best ${categoryTitle.toLowerCase()} in ${city.name}, ${city.state}. ${info.description}. Book verified student accommodation on GetStay.`;
+  const keywords = categoryKeywords[category] ? categoryKeywords[category](city.name) : [`${categoryTitle.toLowerCase()} in ${city.name}`];
 
   return {
     title,
     description,
+    keywords,
     openGraph: {
       title,
       description,
@@ -104,6 +140,7 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
       card: "summary_large_image",
       title,
       description,
+      site: "@GetStay",
     },
     alternates: {
       canonical: `https://getstay.in/city/${citySlug}/${category}`,
