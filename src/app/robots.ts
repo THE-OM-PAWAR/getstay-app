@@ -1,14 +1,17 @@
 import { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://getstay.in';
+  const cleanBaseUrl = baseUrl.replace(/\/$/, '');
+
   return {
     rules: [
       {
         userAgent: '*',
-        allow: ['/', '/_next/static/'], // Specifically allow static assets
-        disallow: ['/api/', '/admin/', '/_next/'], // Block everything else in _next
+        allow: '/',
+        disallow: ['/api/', '/admin/'],
       },
     ],
-    sitemap: 'https://getstay.in/sitemap.xml',
+    sitemap: `${cleanBaseUrl}/sitemap.xml`,
   };
 }
