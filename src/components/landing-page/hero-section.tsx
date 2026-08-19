@@ -46,7 +46,7 @@ export function HeroSection() {
           className="mb-3 md:mb-4 inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3 py-1 md:px-4 md:py-1.5 text-xs md:text-sm font-medium text-white backdrop-blur-md"
         >
           <span className="flex h-1.5 w-1.5 md:h-2 md:w-2 rounded-full bg-green-400 mr-2 animate-pulse"></span>
-          Find your comfort space
+          Student Accommodation Platform • Bhopal
         </motion.div>
 
         <motion.h1
@@ -55,8 +55,8 @@ export function HeroSection() {
           transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
           className="text-3xl md:text-7xl font-extrabold text-white tracking-tight leading-[1.15] md:leading-[1.1] mb-2 md:mb-6 drop-shadow-lg"
         >
-          Elevate Your <br className="hidden md:block" />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary-light to-white">Hostel Experience</span>
+          Find Your Perfect <br className="hidden md:block" />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary-light to-white">Student Accommodation</span>
         </motion.h1>
 
         <motion.p
@@ -65,7 +65,7 @@ export function HeroSection() {
           transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
           className="text-sm md:text-xl text-brand-light font-medium mb-5 md:mb-10 max-w-2xl drop-shadow-md px-2 md:px-0"
         >
-          Discover premium, safe, and vibrant accommodations tailored for students and young professionals.
+          Discover verified hostels, PGs, and student rooms in Bhopal with modern amenities, transparent pricing, and zero hassle.
         </motion.p>
 
         {/* Search Pill Form - Glassmorphism */}

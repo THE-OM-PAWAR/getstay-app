@@ -9,8 +9,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { DescriptionCard } from "@/components/shared/description-card";
 import { RoomActionButtons } from "@/components/room/room-action-buttons";
+import { Breadcrumbs } from "@/components/shared/breadcrumbs";
+import { ExploreLinks } from "@/components/shared/explore-links";
 import { RoomComponentsGrid } from "@/components/room/room-components-grid";
-import { RelatedLinksSection } from "@/components/city/related-links-section";
 import { getRoomById, getAllRoomIds } from "@/services/room-detail.service";
 
 interface RoomPageProps {
@@ -115,7 +116,7 @@ export default async function RoomPage({ params }: RoomPageProps) {
       price: room.rent,
       priceCurrency: 'INR',
       availability: 'https://schema.org/InStock',
-      priceValidUntil: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      priceValidUntil: "2026-12-31",
     },
     brand: {
       '@type': 'Organization',
@@ -163,6 +164,17 @@ export default async function RoomPage({ params }: RoomPageProps) {
       <Header pageTitle={room.name} showBackButton={false} />
 
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <Breadcrumbs
+          items={[
+            {
+              label: `${room.hostel.city || 'Bhopal'} Hostels`,
+              href: `/city/${room.hostel.city ? room.hostel.city.toLowerCase().replace(/\s+/g, '-') : 'bhopal'}`,
+            },
+            { label: room.hostel.name, href: `/hostel/${room.hostel.slug}` },
+            { label: room.name },
+          ]}
+        />
+
         {/* Hero Section with Room Info */}
         <div className="mb-6 overflow-hidden rounded-xl border border-border hover:border-brand-primary/50 transition-colors">
           <div className="flex flex-col gap-4 p-4 sm:flex-row sm:items-center sm:gap-6 lg:p-6">
@@ -461,7 +473,17 @@ export default async function RoomPage({ params }: RoomPageProps) {
           </div>
         )}
 
-
+        {/* Explore Links */}
+        <ExploreLinks
+          title="Explore Accommodation"
+          links={[
+            { label: `${room.hostel.name}`, href: `/hostel/${room.hostel.slug}` },
+            { label: `Hostels in ${room.hostel.city || 'Bhopal'}`, href: `/city/${room.hostel.city ? room.hostel.city.toLowerCase().replace(/\s+/g, '-') : 'bhopal'}` },
+            { label: `Boys Hostels in ${room.hostel.city || 'Bhopal'}`, href: `/city/${room.hostel.city ? room.hostel.city.toLowerCase().replace(/\s+/g, '-') : 'bhopal'}/boys-hostel` },
+            { label: `Girls Hostels in ${room.hostel.city || 'Bhopal'}`, href: `/city/${room.hostel.city ? room.hostel.city.toLowerCase().replace(/\s+/g, '-') : 'bhopal'}/girls-hostel` },
+          ]}
+          className="mt-8"
+        />
       </main>
 
       <Footer />

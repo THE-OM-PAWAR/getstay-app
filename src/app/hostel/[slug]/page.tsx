@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import { MapPin, Phone, Mail, Building2, Users, Calendar, Home, Shield, Wifi, Bed, Info } from "lucide-react";
+import { MapPin, Phone, Mail, Building2, Users, Calendar, Home } from "lucide-react";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Badge } from "@/components/ui/badge";
@@ -12,8 +12,10 @@ import { AmenitiesGrid } from "@/components/hostel/amenities-grid";
 import { SafetyGrid } from "@/components/hostel/safety-grid";
 import { AboutSection } from "@/components/hostel/about-section";
 import { GallerySection } from "@/components/hostel/gallery-section";
-import { HostelActionButtons } from "@/components/hostel/hostel-action-buttons";
+import { Breadcrumbs } from "@/components/shared/breadcrumbs";
+import { ExploreLinks } from "@/components/shared/explore-links";
 import { getHostelDetailBySlug, getHostelSlugsForSSG } from "@/services/hostel-detail.service";
+import { HostelActionButtons } from "@/components/hostel/hostel-action-buttons";
 
 interface HostelPageProps {
   params: Promise<{
@@ -120,8 +122,6 @@ export default async function HostelPage({ params }: HostelPageProps) {
     notFound();
   }
 
-  const mainPhoto = hostel.media.photos.find(p => p.isMain);
-  const otherPhotos = hostel.media.photos.filter(p => !p.isMain);
   const displayType = hostel.propertyDetails.accommodationType === 'coed' 
     ? 'CO-ED' 
     : hostel.propertyDetails.accommodationType?.toUpperCase() || 'HOSTEL';
@@ -223,6 +223,16 @@ export default async function HostelPage({ params }: HostelPageProps) {
       <Header pageTitle={hostel.basicInfo.name} showBackButton={true} />
       
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <Breadcrumbs
+          items={[
+            {
+              label: `${hostel.basicInfo.city || 'Bhopal'} Hostels`,
+              href: `/city/${hostel.basicInfo.city ? hostel.basicInfo.city.toLowerCase().replace(/\s+/g, '-') : 'bhopal'}`,
+            },
+            { label: hostel.basicInfo.name },
+          ]}
+        />
+
         {/* Banner Section with Hostel Info */}
         <div className="mb-8 overflow-hidden rounded-xl border border-border hover:border-brand-primary/50 transition-colors">
           <div className="flex flex-col gap-6 p-6 sm:flex-row sm:items-center sm:gap-8 lg:p-8">
@@ -491,6 +501,19 @@ export default async function HostelPage({ params }: HostelPageProps) {
             )}
           </div>
         </div>
+
+        {/* Explore Links */}
+        <ExploreLinks
+          title="Explore Bhopal Accommodation"
+          links={[
+            { label: "Hostels in Bhopal", href: "/city/bhopal" },
+            { label: "Boys Hostels in Bhopal", href: "/city/bhopal/boys-hostel" },
+            { label: "Girls Hostels in Bhopal", href: "/city/bhopal/girls-hostel" },
+            { label: "Affordable Hostels in Bhopal", href: "/city/bhopal/affordable" },
+            { label: "Best Hostels in Bhopal", href: "/city/bhopal/best" },
+          ]}
+          className="mt-8"
+        />
       </main>
       
       <Footer />
