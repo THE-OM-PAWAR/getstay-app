@@ -1,7 +1,7 @@
 export const SITE_CONFIG = {
   name: "GetStay",
-  domain: "getstay.in",
-  baseUrl: process.env.NEXT_PUBLIC_BASE_URL || "https://getstay.in",
+  domain: "www.getstay.in",
+  baseUrl: process.env.NEXT_PUBLIC_BASE_URL || "https://www.getstay.in",
   defaultOgImage: "/banners/BANNER1.png",
   twitterHandle: "@GetStay",
   description:

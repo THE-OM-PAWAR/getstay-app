@@ -21,7 +21,7 @@ import {
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "About Us | GetStay - Redefining Hostel Living",
+  title: "About Us - Redefining Hostel Living",
   description:
     "Discover GetStay — India's premier tech-enabled hostel and PG accommodation platform. Safe, verified, transparent, and built for students and working professionals.",
   keywords: [
@@ -37,11 +37,11 @@ export const metadata: Metadata = {
     description:
       "Discover the story behind GetStay — connecting students and professionals with verified, premium hostels.",
     type: "website",
-    url: "https://getstay.in/about",
+    url: "https://www.getstay.in/about",
     siteName: "GetStay",
   },
   alternates: {
-    canonical: "https://getstay.in/about",
+    canonical: "https://www.getstay.in/about",
   },
 };
 
@@ -153,7 +153,7 @@ export default function AboutPage() {
             "@context": "https://schema.org",
             "@type": "AboutPage",
             name: "About GetStay",
-            url: "https://getstay.in/about",
+            url: "https://www.getstay.in/about",
             description:
               "Learn about GetStay — India's premier tech-enabled hostel and PG booking platform.",
             mainEntity: {

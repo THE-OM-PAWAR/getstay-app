@@ -54,21 +54,21 @@ export const metadata: Metadata = {
   authors: [{ name: "GetStay" }],
   creator: "GetStay",
   publisher: "GetStay",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "https://getstay.in"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "https://www.getstay.in"),
   alternates: {
-    canonical: "https://getstay.in",
+    canonical: "https://www.getstay.in",
   },
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: "https://getstay.in",
+    url: "https://www.getstay.in",
     siteName: "GetStay",
     title: "GetStay | Student Accommodation Platform - Find Hostels & PGs",
     description:
       "GetStay is India's student accommodation platform. Discover verified hostels, PGs, and student housing with modern amenities, transparent pricing, and safe environments.",
     images: [
       {
-        url: "https://getstay.in/banners/BANNER1.png",
+        url: "https://www.getstay.in/banners/BANNER1.png",
         width: 1200,
         height: 630,
         alt: "GetStay - Student Accommodation Platform",
@@ -80,7 +80,7 @@ export const metadata: Metadata = {
     title: "GetStay | Student Accommodation Platform - Find Hostels & PGs",
     description:
       "Discover & compare verified student accommodation, hostels, and PGs across top student hubs.",
-    images: ["https://getstay.in/banners/BANNER1.png"],
+    images: ["https://www.getstay.in/banners/BANNER1.png"],
   },
   icons: {
     icon: [

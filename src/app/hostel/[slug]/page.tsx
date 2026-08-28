@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: HostelPageProps): Promise<Met
     : null;
 
   // SEO-optimized title and description
-  const title = `${hostel.basicInfo.name} - ${accommodationType.charAt(0).toUpperCase() + accommodationType.slice(1)} in ${location} | GetStay`;
+  const title = `${hostel.basicInfo.name} - ${accommodationType.charAt(0).toUpperCase() + accommodationType.slice(1)} in ${location}`;
   const description = hostel.basicInfo.description 
     ? `${hostel.basicInfo.description.slice(0, 150)}... Book now on GetStay.`
     : `Book ${hostel.basicInfo.name}, a ${accommodationType} hostel in ${location}. ${hostel.propertyDetails.totalRooms || 'Multiple'} rooms available${minRent ? ` starting from ₹${minRent.toLocaleString('en-IN')}/month` : ''}. Modern amenities, safe environment. Book on GetStay.`;
@@ -79,7 +79,7 @@ export async function generateMetadata({ params }: HostelPageProps): Promise<Met
       title,
       description,
       type: 'website',
-      url: `https://getstay.in/hostel/${slug}`,
+      url: `https://www.getstay.in/hostel/${slug}`,
       siteName: 'GetStay',
       locale: 'en_IN',
       images: mainPhoto ? [
@@ -99,7 +99,7 @@ export async function generateMetadata({ params }: HostelPageProps): Promise<Met
       site: '@GetStay',
     },
     alternates: {
-      canonical: `https://getstay.in/hostel/${slug}`,
+      canonical: `https://www.getstay.in/hostel/${slug}`,
     },
     robots: {
       index: true,
@@ -142,10 +142,10 @@ export default async function HostelPage({ params }: HostelPageProps) {
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'LodgingBusiness',
-    '@id': `https://getstay.in/hostel/${slug}`,
+    '@id': `https://www.getstay.in/hostel/${slug}`,
     name: hostel.basicInfo.name,
     description: hostel.basicInfo.description || `${hostel.basicInfo.name} - Modern hostel accommodation`,
-    url: `https://getstay.in/hostel/${slug}`,
+    url: `https://www.getstay.in/hostel/${slug}`,
     image: hostel.media.photos.map(p => p.url),
     address: {
       '@type': 'PostalAddress',
@@ -191,19 +191,19 @@ export default async function HostelPage({ params }: HostelPageProps) {
         '@type': 'ListItem',
         position: 1,
         name: 'Home',
-        item: 'https://getstay.in',
+        item: 'https://www.getstay.in',
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: 'Hostels',
-        item: 'https://getstay.in/#hostels',
+        item: 'https://www.getstay.in/#hostels',
       },
       {
         '@type': 'ListItem',
         position: 3,
         name: hostel.basicInfo.name,
-        item: `https://getstay.in/hostel/${slug}`,
+        item: `https://www.getstay.in/hostel/${slug}`,
       },
     ],
   };

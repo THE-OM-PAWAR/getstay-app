@@ -40,14 +40,14 @@ export const metadata: Metadata = {
       "GetStay is India's student accommodation platform. Discover verified hostels, PGs, and student housing with modern amenities, transparent pricing, and safe environments.",
     images: [
       {
-        url: "https://getstay.in/banners/BANNER1.png",
+        url: "https://www.getstay.in/banners/BANNER1.png",
         width: 1200,
         height: 630,
         alt: "GetStay - Student Accommodation Platform",
       },
     ],
     type: "website",
-    url: "https://getstay.in",
+    url: "https://www.getstay.in",
     siteName: "GetStay",
     locale: "en_IN",
   },
@@ -56,11 +56,11 @@ export const metadata: Metadata = {
     title: "GetStay | Student Accommodation Platform - Find Hostels & PGs",
     description:
       "Discover & compare verified student accommodation, hostels, and PGs across top student hubs.",
-    images: ["https://getstay.in/banners/BANNER1.png"],
+    images: ["https://www.getstay.in/banners/BANNER1.png"],
     site: "@GetStay",
   },
   alternates: {
-    canonical: "https://getstay.in",
+    canonical: "https://www.getstay.in/",
   },
   robots: {
     index: true,
@@ -91,12 +91,12 @@ export default async function Home() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "GetStay",
-    url: "https://getstay.in",
+    url: "https://www.getstay.in",
     description:
       "Student accommodation discovery platform helping students find verified hostels, PGs, and rooms in Bhopal and across India",
     potentialAction: {
       "@type": "SearchAction",
-      target: "https://getstay.in/search?q={search_term_string}",
+      target: "https://www.getstay.in/search?q={search_term_string}",
       "query-input": "required name=search_term_string",
     },
   };
@@ -106,8 +106,8 @@ export default async function Home() {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "GetStay",
-    url: "https://getstay.in",
-    logo: "https://getstay.in/banners/BANNER1.png",
+    url: "https://www.getstay.in",
+    logo: "https://www.getstay.in/banners/BANNER1.png",
     description:
       "GetStay is a student accommodation discovery platform operating in Bhopal, Madhya Pradesh, India.",
     areaServed: {

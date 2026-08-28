@@ -44,8 +44,8 @@ export async function generateMetadata({ params }: CityPageProps): Promise<Metad
 
   const isBhopal = city.name.toLowerCase() === 'bhopal';
   const title = isBhopal 
-    ? `Hostels in Bhopal | Best Boys & Girls PG & Student Accommodation | GetStay`
-    : `Hostels in ${city.name}, ${city.state} | Student Accommodations & PGs | GetStay`;
+    ? `Hostels in Bhopal | Best Boys & Girls PG & Student Accommodation`
+    : `Hostels in ${city.name}, ${city.state} | Student Accommodations & PGs`;
   
   const description = isBhopal
     ? `Find verified hostels in Bhopal, PGs, and student accommodation. Compare ${city.hostelCount}+ boys and girls hostels near RGPV, MANIT, MP Nagar, and Kolar Road with food, WiFi, and 24/7 security on GetStay.`
@@ -95,7 +95,7 @@ export async function generateMetadata({ params }: CityPageProps): Promise<Metad
       title,
       description,
       type: 'website',
-      url: `https://getstay.in/city/${citySlug}`,
+      url: `https://www.getstay.in/city/${citySlug}`,
       siteName: 'GetStay',
       locale: 'en_IN',
     },
@@ -106,7 +106,7 @@ export async function generateMetadata({ params }: CityPageProps): Promise<Metad
       site: "@GetStay",
     },
     alternates: {
-      canonical: `https://getstay.in/city/${citySlug}`,
+      canonical: `https://www.getstay.in/city/${citySlug}`,
     },
     robots: {
       index: true,
@@ -149,7 +149,7 @@ export default async function CityPage({ params }: CityPageProps) {
       item: {
         '@type': 'LodgingBusiness',
         name: hostel.name,
-        url: `https://getstay.in/hostel/${hostel.slug}`,
+        url: `https://www.getstay.in/hostel/${hostel.slug}`,
         address: {
           '@type': 'PostalAddress',
           addressLocality: hostel.city,
@@ -168,13 +168,13 @@ export default async function CityPage({ params }: CityPageProps) {
         '@type': 'ListItem',
         position: 1,
         name: 'Home',
-        item: 'https://getstay.in',
+        item: 'https://www.getstay.in',
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: `${city.name} Hostels`,
-        item: `https://getstay.in/city/${citySlug}`,
+        item: `https://www.getstay.in/city/${citySlug}`,
       },
     ],
   };

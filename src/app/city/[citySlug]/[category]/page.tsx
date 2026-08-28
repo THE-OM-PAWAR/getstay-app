@@ -80,10 +80,10 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
   const categoryTitle = info.title;
 
   const categoryMetaTitles: Record<CategoryType, (c: string, s: string) => string> = {
-    "girls-hostel": (c, s) => `Girls Hostels in ${c}, ${s} | Safe Girls PG & Student Stays | GetStay`,
-    "boys-hostel": (c, s) => `Boys Hostels in ${c}, ${s} | Verified Boys PG & Student Rooms | GetStay`,
-    "affordable": (c, s) => `Affordable Hostels in ${c}, ${s} | Cheap PG starting ₹3,999 | GetStay`,
-    "best": (c, s) => `Best Hostels in ${c}, ${s} | Top Rated Student Accommodation | GetStay`,
+    "girls-hostel": (c, s) => `Girls Hostels in ${c}, ${s} | Safe Girls PG & Student Stays`,
+    "boys-hostel": (c, s) => `Boys Hostels in ${c}, ${s} | Verified Boys PG & Student Rooms`,
+    "affordable": (c, s) => `Affordable Hostels in ${c}, ${s} | Cheap PG starting ₹3,999`,
+    "best": (c, s) => `Best Hostels in ${c}, ${s} | Top Rated Student Accommodation`,
   };
 
   const categoryKeywords: Record<CategoryType, (c: string) => string[]> = {
@@ -120,7 +120,7 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
     ],
   };
 
-  const title = categoryMetaTitles[category] ? categoryMetaTitles[category](city.name, city.state) : `${categoryTitle} in ${city.name}, ${city.state} | GetStay`;
+  const title = categoryMetaTitles[category] ? categoryMetaTitles[category](city.name, city.state) : `${categoryTitle} in ${city.name}, ${city.state}`;
   const description = `Find the best ${categoryTitle.toLowerCase()} in ${city.name}, ${city.state}. ${info.description}. Book verified student accommodation on GetStay.`;
   const keywords = categoryKeywords[category] ? categoryKeywords[category](city.name) : [`${categoryTitle.toLowerCase()} in ${city.name}`];
 
@@ -132,7 +132,7 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
       title,
       description,
       type: "website",
-      url: `https://getstay.in/city/${citySlug}/${category}`,
+      url: `https://www.getstay.in/city/${citySlug}/${category}`,
       siteName: "GetStay",
       locale: "en_IN",
     },
@@ -143,7 +143,7 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
       site: "@GetStay",
     },
     alternates: {
-      canonical: `https://getstay.in/city/${citySlug}/${category}`,
+      canonical: `https://www.getstay.in/city/${citySlug}/${category}`,
     },
     robots: {
       index: true,
@@ -192,7 +192,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       item: {
         "@type": "LodgingBusiness",
         name: hostel.name,
-        url: `https://getstay.in/hostel/${hostel.slug}`,
+        url: `https://www.getstay.in/hostel/${hostel.slug}`,
         address: {
           "@type": "PostalAddress",
           addressLocality: hostel.city,
@@ -211,19 +211,19 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://getstay.in",
+        item: "https://www.getstay.in",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: `${city.name} Hostels`,
-        item: `https://getstay.in/city/${citySlug}`,
+        item: `https://www.getstay.in/city/${citySlug}`,
       },
       {
         "@type": "ListItem",
         position: 3,
         name: info.title,
-        item: `https://getstay.in/city/${citySlug}/${category}`,
+        item: `https://www.getstay.in/city/${citySlug}/${category}`,
       },
     ],
   };
