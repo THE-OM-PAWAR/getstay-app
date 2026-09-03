@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { IndianRupee, Package } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { IndianRupee, BedDouble, ArrowRight } from "lucide-react";
 
 interface CompactRoomCardProps {
   roomId: string;
@@ -9,10 +8,7 @@ interface CompactRoomCardProps {
   description: string;
   rent: number;
   coverImage?: string;
-  components: Array<{
-    name: string;
-    description: string;
-  }>;
+  components: Array<{ name: string; description: string }>;
 }
 
 export function CompactRoomCard({
@@ -24,76 +20,83 @@ export function CompactRoomCard({
   components,
 }: CompactRoomCardProps) {
   return (
-    <Link href={`/room/${roomId}`} className="block">
-      <div className="group overflow-hidden rounded-xl border border-border bg-card transition-all hover:border-brand-primary/50 hover:shadow-md">
-        {/* Image section - reduced height */}
-        <div className="relative h-52 overflow-hidden bg-muted sm:h-36">
+    <Link href={`/room/${roomId}`} className="group block w-full">
+      <div className="flex w-full items-stretch min-h-[175px] sm:min-h-[205px] overflow-hidden rounded-2xl border border-[#e8eaed] bg-white p-3 sm:p-4 gap-4 shadow-[0_2px_16px_rgba(17,24,39,0.07)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(57,50,216,0.13)] hover:-translate-y-0.5">
+
+        {/* ── Image — with distinct outer border ── */}
+        <div className="relative w-[140px] sm:w-[220px] shrink-0 overflow-hidden rounded-xl border border-gray-300/90 bg-[#f0f1f5] shadow-2xs">
           {coverImage ? (
             <Image
               src={coverImage}
               alt={name}
               fill
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover transition-transform duration-700 group-hover:scale-[1.05]"
+              sizes="(max-width: 640px) 140px, 220px"
             />
           ) : (
-            <>
-              <div className="absolute inset-0 bg-gradient-to-br from-muted to-muted/50" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-background/30 backdrop-blur-sm">
-                  <svg className="h-8 w-8 text-foreground/20" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-                  </svg>
-                </div>
-              </div>
-            </>
-          )}
-          
-          {/* Price badge */}
-          <Badge
-            className="absolute bottom-2 right-2 rounded-lg bg-brand-primary px-2.5 py-1 text-xs font-bold text-brand-white backdrop-blur-sm dark:bg-brand-primary-light dark:text-brand-dark"
-            variant="secondary"
-          >
-            <IndianRupee className="mr-0.5 inline h-3 w-3" />
-            {rent.toLocaleString('en-IN')}/mo
-          </Badge>
-        </div>
-        
-        {/* Card content - reduced padding */}
-        <div className="p-3 sm:p-4">
-          <h3 className="mb-1.5 text-base font-bold text-foreground sm:text-lg">
-            {name}
-          </h3>
-          <p className="mb-2.5 line-clamp-1 text-xs text-muted-foreground sm:text-sm">
-            {description}
-          </p>
-          
-          {/* Components */}
-          {components.length > 0 && (
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
-                <Package className="h-3 w-3" />
-                <span>Includes:</span>
-              </div>
-              <div className="flex flex-wrap gap-1.5">
-                {components.slice(0, 3).map((component, idx) => (
-                  <Badge
-                    key={idx}
-                    variant="outline"
-                    className="text-[10px] font-normal sm:text-xs"
-                  >
-                    {component.name}
-                  </Badge>
-                ))}
-                {components.length > 3 && (
-                  <Badge variant="outline" className="text-[10px] font-normal sm:text-xs">
-                    +{components.length - 3}
-                  </Badge>
-                )}
-              </div>
+            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#f1f3ff] to-[#e8eaff]">
+              <BedDouble className="h-10 w-10 text-[#3932d8]/20" strokeWidth={1.3} />
             </div>
           )}
         </div>
+
+        {/* ── Centre: info ── */}
+        <div className="flex flex-1 min-w-0 flex-col justify-between py-1">
+
+          {/* Title + description */}
+          <div>
+            <h3 className="text-base font-black tracking-tight text-[#111827] leading-snug line-clamp-1 sm:text-lg">
+              {name}
+            </h3>
+            <p className="mt-1.5 text-xs sm:text-sm text-gray-500 leading-relaxed line-clamp-2">
+              {description}
+            </p>
+          </div>
+
+          {/* Includes bar */}
+          {components.length > 0 && (
+            <div className="mt-3 flex flex-wrap items-center gap-1.5">
+              <span className="text-[10px] font-black uppercase tracking-[0.14em] text-gray-400 mr-0.5">
+                Includes
+              </span>
+              {components.slice(0, 4).map((c, i) => (
+                <span
+                  key={i}
+                  className="rounded-full bg-[#f4f5f7] border border-[#e8eaed] px-2.5 py-0.5 text-[10px] font-semibold text-[#4b5563]"
+                >
+                  {c.name}
+                </span>
+              ))}
+              {components.length > 4 && (
+                <span className="rounded-full bg-[#eef0ff] border border-[#3932d8]/15 px-2.5 py-0.5 text-[10px] font-black text-[#3932d8]">
+                  +{components.length - 4}
+                </span>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* ── Right: price + CTA ── */}
+        <div className="flex shrink-0 flex-col items-end justify-between border-l border-[#f0f1f5] pl-4 sm:pl-6 py-1">
+
+          {/* Price */}
+          <div className="text-right">
+            <div className="flex items-baseline gap-0.5 justify-end">
+              <IndianRupee className="h-4 w-4 text-[#111827] mt-0.5 shrink-0" strokeWidth={2.2} />
+              <span className="text-lg font-black text-[#111827] leading-none sm:text-2xl">
+                {rent.toLocaleString('en-IN')}
+              </span>
+            </div>
+            <span className="text-[10px] font-medium text-gray-400 mt-1 block">/month</span>
+          </div>
+
+          {/* Explore pill */}
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-[#3932d8] px-4 py-2 text-[11px] font-black text-white shadow-sm shadow-[#3932d8]/25 transition-all duration-200 group-hover:bg-[#2e28b8] group-hover:shadow-md group-hover:shadow-[#3932d8]/30">
+            Explore
+            <ArrowRight className="h-3 w-3" strokeWidth={2.5} />
+          </span>
+        </div>
+
       </div>
     </Link>
   );

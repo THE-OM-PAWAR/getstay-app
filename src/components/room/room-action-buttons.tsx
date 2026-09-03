@@ -1,57 +1,66 @@
 "use client";
 
 import Link from "next/link";
-import { Building2, Share2 } from "lucide-react";
+import { Building2, Share2, Check, Phone } from "lucide-react";
+import { useState } from "react";
 
 interface RoomActionButtonsProps {
   roomName: string;
   hostelName: string;
   hostelSlug: string;
+  contactNumber?: string;
 }
 
-export function RoomActionButtons({ 
-  roomName, 
-  hostelName, 
-  hostelSlug 
+export function RoomActionButtons({
+  roomName,
+  hostelName,
+  hostelSlug,
+  contactNumber,
 }: RoomActionButtonsProps) {
-  const handleShareClick = async () => {
-    const shareData = {
-      title: roomName,
-      text: `Check out ${roomName} at ${hostelName}`,
-      url: window.location.href,
-    };
+  const [copied, setCopied] = useState(false);
 
+  const handleShare = async () => {
     try {
       if (navigator.share) {
-        await navigator.share(shareData);
+        await navigator.share({ title: roomName, text: `Check out ${roomName} at ${hostelName}`, url: window.location.href });
       } else {
         await navigator.clipboard.writeText(window.location.href);
-        alert('Link copied to clipboard!');
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
       }
-    } catch (err) {
-      console.error('Error sharing:', err);
-    }
+    } catch { /* ignore */ }
   };
 
   return (
-    <div className="flex items-center gap-2">
-      <Link href={`/hostel/${hostelSlug}`}>
-        <button
-          className="flex items-center gap-1.5 rounded-lg border border-brand-primary bg-transparent px-3 py-2 text-xs font-bold text-brand-primary transition-colors hover:bg-brand-primary hover:text-brand-white"
-          aria-label="View Hostel"
+    <div className="flex flex-wrap items-center gap-2 mt-1">
+      {/* Primary CTA — call if available, otherwise view hostel */}
+      {contactNumber ? (
+        <a
+          href={`tel:${contactNumber}`}
+          className="inline-flex items-center gap-1.5 rounded-full bg-[#3932d8] px-5 py-2.5 text-xs font-black text-white shadow-md shadow-[#3932d8]/20 transition-all hover:-translate-y-0.5 hover:bg-[#2e28b8] active:scale-[0.97]"
         >
-          <Building2 className="h-3.5 w-3.5" />
-          <span>View Hostel</span>
-        </button>
+          <Phone className="h-3.5 w-3.5" strokeWidth={1.8} />
+          <span>Call Now</span>
+        </a>
+      ) : null}
+
+      <Link href={`/hostel/${hostelSlug}`}
+        className="inline-flex items-center gap-1.5 rounded-full border border-[#111827]/15 bg-white px-5 py-2.5 text-xs font-bold text-[#111827] transition-all hover:border-[#3932d8]/30 hover:text-[#3932d8] hover:-translate-y-0.5 active:scale-[0.97]"
+      >
+        <Building2 className="h-3.5 w-3.5" strokeWidth={1.7} />
+        <span>View Hostel</span>
       </Link>
-      
+
       <button
-        onClick={handleShareClick}
-        className="flex items-center gap-1.5 rounded-lg border border-brand-primary bg-transparent px-3 py-2 text-xs font-bold text-brand-primary transition-colors hover:bg-brand-primary hover:text-brand-white"
+        onClick={handleShare}
+        className="inline-flex items-center gap-1.5 rounded-full border border-[#111827]/15 bg-white px-5 py-2.5 text-xs font-bold text-[#111827] transition-all hover:border-[#3932d8]/30 hover:text-[#3932d8] hover:-translate-y-0.5 active:scale-[0.97]"
         aria-label="Share"
       >
-        <Share2 className="h-3.5 w-3.5" />
-        <span>Share</span>
+        {copied ? (
+          <><Check className="h-3.5 w-3.5 text-[#10b981]" /><span className="text-[#10b981]">Copied!</span></>
+        ) : (
+          <><Share2 className="h-3.5 w-3.5" /><span>Share</span></>
+        )}
       </button>
     </div>
   );

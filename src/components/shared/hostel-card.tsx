@@ -187,18 +187,16 @@ export function HostelCard({
 
             {/* Price indicator overlay - removed to match image style */}
 
-            {/* Price badge - top left (From XXXX) */}
+            {/* Price badge - top left (From ₹XXXX/mo) */}
             {currentImage.price && (
-              <div className="absolute top-3 left-3 z-10 rounded-full bg-black/70 backdrop-blur-md px-4 py-1.5 text-sm font-semibold text-white shadow-sm">
-                From {currentImage.price.toLocaleString()}
+              <div className="absolute top-3 left-3 z-10 rounded-full bg-black/70 backdrop-blur-md px-3.5 py-1.5 text-xs font-bold text-white shadow-sm">
+                From ₹{currentImage.price.toLocaleString('en-IN')}<span className="text-[10px] text-white/70 font-normal ml-0.5">/mo</span>
               </div>
             )}
 
-            {/* Type badge - moved or hidden, maybe keep small on top right if needed, but let's hide to match image exactly or keep it if necessary. Let's keep the heart. */}
-
             {/* Heart button - top right */}
             <button
-              className="absolute top-2 right-2 z-10 p-1.5 rounded-full bg-white dark:bg-background shadow-md hover:scale-110 transition-transform"
+              className="absolute top-3 right-3 z-10 p-2 rounded-full bg-white/90 dark:bg-background/90 backdrop-blur-sm shadow-md hover:scale-110 active:scale-95 transition-all"
               aria-label="Add to favorites"
             >
               <svg className="h-3.5 w-3.5 text-foreground" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
@@ -236,13 +234,13 @@ export function HostelCard({
               {name}
             </h3>
             <div className="flex items-center gap-1 text-muted-foreground">
-              <MapPin className="h-3 w-3 shrink-0" />
-              <span className="text-[10px] truncate">{location}</span>
+              <MapPin className="h-3 w-3 shrink-0 text-[#3932d8]" />
+              <span className="text-[11px] truncate">{location}</span>
             </div>
           </div>
           {currentImage?.price && (
-            <div className="text-sm md:text-base font-bold text-foreground shrink-0 leading-tight whitespace-nowrap">
-              ₹{currentImage.price.toLocaleString()}
+            <div className="text-sm md:text-base font-black text-[#111827] shrink-0 leading-tight whitespace-nowrap">
+              ₹{currentImage.price.toLocaleString('en-IN')}<span className="text-[10px] text-gray-400 font-normal">/mo</span>
             </div>
           )}
         </div>

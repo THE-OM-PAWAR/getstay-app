@@ -3,9 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, ChevronLeft, ChevronRight, Images } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
+import { X, ChevronLeft, ChevronRight, ZoomIn, LayoutGrid } from 'lucide-react'
 
 interface HostelPhoto {
   url: string
@@ -19,285 +17,299 @@ interface GallerySectionProps {
   photos: HostelPhoto[]
 }
 
+const TYPE_LABELS: Record<string, string> = {
+  boys: 'Boys',
+  girls: 'Girls',
+  common: 'Common Area',
+  exterior: 'Exterior',
+  interior: 'Interior',
+  amenities: 'Amenities',
+}
+
+// Subtle per-type tint for filter pills
+const TYPE_PILL = 'border border-[#111827]/10 bg-white text-gray-600 hover:border-[#3932d8]/20 hover:text-[#3932d8]'
+const TYPE_PILL_ACTIVE = 'bg-[#3932d8] text-white shadow-md shadow-[#3932d8]/25 border-transparent'
+
+const BATCH = 12 // photos shown per "load more" click
+
 export function GallerySection({ photos }: GallerySectionProps) {
-  const [selectedImage, setSelectedImage] = useState<number | null>(null)
-  const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set([0, 1, 2, 3, 4]))
+  const [lightboxIdx, setLightboxIdx] = useState<number | null>(null)
+  const [activeFilter, setActiveFilter] = useState('all')
+  const [visible, setVisible] = useState(BATCH)
 
-  if (!photos || photos.length === 0) {
-    return null
-  }
+  if (!photos || photos.length === 0) return null
 
-  // Show only first 5 images in preview
-  const previewPhotos = photos.slice(0, 5)
-  const hasMorePhotos = photos.length > 5
+  // Always show main photo first
+  const sorted = [...photos.filter(p => p.isMain), ...photos.filter(p => !p.isMain)]
 
-  const openLightbox = (index: number) => {
-    setSelectedImage(index)
-    // Preload adjacent images
-    loadAdjacentImages(index)
-  }
+  const open = (idx: number) => setLightboxIdx(idx)
+  const close = () => setLightboxIdx(null)
 
-  const closeLightbox = () => {
-    setSelectedImage(null)
-  }
+  const prev = useCallback(() => {
+    if (lightboxIdx === null) return
+    setLightboxIdx(lightboxIdx === 0 ? sorted.length - 1 : lightboxIdx - 1)
+  }, [lightboxIdx, sorted.length])
 
-  const goToPrevious = useCallback(() => {
-    if (selectedImage !== null) {
-      const newIndex = selectedImage === 0 ? photos.length - 1 : selectedImage - 1
-      setSelectedImage(newIndex)
-      loadAdjacentImages(newIndex)
-    }
-  }, [selectedImage, photos.length])
+  const next = useCallback(() => {
+    if (lightboxIdx === null) return
+    setLightboxIdx(lightboxIdx === sorted.length - 1 ? 0 : lightboxIdx + 1)
+  }, [lightboxIdx, sorted.length])
 
-  const goToNext = useCallback(() => {
-    if (selectedImage !== null) {
-      const newIndex = selectedImage === photos.length - 1 ? 0 : selectedImage + 1
-      setSelectedImage(newIndex)
-      loadAdjacentImages(newIndex)
-    }
-  }, [selectedImage, photos.length])
-
-  // Lazy load adjacent images
-  const loadAdjacentImages = (index: number) => {
-    const toLoad = new Set(loadedImages)
-    // Load current, previous, and next images
-    toLoad.add(index)
-    toLoad.add(index === 0 ? photos.length - 1 : index - 1)
-    toLoad.add(index === photos.length - 1 ? 0 : index + 1)
-    setLoadedImages(toLoad)
-  }
-
-  // Keyboard navigation
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (selectedImage === null) return
-      
-      if (e.key === 'ArrowLeft') {
-        goToPrevious()
-      } else if (e.key === 'ArrowRight') {
-        goToNext()
-      } else if (e.key === 'Escape') {
-        closeLightbox()
-      }
+    const onKey = (e: KeyboardEvent) => {
+      if (lightboxIdx === null) return
+      if (e.key === 'ArrowLeft') prev()
+      else if (e.key === 'ArrowRight') next()
+      else if (e.key === 'Escape') close()
     }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [lightboxIdx, prev, next])
 
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [selectedImage, goToPrevious, goToNext])
-
-  const getTypeLabel = (type: string) => {
-    const labels: Record<string, string> = {
-      boys: 'Boys',
-      girls: 'Girls',
-      common: 'Common Area',
-      exterior: 'Exterior',
-      interior: 'Interior',
-      amenities: 'Amenities',
-    }
-    return labels[type] || type
-  }
+  // Map 4 images for the layout matching Image 1
+  const img1 = sorted[0] || photos[0]
+  const img2 = sorted[1] || sorted[0] || photos[0]
+  const img3 = sorted[2] || sorted[0] || photos[0]
+  const img4 = sorted[3] || sorted[0] || photos[0]
 
   return (
     <>
-      <section className="overflow-hidden rounded-2xl border border-border bg-card">
-        <div className="p-6 sm:p-8">
+      {/* ── Main Gallery Layout matching Reference Image 1 ── */}
+      <div className="mx-auto max-w-6xl px-4 py-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 items-stretch">
+
+          {/* Left Column: Tall image card */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="mb-6"
+            transition={{ duration: 0.4 }}
+            className="relative h-[340px] md:h-[460px] rounded-[28px] md:rounded-[32px] overflow-hidden bg-gray-100 border border-gray-200/80 shadow-xs cursor-pointer group"
+            onClick={() => open(0)}
           >
-            <h2 className="mb-2 flex items-center gap-2 text-2xl font-bold sm:text-3xl">
-              <Images className="h-6 w-6 text-brand-primary" />
-              Photo <span className="text-brand-primary">Gallery</span>
-            </h2>
-            <p className="text-sm text-muted-foreground sm:text-base">
-              {photos.length} {photos.length === 1 ? 'photo' : 'photos'} • Click to view all
-            </p>
+            {img1?.url && (
+              <Image
+                src={img1.url}
+                alt={img1.title || 'Hostel image'}
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                sizes="(max-width: 768px) 100vw, 25vw"
+              />
+            )}
+            <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </motion.div>
 
-          {/* Grid Layout - 2 rows with 4-5 images */}
-          <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
-            {previewPhotos.map((photo, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: idx * 0.05 }}
-                whileHover={{ scale: 1.03 }}
-                className={`group relative cursor-pointer overflow-hidden rounded-xl shadow-md transition-shadow hover:shadow-xl ${
-                  idx === 0 ? 'col-span-2 row-span-2 aspect-square md:col-span-2 md:row-span-2' : 'aspect-square'
-                }`}
-                onClick={() => openLightbox(idx)}
-              >
-                <Image
-                  src={photo.url}
-                  alt={photo.title}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
-                  sizes={idx === 0 ? "(max-width: 768px) 50vw, 33vw" : "(max-width: 768px) 25vw, 16vw"}
-                />
-                <div className="absolute inset-0 bg-linear-to-t from-brand-dark/80 via-brand-dark/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 dark:from-brand-primary-light/80 dark:via-brand-primary-light/30">
-                  <div className="absolute bottom-0 left-0 right-0 p-3">
-                    <Badge variant="secondary" className="mb-1 bg-brand-primary text-brand-white dark:bg-brand-white dark:text-brand-dark text-xs">
-                      {getTypeLabel(photo.type)}
-                    </Badge>
-                    <p className="text-xs font-medium text-brand-white dark:text-brand-dark line-clamp-1">{photo.title}</p>
-                  </div>
-                </div>
-                
-                {/* Show "View All" overlay on last image if there are more photos */}
-                {idx === previewPhotos.length - 1 && hasMorePhotos && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-brand-dark/70 dark:bg-brand-primary-light/70">
-                    <div className="text-center">
-                      <p className="text-2xl font-bold text-brand-white dark:text-brand-dark">+{photos.length - 5}</p>
-                      <p className="text-sm text-brand-white dark:text-brand-dark">More Photos</p>
-                    </div>
-                  </div>
-                )}
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+          {/* Middle Area: 2 Columns wide */}
+          <div className="md:col-span-2 flex flex-col justify-between gap-6">
 
-      {/* Lightbox Modal */}
+            {/* Top row: 2 cards side by side */}
+            <div className="grid grid-cols-2 gap-4 md:gap-6">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: 0.1 }}
+                className="relative h-[160px] md:h-[230px] rounded-[24px] md:rounded-[28px] overflow-hidden bg-gray-100 border border-gray-200/80 shadow-xs cursor-pointer group"
+                onClick={() => open(1 % sorted.length)}
+              >
+                {img2?.url && (
+                  <Image
+                    src={img2.url}
+                    alt={img2.title || 'Hostel image'}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                  />
+                )}
+                <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: 0.15 }}
+                className="relative h-[160px] md:h-[230px] rounded-[24px] md:rounded-[28px] overflow-hidden bg-gray-100 border border-gray-200/80 shadow-xs cursor-pointer group"
+                onClick={() => open(2 % sorted.length)}
+              >
+                {img3?.url && (
+                  <Image
+                    src={img3.url}
+                    alt={img3.title || 'Hostel image'}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                  />
+                )}
+                <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </motion.div>
+            </div>
+
+            {/* Bottom row: Gallery Title, Subtitle, and View All button */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.2 }}
+              className="flex flex-col items-center justify-center text-center px-4 py-2"
+            >
+              <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-[#111827]">
+                Gallery
+              </h2>
+              <p className="mt-3 text-xs sm:text-sm text-gray-500 max-w-sm mx-auto leading-relaxed">
+                Discover premium, safe, and vibrant accommodations tailored for students and young professionals.
+              </p>
+              <button
+                onClick={() => open(0)}
+                className="mt-5 inline-flex items-center justify-center rounded-full border border-gray-300 bg-white px-7 py-2 text-xs sm:text-sm font-medium text-gray-800 shadow-2xs hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
+              >
+                View all
+              </button>
+            </motion.div>
+
+          </div>
+
+          {/* Right Column: Tall image card */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.25 }}
+            className="relative h-[340px] md:h-[460px] rounded-[28px] md:rounded-[32px] overflow-hidden bg-gray-100 border border-gray-200/80 shadow-xs cursor-pointer group"
+            onClick={() => open(3 % sorted.length)}
+          >
+            {img4?.url && (
+              <Image
+                src={img4.url}
+                alt={img4.title || 'Hostel image'}
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                sizes="(max-width: 768px) 100vw, 25vw"
+              />
+            )}
+            <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          </motion.div>
+
+        </div>
+      </div>
+
+      {/* ══════════════════════════════════════════
+          LIGHTBOX
+      ══════════════════════════════════════════ */}
       <AnimatePresence>
-        {selectedImage !== null && (
+        {lightboxIdx !== null && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 flex items-end justify-center bg-brand-white/95 dark:bg-brand-dark/95 p-4 backdrop-blur-sm sm:p-6 lg:p-8"
-            onClick={closeLightbox}
+            transition={{ duration: 0.16 }}
+            className="fixed inset-0 z-[9999] flex flex-col bg-[#080808]"
+            onClick={close}
           >
-            <div className="relative mx-auto w-full max-w-6xl flex h-[90%]">
-              {/* Close Button */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.1 }}
-                className="absolute -right-2 -top-2 z-10 sm:right-0 sm:top-0"
-              >
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-10 w-10 rounded-full bg-brand-primary text-brand-white shadow-lg hover:bg-brand-primary/90 dark:bg-brand-primary-light dark:text-brand-dark dark:hover:bg-brand-primary-light/90"
-                  onClick={closeLightbox}
+            {/* ── Top bar ── */}
+            <div
+              className="flex h-13 shrink-0 items-center justify-between border-b border-white/[0.07] px-5 sm:px-8"
+              onClick={(e: React.MouseEvent) => e.stopPropagation()}
+            >
+              <div className="flex items-center gap-3 min-w-0">
+                <span className="rounded-full bg-[#3932d8]/80 px-3 py-0.5 text-[10px] font-black uppercase tracking-[0.18em] text-white">
+                  {TYPE_LABELS[sorted[lightboxIdx]?.type] || sorted[lightboxIdx]?.type}
+                </span>
+                <p className="hidden sm:block text-sm font-semibold text-white/70 truncate">
+                  {sorted[lightboxIdx]?.title}
+                </p>
+              </div>
+              <div className="flex items-center gap-4 shrink-0">
+                <span className="text-[11px] font-bold tabular-nums text-white/30">
+                  {lightboxIdx + 1} / {sorted.length}
+                </span>
+                <button
+                  onClick={close}
+                  className="flex h-8 w-8 items-center justify-center rounded-full bg-white/[0.08] text-white hover:bg-white/[0.18] transition-colors"
+                  aria-label="Close"
                 >
-                  <X className="h-5 w-5" />
-                </Button>
-              </motion.div>
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
 
-              {/* Navigation Buttons */}
-              {photos.length > 1 && (
+            {/* ── Main image ── */}
+            <div className="relative flex flex-1 items-center justify-center overflow-hidden">
+              {/* prev / next */}
+              {sorted.length > 1 && (
                 <>
-                  <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.1 }}
-                    className="absolute -left-2 top-1/2 z-10 -translate-y-1/2 sm:-left-16"
+                  <button
+                    onClick={(e: React.MouseEvent) => { e.stopPropagation(); prev() }}
+                    className="absolute left-3 sm:left-6 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/[0.08] text-white backdrop-blur-sm transition-all hover:bg-white/[0.18] hover:scale-105"
+                    aria-label="Previous photo"
                   >
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-10 w-10 rounded-full bg-brand-primary text-brand-white shadow-lg hover:bg-brand-primary/90 dark:bg-brand-primary-light dark:text-brand-dark dark:hover:bg-brand-primary-light/90 sm:h-12 sm:w-12"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        goToPrevious()
-                      }}
-                    >
-                      <ChevronLeft className="h-6 w-6" />
-                    </Button>
-                  </motion.div>
-
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.1 }}
-                    className="absolute -right-2 top-1/2 z-10 -translate-y-1/2 sm:-right-16"
+                    <ChevronLeft className="h-5 w-5" />
+                  </button>
+                  <button
+                    onClick={(e: React.MouseEvent) => { e.stopPropagation(); next() }}
+                    className="absolute right-3 sm:right-6 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/[0.08] text-white backdrop-blur-sm transition-all hover:bg-white/[0.18] hover:scale-105"
+                    aria-label="Next photo"
                   >
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-10 w-10 rounded-full bg-brand-primary text-brand-white shadow-lg hover:bg-brand-primary/90 dark:bg-brand-primary-light dark:text-brand-dark dark:hover:bg-brand-primary-light/90 sm:h-12 sm:w-12"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        goToNext()
-                      }}
-                    >
-                      <ChevronRight className="h-6 w-6" />
-                    </Button>
-                  </motion.div>
+                    <ChevronRight className="h-5 w-5" />
+                  </button>
                 </>
               )}
 
-              {/* Image Container */}
-              <motion.div
-                key={selectedImage}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.2 }}
-                className="relative flex flex-col mb-20 items-end justify-end"
-                onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
-              >
-                {/* Image - Lazy loaded */}
-                <div className="relative w-full overflow-hidden rounded-xl bg-brand-light dark:bg-brand-dark p-1 shadow-2xl flex border border-border">
-                  <div className="relative w-full aspect-3/5">
-                    {loadedImages.has(selectedImage) ? (
-                      <Image
-                        src={photos[selectedImage].url}
-                        alt={photos[selectedImage].title}
-                        fill
-                        className="object-contain"
-                        priority={selectedImage < 5}
-                        onLoad={() => {
-                          // Mark image as loaded
-                          setLoadedImages(prev => new Set(prev).add(selectedImage))
-                        }}
-                      />
-                    ) : (
-                      <div className="flex h-full w-full items-center justify-center bg-muted">
-                        <div className="h-8 w-8 animate-spin rounded-full border-4 border-brand-primary border-t-transparent" />
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Image Info */}
+              <AnimatePresence mode="wait">
                 <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
-                  className="mt-4 w-full rounded-xl bg-card border border-border p-4 shadow-lg backdrop-blur-sm sm:mt-6 sm:p-6"
+                  key={lightboxIdx}
+                  initial={{ opacity: 0, scale: 0.97 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.97 }}
+                  transition={{ duration: 0.16 }}
+                  className="relative h-full w-full max-h-[calc(100vh-168px)] px-16"
+                  onClick={(e: React.MouseEvent) => e.stopPropagation()}
                 >
-                  <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
-                    <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-foreground sm:text-xl">
-                        {photos[selectedImage].title}
-                      </h3>
-                      {photos[selectedImage].description && (
-                        <p className="mt-1 text-sm text-muted-foreground sm:text-base">
-                          {photos[selectedImage].description}
-                        </p>
-                      )}
-                    </div>
-                    <div className="flex shrink-0 items-center gap-3">
-                      <Badge variant="secondary" className="whitespace-nowrap bg-brand-primary text-brand-white dark:bg-brand-primary-light dark:text-brand-dark">
-                        {getTypeLabel(photos[selectedImage].type)}
-                      </Badge>
-                      <span className="text-sm font-medium text-muted-foreground">
-                        {selectedImage + 1} / {photos.length}
-                      </span>
-                    </div>
-                  </div>
+                  <Image
+                    src={sorted[lightboxIdx]?.url}
+                    alt={sorted[lightboxIdx]?.title || 'Hostel image'}
+                    fill
+                    className="object-contain"
+                    priority
+                    sizes="100vw"
+                  />
                 </motion.div>
-              </motion.div>
+              </AnimatePresence>
             </div>
+
+            {/* ── Caption ── */}
+            {sorted[lightboxIdx]?.description && (
+              <div
+                className="shrink-0 border-t border-white/[0.06] px-5 py-2 text-center"
+                onClick={(e: React.MouseEvent) => e.stopPropagation()}
+              >
+                <p className="text-xs text-white/40">{sorted[lightboxIdx].description}</p>
+              </div>
+            )}
+
+            {/* ── Filmstrip ── */}
+            {sorted.length > 1 && (
+              <div
+                className="shrink-0 border-t border-white/[0.06] px-4 py-2.5"
+                onClick={(e: React.MouseEvent) => e.stopPropagation()}
+              >
+                <div className="flex gap-1.5 overflow-x-auto scrollbar-hide justify-center">
+                  {sorted.map((photo, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setLightboxIdx(idx)}
+                      className={`relative h-12 w-16 shrink-0 overflow-hidden rounded-lg transition-all duration-200 ${
+                        idx === lightboxIdx
+                          ? 'ring-2 ring-[#3932d8] ring-offset-1 ring-offset-[#080808] opacity-100 scale-[1.06]'
+                          : 'opacity-30 hover:opacity-60'
+                      }`}
+                    >
+                      <Image src={photo.url} alt={photo.title} fill className="object-cover" sizes="64px" />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

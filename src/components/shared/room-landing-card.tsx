@@ -58,17 +58,17 @@ export function RoomLandingCard({
             </>
           )}
           
-          {/* Price badge - top left (From XXXX) */}
-          <div className="absolute top-3 left-3 z-10 rounded-full bg-black/70 backdrop-blur-md px-4 py-1.5 text-sm font-semibold text-white shadow-sm">
-            From {rent.toLocaleString('en-IN')}
+          {/* Price badge - top left (From ₹XXXX/mo) */}
+          <div className="absolute top-3 left-3 z-10 rounded-full bg-black/70 backdrop-blur-md px-3.5 py-1.5 text-xs font-bold text-white shadow-sm">
+            From ₹{rent.toLocaleString('en-IN')}<span className="text-[10px] text-white/70 font-normal ml-0.5">/mo</span>
           </div>
 
           {/* Heart button - top right */}
           <button
-            className="absolute top-3 right-3 z-10 p-1.5 rounded-full bg-white dark:bg-background shadow-md hover:scale-110 transition-transform"
+            className="absolute top-3 right-3 z-10 p-2 rounded-full bg-white/90 dark:bg-background/90 backdrop-blur-sm shadow-md hover:scale-110 active:scale-95 transition-all"
             aria-label="Add to favorites"
           >
-            <svg className="h-4 w-4 text-foreground" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+            <svg className="h-3.5 w-3.5 text-foreground" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
             </svg>
           </button>
@@ -82,14 +82,14 @@ export function RoomLandingCard({
                 {name}
               </h3>
               <div className="flex items-center gap-1 text-muted-foreground">
-                <MapPin className="h-3 w-3 shrink-0" />
-                <span className="text-[10px] truncate">
+                <MapPin className="h-3 w-3 shrink-0 text-[#3932d8]" />
+                <span className="text-[11px] truncate">
                   in {hostelName}{location ? `, ${location}` : ''}
                 </span>
               </div>
             </div>
-            <div className="text-sm md:text-base font-bold text-foreground shrink-0 leading-tight whitespace-nowrap">
-              ₹{rent.toLocaleString('en-IN')}
+            <div className="text-sm md:text-base font-black text-[#111827] shrink-0 leading-tight whitespace-nowrap">
+              ₹{rent.toLocaleString('en-IN')}<span className="text-[10px] text-gray-400 font-normal">/mo</span>
             </div>
           </div>
           
