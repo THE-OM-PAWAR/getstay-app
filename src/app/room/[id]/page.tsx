@@ -60,6 +60,12 @@ export default async function RoomPage({ params }: RoomPageProps) {
     ? `${room.hostel.city}, ${room.hostel.state}`
     : room.hostel.city || room.hostel.state || '';
 
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: room.name,
+    description: room.description,
+    image: room.images.map(img => img.url),
     offers: {
       '@type': 'Offer',
       price: room.rent,
@@ -71,6 +77,7 @@ export default async function RoomPage({ params }: RoomPageProps) {
       '@type': 'Organization',
       name: room.hostel.name,
     },
+  };
 
   const breadcrumbData = {
     '@context': 'https://schema.org', '@type': 'BreadcrumbList',
