@@ -1,16 +1,18 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Link from "next/link";
-import { MapPin, Building2, Users, Award } from "lucide-react";
+import { Suspense } from "react";
+import { MapPin, Loader2 } from "lucide-react";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { HostelCard } from "@/components/shared/hostel-card";
 import { WhyChooseCity } from "@/components/city/why-choose-city";
 import { CityFAQSection } from "@/components/city/city-faq-section";
-import { AreaSection } from "@/components/city/area-section";
-import { RelatedLinksSection } from "@/components/city/related-links-section";
+import { ExploreLinks } from "@/components/shared/explore-links";
+import { BhopalExploreLinks } from "@/components/city/bhopal-explore-links";
+import { CityEditorialIntro } from "@/components/city/city-editorial-intro";
+import { ExploreContent } from "@/app/explore/explore-content";
 import { getCityBySlug, getHostelsByCity, getCitiesWithHostels } from "@/services/city.service";
+import { getExploreResults, ExploreParams } from "@/services/explore.service";
 import { getCityFAQs } from "@/lib/constants/city-faqs";
 
 interface CityPageProps {
@@ -42,53 +44,58 @@ export async function generateMetadata({ params }: CityPageProps): Promise<Metad
 
   const isBhopal = city.name.toLowerCase() === 'bhopal';
   const title = isBhopal 
-    ? `Best Hostels in Bhopal, MP - ${city.hostelCount}+ Boys & Girls PG | GetStay`
-    : `Hostels in ${city.name}, ${city.state} - ${city.hostelCount}+ Options | GetStay`;
+    ? `Hostels in Bhopal | Best Boys & Girls PG & Student Accommodation`
+    : `Hostels in ${city.name}, ${city.state} | Student Accommodations & PGs`;
   
   const description = isBhopal
-    ? `Discover the best hostels and PG accommodations in Bhopal, Madhya Pradesh. ${city.hostelCount}+ verified hostels including ${city.boysHostelCount} boys hostels and ${city.girlsHostelCount} girls hostels. Modern amenities, WiFi, food, safe environment. Book affordable student and working professional accommodation in Bhopal with GetStay.`
-    : `Find the best hostels in ${city.name}, ${city.state}. ${city.hostelCount}+ verified hostels with ${city.boysHostelCount} boys hostels and ${city.girlsHostelCount} girls hostels. Book affordable PG accommodation on GetStay.`;
+    ? `Find verified hostels in Bhopal, PGs, and student accommodation. Compare ${city.hostelCount}+ boys and girls hostels near RGPV, MANIT, MP Nagar, and Kolar Road with food, WiFi, and 24/7 security on GetStay.`
+    : `Find verified hostels in ${city.name}, ${city.state}. Compare ${city.hostelCount}+ boys and girls hostels with food, WiFi, and safe amenities on GetStay.`;
 
-  const keywords = isBhopal ? [
-    "hostels in Bhopal",
-    "PG in Bhopal",
-    "Bhopal hostels",
-    "boys hostel Bhopal",
-    "girls hostel Bhopal",
-    "best hostel in Bhopal",
-    "affordable hostel Bhopal",
-    "student accommodation Bhopal",
-    "PG accommodation Bhopal",
-    "hostel near me Bhopal",
-    "cheap hostel Bhopal",
-    "hostel with WiFi Bhopal",
-    "hostel with food Bhopal",
-    "working professional hostel Bhopal",
-    "Madhya Pradesh hostels",
-    "Bhopal MP hostels",
-    "hostel booking Bhopal",
-    "GetStay Bhopal"
-  ] : [
-    `hostels in ${city.name}`,
-    `PG in ${city.name}`,
-    `${city.name} hostels`,
-    `boys hostel ${city.name}`,
-    `girls hostel ${city.name}`,
-    `affordable hostel ${city.name}`,
-    `student accommodation ${city.name}`,
-    `${city.state} hostels`,
-  ];
+  const keywords = isBhopal
+    ? [
+        "hostels in Bhopal",
+        "hostel in Bhopal",
+        "student hostels in Bhopal",
+        "student accommodation in Bhopal",
+        "PG in Bhopal",
+        "PGs in Bhopal",
+        "student PG in Bhopal",
+        "accommodation for students in Bhopal",
+        "student housing in Bhopal",
+        "boys hostel in Bhopal",
+        "girls hostel in Bhopal",
+        "affordable hostel in Bhopal",
+        "cheap hostel in Bhopal",
+        "hostel for students in Bhopal",
+        "hostel near college in Bhopal",
+        "hostel with food in Bhopal",
+        "hostel with WiFi in Bhopal",
+        "hostels near RGPV",
+        "hostels near MANIT Bhopal",
+        "hostels in MP Nagar",
+        "hostels in Kolar Road",
+      ]
+    : [
+        `hostels in ${city.name}`,
+        `hostel in ${city.name}`,
+        `student hostels in ${city.name}`,
+        `student accommodation in ${city.name}`,
+        `PG in ${city.name}`,
+        `PGs in ${city.name}`,
+        `boys hostel in ${city.name}`,
+        `girls hostel in ${city.name}`,
+      ];
 
   return {
     title,
     description,
-    keywords: keywords.join(', '),
+    keywords,
     authors: [{ name: "GetStay" }],
     openGraph: {
       title,
       description,
       type: 'website',
-      url: `https://getstay.in/city/${citySlug}`,
+      url: `https://www.getstay.in/city/${citySlug}`,
       siteName: 'GetStay',
       locale: 'en_IN',
     },
@@ -99,7 +106,7 @@ export async function generateMetadata({ params }: CityPageProps): Promise<Metad
       site: "@GetStay",
     },
     alternates: {
-      canonical: `https://getstay.in/city/${citySlug}`,
+      canonical: `https://www.getstay.in/city/${citySlug}`,
     },
     robots: {
       index: true,
@@ -124,22 +131,10 @@ export default async function CityPage({ params }: CityPageProps) {
 
   const hostels = await getHostelsByCity(citySlug, undefined, 50);
   const faqs = getCityFAQs(city.name);
-  const isBhopal = city.name.toLowerCase() === 'bhopal';
 
-  // Group hostels by area for Bhopal
-  const areaHostels = isBhopal ? {
-    'MP Nagar': hostels.filter(h => h.name.toLowerCase().includes('mp nagar') || h.description?.toLowerCase().includes('mp nagar')),
-    'Near MANIT': hostels.filter(h => h.name.toLowerCase().includes('manit') || h.description?.toLowerCase().includes('manit')),
-    'Kolar Road': hostels.filter(h => h.name.toLowerCase().includes('kolar') || h.description?.toLowerCase().includes('kolar')),
-    'Near Railway Station': hostels.filter(h => h.name.toLowerCase().includes('railway') || h.description?.toLowerCase().includes('railway station')),
-    'Near LNCT': hostels.filter(h => h.name.toLowerCase().includes('lnct') || h.description?.toLowerCase().includes('lnct')),
-  } : {
-    'MP Nagar': [],
-    'Near MANIT': [],
-    'Kolar Road': [],
-    'Near Railway Station': [],
-    'Near LNCT': [],
-  };
+  // Initial params and results for the Explore Experience
+  const exploreParams: ExploreParams = { city: city.name };
+  const initialExploreData = await getExploreResults(exploreParams);
 
   // JSON-LD Structured Data
   const structuredData = {
@@ -154,7 +149,7 @@ export default async function CityPage({ params }: CityPageProps) {
       item: {
         '@type': 'LodgingBusiness',
         name: hostel.name,
-        url: `https://getstay.in/hostel/${hostel.slug}`,
+        url: `https://www.getstay.in/hostel/${hostel.slug}`,
         address: {
           '@type': 'PostalAddress',
           addressLocality: hostel.city,
@@ -173,13 +168,13 @@ export default async function CityPage({ params }: CityPageProps) {
         '@type': 'ListItem',
         position: 1,
         name: 'Home',
-        item: 'https://getstay.in',
+        item: 'https://www.getstay.in',
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: `${city.name} Hostels`,
-        item: `https://getstay.in/city/${citySlug}`,
+        item: `https://www.getstay.in/city/${citySlug}`,
       },
     ],
   };
@@ -199,7 +194,7 @@ export default async function CityPage({ params }: CityPageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
@@ -215,194 +210,53 @@ export default async function CityPage({ params }: CityPageProps) {
 
       <Header pageTitle={`${city.name} Hostels`} showBackButton={true} />
       
-      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <main className="mx-auto max-w-7xl w-full px-4 py-8 sm:px-6 lg:px-8 flex-1">
         {/* Hero Section */}
-        <div className="mb-8">
-          <h1 className="mb-3 text-4xl font-bold sm:text-5xl">
+        <div className="mb-4">
+          <h1 className="mb-2 text-3xl font-extrabold tracking-tight sm:text-4xl">
             Hostels in <span className="text-brand-primary">{city.name}</span>
           </h1>
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <MapPin className="h-5 w-5" />
-            <span className="text-lg">{city.state}</span>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs md:text-sm font-medium text-gray-500">
+            <span className="inline-flex items-center gap-1 text-gray-700 dark:text-zinc-300 font-semibold">
+              <MapPin className="h-4 w-4 text-brand-primary shrink-0" />
+              {city.state}, India
+            </span>
+            <span className="text-gray-300 select-none">•</span>
+            <span>{city.hostelCount}+ verified hostels</span>
+            <span className="text-gray-300 select-none">•</span>
+            <span>{city.boysHostelCount} boys hostels</span>
+            <span className="text-gray-300 select-none">•</span>
+            <span>{city.girlsHostelCount} girls hostels</span>
           </div>
         </div>
 
-        {/* Stats Cards */}
-        <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <Card>
-            <CardContent className="flex items-center gap-3 p-4">
-              <Building2 className="h-8 w-8 text-brand-primary" />
-              <div>
-                <p className="text-2xl font-bold">{city.hostelCount}+</p>
-                <p className="text-sm text-muted-foreground">Total Hostels</p>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="flex items-center gap-3 p-4">
-              <Users className="h-8 w-8 text-blue-500" />
-              <div>
-                <p className="text-2xl font-bold">{city.boysHostelCount}</p>
-                <p className="text-sm text-muted-foreground">Boys Hostels</p>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="flex items-center gap-3 p-4">
-              <Users className="h-8 w-8 text-pink-500" />
-              <div>
-                <p className="text-2xl font-bold">{city.girlsHostelCount}</p>
-                <p className="text-sm text-muted-foreground">Girls Hostels</p>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="flex items-center gap-3 p-4">
-              <Award className="h-8 w-8 text-green-500" />
-              <div>
-                <p className="text-2xl font-bold">Verified</p>
-                <p className="text-sm text-muted-foreground">All Listings</p>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+        {/* City Editorial Intro Guide */}
+        <CityEditorialIntro cityName={city.name} stateName={city.state} />
 
-        {/* Category Links */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Browse by Category</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              {city.girlsHostelCount >= 3 && (
-                <Link href={`/city/${citySlug}/girls-hostel`}>
-                  <Card className="transition-all hover:border-brand-primary/50 hover:shadow-sm">
-                    <CardContent className="p-4">
-                      <h3 className="mb-1 font-semibold">Girls Hostels</h3>
-                      <p className="text-sm text-muted-foreground">{city.girlsHostelCount} options</p>
-                    </CardContent>
-                  </Card>
-                </Link>
-              )}
-              {city.boysHostelCount >= 3 && (
-                <Link href={`/city/${citySlug}/boys-hostel`}>
-                  <Card className="transition-all hover:border-brand-primary/50 hover:shadow-sm">
-                    <CardContent className="p-4">
-                      <h3 className="mb-1 font-semibold">Boys Hostels</h3>
-                      <p className="text-sm text-muted-foreground">{city.boysHostelCount} options</p>
-                    </CardContent>
-                  </Card>
-                </Link>
-              )}
-              <Link href={`/city/${citySlug}/affordable`}>
-                <Card className="transition-all hover:border-brand-primary/50 hover:shadow-sm">
-                  <CardContent className="p-4">
-                    <h3 className="mb-1 font-semibold">Affordable Hostels</h3>
-                    <p className="text-sm text-muted-foreground">Budget-friendly</p>
-                  </CardContent>
-                </Card>
-              </Link>
-              <Link href={`/city/${citySlug}/best`}>
-                <Card className="transition-all hover:border-brand-primary/50 hover:shadow-sm">
-                  <CardContent className="p-4">
-                    <h3 className="mb-1 font-semibold">Best Hostels</h3>
-                    <p className="text-sm text-muted-foreground">Top rated</p>
-                  </CardContent>
-                </Card>
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
+        {/* Compact Internal-Link Section */}
+        <BhopalExploreLinks cityName={city.name} citySlug={citySlug} />
 
-        {/* Hostels Grid */}
-        <div className="mb-8">
-          <h2 className="mb-4 text-2xl font-bold">All Hostels in {city.name}</h2>
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {hostels.map((hostel) => (
-              <HostelCard
-                key={hostel._id}
-                slug={hostel.slug}
-                name={hostel.name}
-                subtitle={hostel.description}
-                city={hostel.city}
-                state={hostel.state}
-                totalRooms={hostel.totalRooms || 0}
-                accommodationType={hostel.accommodationType || 'boys'}
-                mainPhoto={hostel.mainPhoto}
-              />
-            ))}
-          </div>
+        {/* Explore Experience */}
+        <div className="mb-12">
+          <Suspense
+            fallback={
+              <div className="flex items-center justify-center py-12">
+                <Loader2 className="h-8 w-8 animate-spin text-brand-primary" />
+              </div>
+            }
+          >
+            <ExploreContent initialData={initialExploreData} initialParams={exploreParams} isEmbedded={true} />
+          </Suspense>
         </div>
 
         {/* Why Choose City Section */}
         <WhyChooseCity cityName={city.name} />
 
-        {/* Area-Based Sections for Bhopal */}
-        {isBhopal && (
-          <div className="mb-8">
-            <h2 className="mb-6 text-2xl font-bold sm:text-3xl">
-              Hostels by <span className="text-brand-primary">Area</span> in Bhopal
-            </h2>
-            
-            {areaHostels['MP Nagar'].length > 0 && (
-              <AreaSection
-                areaName="MP Nagar"
-                description="MP Nagar is the commercial and business hub of Bhopal, offering excellent connectivity, shopping centers, restaurants, and entertainment options. Ideal for working professionals and students who prefer a vibrant urban lifestyle."
-                hostels={areaHostels['MP Nagar']}
-                citySlug={citySlug}
-              />
-            )}
-
-            {areaHostels['Near MANIT'].length > 0 && (
-              <AreaSection
-                areaName="Near MANIT"
-                description="Perfect for MANIT (Maulana Azad National Institute of Technology) students, these hostels offer easy access to the campus with good connectivity to other parts of the city. The area has essential facilities like shops, medical stores, and eateries."
-                hostels={areaHostels['Near MANIT']}
-                citySlug={citySlug}
-              />
-            )}
-
-            {areaHostels['Kolar Road'].length > 0 && (
-              <AreaSection
-                areaName="Kolar Road"
-                description="Kolar Road is known for affordable hostel options with good transport connectivity. The area has a mix of residential and commercial establishments, making it convenient for daily needs. Popular among students and budget-conscious individuals."
-                hostels={areaHostels['Kolar Road']}
-                citySlug={citySlug}
-              />
-            )}
-
-            {areaHostels['Near Railway Station'].length > 0 && (
-              <AreaSection
-                areaName="Near Railway Station"
-                description="Hostels near Bhopal Railway Station offer excellent connectivity for students and professionals who travel frequently. The area is well-connected to all parts of the city via local transport and has good availability of essential services."
-                hostels={areaHostels['Near Railway Station']}
-                citySlug={citySlug}
-              />
-            )}
-
-            {areaHostels['Near LNCT'].length > 0 && (
-              <AreaSection
-                areaName="Near LNCT"
-                description="Located near LNCT (Lakshmi Narain College of Technology), these hostels are popular among engineering students. The area offers a peaceful environment conducive to studies with easy access to the college campus and basic amenities."
-                hostels={areaHostels['Near LNCT']}
-                citySlug={citySlug}
-              />
-            )}
-          </div>
-        )}
-
-        {/* FAQ Section */}
+        {/* FAQ Section (4 Concise High-Intent Questions) */}
         <CityFAQSection cityName={city.name} faqs={faqs} />
 
-        {/* Related Links Section */}
-        <RelatedLinksSection 
-          cityName={city.name} 
-          citySlug={citySlug}
-          state={city.state}
-        />
-
-        {/* SEO Content */}
-        <Card className="rounded-xl border border-border">
+        {/* SEO Context */}
+        <Card className="rounded-xl border border-border mt-8">
           <CardHeader>
             <CardTitle className="text-xl font-bold">
               About Hostels in <span className="text-brand-primary">{city.name}</span>
@@ -411,7 +265,7 @@ export default async function CityPage({ params }: CityPageProps) {
           <CardContent className="prose prose-sm max-w-none">
             <p className="text-sm font-light leading-relaxed text-muted-foreground mb-3">
               Looking for quality hostel accommodation in {city.name}, {city.state}? GetStay offers {city.hostelCount}+ verified hostels 
-              and PG options to choose from. Whether you're a student, working professional, or someone looking for affordable 
+              and PG options to choose from. Whether you&apos;re a student, working professional, or someone looking for affordable 
               accommodation, we have the perfect place for you.
             </p>
             <p className="text-sm font-light leading-relaxed text-muted-foreground">
@@ -421,6 +275,19 @@ export default async function CityPage({ params }: CityPageProps) {
             </p>
           </CardContent>
         </Card>
+
+        {/* Explore Links */}
+        <ExploreLinks
+          title={`Explore ${city.name}`}
+          links={[
+            { label: `Hostels in ${city.name}`, href: `/city/${citySlug}` },
+            { label: `Boys Hostels in ${city.name}`, href: `/city/${citySlug}/boys-hostel` },
+            { label: `Girls Hostels in ${city.name}`, href: `/city/${citySlug}/girls-hostel` },
+            { label: `Affordable Hostels in ${city.name}`, href: `/city/${citySlug}/affordable` },
+            { label: `Best Hostels in ${city.name}`, href: `/city/${citySlug}/best` },
+          ]}
+          className="mt-8"
+        />
       </main>
       
       <Footer />

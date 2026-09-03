@@ -282,7 +282,7 @@ function HeaderContent({ pageTitle, showBackButton = false }: HeaderProps) {
                   Explore
                 </Link>
                 <Link
-                  href="/hostels"
+                  href="/city/bhopal"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="text-base font-medium px-4 py-3 rounded-xl text-zinc-600 hover:text-brand-primary hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800 transition-colors"
                 >
@@ -407,7 +407,7 @@ function HeaderContent({ pageTitle, showBackButton = false }: HeaderProps) {
                 <Link href="/explore" className="text-sm font-medium text-zinc-600 hover:text-brand-primary dark:text-zinc-300 dark:hover:text-brand-primary transition-colors">
                   Explore
                 </Link>
-                <Link href="/hostels" className="text-sm font-medium text-zinc-600 hover:text-brand-primary dark:text-zinc-300 dark:hover:text-brand-primary transition-colors">
+                <Link href="/city/bhopal" className="text-sm font-medium text-zinc-600 hover:text-brand-primary dark:text-zinc-300 dark:hover:text-brand-primary transition-colors">
                   Hostels
                 </Link>
                 <Link href="/about" className="text-sm font-medium text-zinc-600 hover:text-brand-primary dark:text-zinc-300 dark:hover:text-brand-primary transition-colors">
@@ -461,7 +461,7 @@ function HeaderContent({ pageTitle, showBackButton = false }: HeaderProps) {
                   Explore
                 </Link>
                 <Link
-                  href="/hostels"
+                  href="/city/bhopal"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="text-base font-medium px-4 py-3 rounded-xl text-zinc-600 hover:text-brand-primary hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800 transition-colors"
                 >
@@ -554,9 +554,9 @@ export function Header({ pageTitle, showBackButton = false }: HeaderProps) {
     <Suspense fallback={
       <header className="sticky top-0 z-50 border-b border-zinc-200/50 dark:border-zinc-800/50 bg-white/70 dark:bg-zinc-950/70 backdrop-blur-xl">
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-8 lg:px-12">
-          <h1 className="text-2xl font-black tracking-tight text-brand-primary">
+          <span className="text-2xl font-black tracking-tight text-brand-primary">
             getstay
-          </h1>
+          </span>
         </div>
       </header>
     }>

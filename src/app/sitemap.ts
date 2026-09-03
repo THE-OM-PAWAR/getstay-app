@@ -1,52 +1,51 @@
 import { MetadataRoute } from 'next';
 import { getHostelSlugsForSSG } from '@/services/hostel-detail.service';
-import { getAllRoomIds } from '@/services/room-detail.service';
 import { getCitiesWithHostels, getCityCategoryPaths } from '@/services/city.service';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.getstay.in';
+  const cleanBaseUrl = baseUrl.replace(/\/$/, '');
+
   const slugs = await getHostelSlugsForSSG();
-  const roomIds = await getAllRoomIds();
   const cities = await getCitiesWithHostels();
   const cityCategories = await getCityCategoryPaths();
 
-  const hostelPages = slugs.map((slug) => ({
-    url: `https://getstay.in/hostel/${slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
-    priority: 0.8,
-  }));
-
-  const roomPages = roomIds.map((id) => ({
-    url: `https://getstay.in/room/${id}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
-    priority: 0.7,
-  }));
-
   const cityPages = cities.map((city) => ({
-    url: `https://getstay.in/city/${city.slug}`,
+    url: `${cleanBaseUrl}/city/${city.slug}`,
     lastModified: new Date(),
     changeFrequency: 'daily' as const,
     priority: 0.9,
   }));
 
   const categoryPages = cityCategories.map((path) => ({
-    url: `https://getstay.in/city/${path.citySlug}/${path.category}`,
+    url: `${cleanBaseUrl}/city/${path.citySlug}/${path.category}`,
     lastModified: new Date(),
     changeFrequency: 'daily' as const,
     priority: 0.85,
   }));
 
+  const hostelPages = slugs.map((slug) => ({
+    url: `${cleanBaseUrl}/hostel/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.8,
+  }));
+
   return [
     {
-      url: 'https://getstay.in',
+      url: cleanBaseUrl,
       lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 1,
+      changeFrequency: 'daily' as const,
+      priority: 1.0,
+    },
+    {
+      url: `${cleanBaseUrl}/about`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
     },
     ...cityPages,
     ...categoryPages,
     ...hostelPages,
-    ...roomPages,
   ];
 }

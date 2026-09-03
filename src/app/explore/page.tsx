@@ -43,7 +43,7 @@ function parseSearchParams(searchParams: { [key: string]: string | string[] | un
   const type = typeof searchParams.type === 'string' ? searchParams.type : undefined;
   const maxRentStr = typeof searchParams.maxRent === 'string' ? searchParams.maxRent : undefined;
   const amenitiesStr = typeof searchParams.amenities === 'string' ? searchParams.amenities : undefined;
-  const sortBy = typeof searchParams.sortBy === 'string' ? searchParams.sortBy as any : undefined;
+  const sortBy = typeof searchParams.sortBy === 'string' ? searchParams.sortBy as ExploreParams['sortBy'] : undefined;
 
   return {
     query,

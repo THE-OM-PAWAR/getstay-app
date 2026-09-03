@@ -1,19 +1,21 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Link from "next/link";
-import { MapPin, ArrowLeft } from "lucide-react";
+import { Suspense } from "react";
+import { MapPin, UserCheck, Tag, Star, ShieldCheck, Loader2 } from "lucide-react";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { HostelCard } from "@/components/shared/hostel-card";
-import { RelatedLinksSection } from "@/components/city/related-links-section";
+import { Breadcrumbs } from "@/components/shared/breadcrumbs";
+import { ExploreLinks } from "@/components/shared/explore-links";
+import { BhopalExploreLinks } from "@/components/city/bhopal-explore-links";
+import { ExploreContent } from "@/app/explore/explore-content";
 import { 
   getCityBySlug, 
   getHostelsByCity, 
   getCityCategoryPaths,
   CategoryType 
 } from "@/services/city.service";
+import { getExploreResults, ExploreParams } from "@/services/explore.service";
 
 interface CategoryPageProps {
   params: Promise<{
@@ -25,26 +27,33 @@ interface CategoryPageProps {
 // ISR: Revalidate every 24 hours
 export const revalidate = 86400;
 
-const categoryInfo: Record<CategoryType, { title: string; description: string; icon: string }> = {
-  'girls-hostel': {
-    title: 'Girls Hostels',
-    description: 'Safe and secure hostels exclusively for girls with modern amenities',
-    icon: '👩',
+const categoryInfo: Record<
+  CategoryType,
+  { title: string; description: string; icon: React.ElementType; color: string }
+> = {
+  "girls-hostel": {
+    title: "Girls Hostels",
+    description: "Safe and secure hostels exclusively for girls with modern amenities and 24/7 security",
+    icon: ShieldCheck,
+    color: "text-purple-600 bg-purple-50 border-purple-100",
   },
-  'boys-hostel': {
-    title: 'Boys Hostels',
-    description: 'Comfortable and affordable hostels for boys with all facilities',
-    icon: '👨',
+  "boys-hostel": {
+    title: "Boys Hostels",
+    description: "Comfortable and affordable hostels for boys with study facilities and high-speed WiFi",
+    icon: UserCheck,
+    color: "text-indigo-600 bg-indigo-50 border-indigo-100",
   },
-  'affordable': {
-    title: 'Affordable Hostels',
-    description: 'Budget-friendly hostels without compromising on quality',
-    icon: '💰',
+  affordable: {
+    title: "Affordable Hostels",
+    description: "Budget-friendly hostels and PGs offering great value starting from ₹3,999/month",
+    icon: Tag,
+    color: "text-emerald-600 bg-emerald-50 border-emerald-100",
   },
-  'best': {
-    title: 'Best Hostels',
-    description: 'Top-rated hostels with excellent facilities and reviews',
-    icon: '⭐',
+  best: {
+    title: "Best Hostels",
+    description: "Top-rated student accommodation with premium amenities and verified reviews",
+    icon: Star,
+    color: "text-amber-600 bg-amber-50 border-amber-100",
   },
 };
 
@@ -69,35 +78,72 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
 
   const info = categoryInfo[category];
   const categoryTitle = info.title;
-  
-  const title = `${categoryTitle} in ${city.name}, ${city.state} | GetStay`;
-  const description = `Find the best ${categoryTitle.toLowerCase()} in ${city.name}, ${city.state}. ${info.description}. Book verified hostels on GetStay.`;
+
+  const categoryMetaTitles: Record<CategoryType, (c: string, s: string) => string> = {
+    "girls-hostel": (c, s) => `Girls Hostels in ${c}, ${s} | Safe Girls PG & Student Stays`,
+    "boys-hostel": (c, s) => `Boys Hostels in ${c}, ${s} | Verified Boys PG & Student Rooms`,
+    "affordable": (c, s) => `Affordable Hostels in ${c}, ${s} | Cheap PG starting ₹3,999`,
+    "best": (c, s) => `Best Hostels in ${c}, ${s} | Top Rated Student Accommodation`,
+  };
+
+  const categoryKeywords: Record<CategoryType, (c: string) => string[]> = {
+    "girls-hostel": (c) => [
+      `girls hostel in ${c}`,
+      `girls hostels in ${c}`,
+      `hostel for girls in ${c}`,
+      `girls PG in ${c}`,
+      `student hostel for girls ${c}`,
+      `safe girls PG ${c}`,
+      `hostel for female students ${c}`,
+    ],
+    "boys-hostel": (c) => [
+      `boys hostel in ${c}`,
+      `boys hostels in ${c}`,
+      `hostel for boys in ${c}`,
+      `boys PG in ${c}`,
+      `student hostel for boys ${c}`,
+      `hostel for male students ${c}`,
+    ],
+    "affordable": (c) => [
+      `affordable hostel in ${c}`,
+      `cheap hostel in ${c}`,
+      `budget PG in ${c}`,
+      `low cost student accommodation ${c}`,
+      `cheap student rooms ${c}`,
+    ],
+    "best": (c) => [
+      `best hostels in ${c}`,
+      `top hostels in ${c}`,
+      `best PG in ${c}`,
+      `top rated student accommodation ${c}`,
+      `premium hostels ${c}`,
+    ],
+  };
+
+  const title = categoryMetaTitles[category] ? categoryMetaTitles[category](city.name, city.state) : `${categoryTitle} in ${city.name}, ${city.state}`;
+  const description = `Find the best ${categoryTitle.toLowerCase()} in ${city.name}, ${city.state}. ${info.description}. Book verified student accommodation on GetStay.`;
+  const keywords = categoryKeywords[category] ? categoryKeywords[category](city.name) : [`${categoryTitle.toLowerCase()} in ${city.name}`];
 
   return {
     title,
     description,
-    keywords: [
-      `${category.replace('-', ' ')} ${city.name}`,
-      `${categoryTitle} ${city.name}`,
-      `${city.name} ${category}`,
-      `PG for ${category.includes('girls') ? 'girls' : category.includes('boys') ? 'boys' : 'students'} ${city.name}`,
-      `${category} ${city.state}`,
-    ].join(', '),
+    keywords,
     openGraph: {
       title,
       description,
-      type: 'website',
-      url: `https://getstay.in/city/${citySlug}/${category}`,
-      siteName: 'GetStay',
-      locale: 'en_IN',
+      type: "website",
+      url: `https://www.getstay.in/city/${citySlug}/${category}`,
+      siteName: "GetStay",
+      locale: "en_IN",
     },
     twitter: {
-      card: 'summary_large_image',
+      card: "summary_large_image",
       title,
       description,
+      site: "@GetStay",
     },
     alternates: {
-      canonical: `https://getstay.in/city/${citySlug}/${category}`,
+      canonical: `https://www.getstay.in/city/${citySlug}/${category}`,
     },
     robots: {
       index: true,
@@ -122,57 +168,68 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   const info = categoryInfo[category];
 
+  // Map category to explore params
+  const categoryParamsMap: Record<CategoryType, ExploreParams> = {
+    "girls-hostel": { city: city.name, accommodationType: "girls" },
+    "boys-hostel": { city: city.name, accommodationType: "boys" },
+    "affordable": { city: city.name, sortBy: "price-low" },
+    "best": { city: city.name, sortBy: "newest" },
+  };
+
+  const exploreParams = categoryParamsMap[category] || { city: city.name };
+  const initialExploreData = await getExploreResults(exploreParams);
+
   // JSON-LD Structured Data
   const structuredData = {
-    '@context': 'https://schema.org',
-    '@type': 'ItemList',
+    "@context": "https://schema.org",
+    "@type": "ItemList",
     name: `${info.title} in ${city.name}, ${city.state}`,
     description: info.description,
     numberOfItems: hostels.length,
     itemListElement: hostels.slice(0, 10).map((hostel, index) => ({
-      '@type': 'ListItem',
+      "@type": "ListItem",
       position: index + 1,
       item: {
-        '@type': 'LodgingBusiness',
+        "@type": "LodgingBusiness",
         name: hostel.name,
-        url: `https://getstay.in/hostel/${hostel.slug}`,
+        url: `https://www.getstay.in/hostel/${hostel.slug}`,
         address: {
-          '@type': 'PostalAddress',
+          "@type": "PostalAddress",
           addressLocality: hostel.city,
           addressRegion: hostel.state,
-          addressCountry: 'IN',
+          addressCountry: "IN",
         },
       },
     })),
   };
 
   const breadcrumbData = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
     itemListElement: [
       {
-        '@type': 'ListItem',
+        "@type": "ListItem",
         position: 1,
-        name: 'Home',
-        item: 'https://getstay.in',
+        name: "Home",
+        item: "https://www.getstay.in",
       },
       {
-        '@type': 'ListItem',
+        "@type": "ListItem",
         position: 2,
         name: `${city.name} Hostels`,
-        item: `https://getstay.in/city/${citySlug}`,
+        item: `https://www.getstay.in/city/${citySlug}`,
       },
       {
-        '@type': 'ListItem',
+        "@type": "ListItem",
         position: 3,
         name: info.title,
-        item: `https://getstay.in/city/${citySlug}/${category}`,
+        item: `https://www.getstay.in/city/${citySlug}/${category}`,
       },
     ],
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
@@ -184,87 +241,83 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
       <Header pageTitle={`${city.name} - ${info.title}`} showBackButton={true} />
       
-      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        {/* Back Button */}
-        <Link href={`/city/${citySlug}`}>
-          <Button variant="ghost" className="mb-4">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to {city.name} Hostels
-          </Button>
-        </Link>
+      <main className="mx-auto max-w-7xl w-full px-4 py-8 sm:px-6 lg:px-8 flex-1">
+        <Breadcrumbs
+          items={[
+            { label: `${city.name} Hostels`, href: `/city/${citySlug}` },
+            { label: info.title },
+          ]}
+        />
 
         {/* Hero Section */}
-        <div className="mb-8">
-          <div className="mb-3 flex items-center gap-3">
-            <span className="text-5xl">{info.icon}</span>
-            <div>
-              <h1 className="text-4xl font-bold sm:text-5xl">
-                {info.title} in <span className="text-brand-primary">{city.name}</span>
-              </h1>
-              <div className="mt-2 flex items-center gap-2 text-muted-foreground">
-                <MapPin className="h-5 w-5" />
-                <span className="text-lg">{city.state}</span>
+        <div className="mb-4">
+          <h1 className="mb-2 text-3xl font-extrabold tracking-tight sm:text-4xl">
+            {info.title} in <span className="text-brand-primary">{city.name}</span>
+          </h1>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs md:text-sm font-medium text-gray-500">
+            <span className="inline-flex items-center gap-1 text-gray-700 dark:text-zinc-300 font-semibold">
+              <MapPin className="h-4 w-4 text-brand-primary shrink-0" />
+              {city.state}, India
+            </span>
+            <span className="text-gray-300 select-none">•</span>
+            <span>{city.hostelCount}+ verified hostels</span>
+            <span className="text-gray-300 select-none">•</span>
+            <span>{city.boysHostelCount} boys hostels</span>
+            <span className="text-gray-300 select-none">•</span>
+            <span>{city.girlsHostelCount} girls hostels</span>
+          </div>
+        </div>
+
+        {/* Compact Internal-Link Section */}
+        <BhopalExploreLinks cityName={city.name} citySlug={citySlug} />
+
+        {/* Explore Experience */}
+        <div className="mb-12">
+          <Suspense
+            fallback={
+              <div className="flex items-center justify-center py-12">
+                <Loader2 className="h-8 w-8 animate-spin text-brand-primary" />
               </div>
-            </div>
-          </div>
-          <p className="text-lg text-muted-foreground">{info.description}</p>
+            }
+          >
+            <ExploreContent initialData={initialExploreData} initialParams={exploreParams} isEmbedded={true} />
+          </Suspense>
         </div>
 
-        {/* Results Count */}
-        <div className="mb-6">
-          <p className="text-muted-foreground">
-            Showing <span className="font-semibold text-foreground">{hostels.length}</span> {info.title.toLowerCase()} in {city.name}
-          </p>
-        </div>
-
-        {/* Hostels Grid */}
-        <div className="mb-8">
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {hostels.map((hostel) => (
-              <HostelCard
-                key={hostel._id}
-                slug={hostel.slug}
-                name={hostel.name}
-                subtitle={hostel.description}
-                city={hostel.city}
-                state={hostel.state}
-                totalRooms={hostel.totalRooms || 0}
-                accommodationType={hostel.accommodationType || 'boys'}
-                mainPhoto={hostel.mainPhoto}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* SEO Content */}
-        <Card>
+        {/* Professional SEO Context Card */}
+        <Card className="rounded-2xl border border-gray-100 shadow-xs mb-8">
           <CardHeader>
-            <CardTitle>About {info.title} in {city.name}</CardTitle>
+            <CardTitle className="text-lg font-bold text-brand-dark">
+              About {info.title} in {city.name}
+            </CardTitle>
           </CardHeader>
-          <CardContent className="prose prose-sm max-w-none">
+          <CardContent className="text-sm text-gray-600 leading-relaxed space-y-3">
             <p>
-              {info.description} in {city.name}, {city.state}. We have carefully curated {hostels.length} verified 
-              {category === 'girls-hostel' && ' girls hostels with enhanced safety features, CCTV surveillance, and female wardens'}
-              {category === 'boys-hostel' && ' boys hostels with modern amenities, study rooms, and recreational facilities'}
-              {category === 'affordable' && ' budget-friendly hostels that offer great value without compromising on essential amenities'}
-              {category === 'best' && ' premium hostels with top-notch facilities, excellent maintenance, and high ratings'}
+              Discover top-rated {info.title.toLowerCase()} in {city.name}, {city.state}. We have curated verified listings 
+              {category === "girls-hostel" && " featuring round-the-clock security, female wardens, CCTV surveillance, and hygienic mess facilities"}
+              {category === "boys-hostel" && " equipped with high-speed WiFi, dedicated study spaces, mess food, and daily housekeeping"}
+              {category === "affordable" && " offering budget-friendly room options without compromising on safety, cleanliness, or location"}
+              {category === "best" && " recognized for high ratings, premium room configurations, and student satisfaction"}
               .
             </p>
             <p>
-              All our listings in {city.name} are verified and offer quality accommodation for students and working professionals. 
-              Book your ideal hostel today and enjoy a comfortable stay in {city.name}.
+              All accommodations listed on GetStay are verified to ensure quality stay experiences for students and young working professionals in {city.name}.
             </p>
           </CardContent>
         </Card>
 
-        {/* Related Links Section */}
-        <div className="mt-8">
-          <RelatedLinksSection 
-            cityName={city.name} 
-            citySlug={citySlug}
-            state={city.state}
-          />
-        </div>
+        {/* Explore Links */}
+        <ExploreLinks
+          title={`Explore ${city.name} Categories`}
+          links={[
+            { label: `All ${city.name} Hostels`, href: `/city/${citySlug}` },
+            { label: `Boys Hostels in ${city.name}`, href: `/city/${citySlug}/boys-hostel` },
+            { label: `Girls Hostels in ${city.name}`, href: `/city/${citySlug}/girls-hostel` },
+            { label: `Affordable Hostels in ${city.name}`, href: `/city/${citySlug}/affordable` },
+            { label: `Best Hostels in ${city.name}`, href: `/city/${citySlug}/best` },
+          ]}
+          className="mt-8"
+        />
       </main>
       
       <Footer />

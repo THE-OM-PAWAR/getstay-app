@@ -38,22 +38,27 @@ export function Footer() {
           {/* Navigation Column */}
           <div className="md:col-span-3 flex flex-col gap-4">
             <h3 className="text-xs font-black tracking-wider text-brand-primary uppercase">
-              Navigation
+              Explore Stays
             </h3>
             <ul className="flex flex-col gap-3 text-sm font-semibold text-gray-650">
               <li>
-                <Link href="/" className="hover:text-brand-primary transition-colors">
-                  Explore
+                <Link href="/city/bhopal" className="hover:text-brand-primary transition-colors">
+                  Hostels in Bhopal
+                </Link>
+              </li>
+              <li>
+                <Link href="/city/bhopal/boys-hostel" className="hover:text-brand-primary transition-colors">
+                  Boys Hostels
+                </Link>
+              </li>
+              <li>
+                <Link href="/city/bhopal/girls-hostel" className="hover:text-brand-primary transition-colors">
+                  Girls Hostels
                 </Link>
               </li>
               <li>
                 <Link href="/explore" className="hover:text-brand-primary transition-colors">
-                  Destinations
-                </Link>
-              </li>
-              <li>
-                <Link href="/hostels" className="hover:text-brand-primary transition-colors">
-                  Hostels
+                  All Stays
                 </Link>
               </li>
               <li>

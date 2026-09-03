@@ -11,6 +11,8 @@ import {
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { RoomActionButtons } from "@/components/room/room-action-buttons";
+import { Breadcrumbs } from "@/components/shared/breadcrumbs";
+import { ExploreLinks } from "@/components/shared/explore-links";
 import { RoomComponentsGrid } from "@/components/room/room-components-grid";
 import { AmenitiesGrid } from "@/components/hostel/amenities-grid";
 import { getRoomById, getAllRoomIds } from "@/services/room-detail.service";
@@ -58,13 +60,17 @@ export default async function RoomPage({ params }: RoomPageProps) {
     ? `${room.hostel.city}, ${room.hostel.state}`
     : room.hostel.city || room.hostel.state || '';
 
-  const structuredData = {
-    '@context': 'https://schema.org', '@type': 'Product',
-    name: room.name, description: room.description,
-    image: room.images.map(img => img.url),
-    offers: { '@type': 'Offer', price: room.rent, priceCurrency: 'INR', availability: 'https://schema.org/InStock', priceValidUntil: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] },
-    brand: { '@type': 'Organization', name: room.hostel.name },
-  };
+    offers: {
+      '@type': 'Offer',
+      price: room.rent,
+      priceCurrency: 'INR',
+      availability: 'https://schema.org/InStock',
+      priceValidUntil: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    },
+    brand: {
+      '@type': 'Organization',
+      name: room.hostel.name,
+    },
 
   const breadcrumbData = {
     '@context': 'https://schema.org', '@type': 'BreadcrumbList',
@@ -515,6 +521,17 @@ export default async function RoomPage({ params }: RoomPageProps) {
           </div>
         </section>
 
+        {/* Explore Links */}
+        <ExploreLinks
+          title="Explore Accommodation"
+          links={[
+            { label: `${room.hostel.name}`, href: `/hostel/${room.hostel.slug}` },
+            { label: `Hostels in ${room.hostel.city || 'Bhopal'}`, href: `/city/${room.hostel.city ? room.hostel.city.toLowerCase().replace(/\s+/g, '-') : 'bhopal'}` },
+            { label: `Boys Hostels in ${room.hostel.city || 'Bhopal'}`, href: `/city/${room.hostel.city ? room.hostel.city.toLowerCase().replace(/\s+/g, '-') : 'bhopal'}/boys-hostel` },
+            { label: `Girls Hostels in ${room.hostel.city || 'Bhopal'}`, href: `/city/${room.hostel.city ? room.hostel.city.toLowerCase().replace(/\s+/g, '-') : 'bhopal'}/girls-hostel` },
+          ]}
+          className="mt-8"
+        />
       </main>
 
       <Footer />
