@@ -177,6 +177,7 @@ export default function ProfilePage() {
                         alt={booking.property}
                         fill
                         className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 256px"
                       />
                     </div>
                     <div className="flex-1 p-6 flex flex-col">

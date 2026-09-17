@@ -22,24 +22,22 @@ interface SafetyGridProps {
   safetyFeatures?: SafetyFeature[]
   title?: string
   subtitle?: string
-  tagline?: string
 }
 
-// 3 Default reference safety cards matching the user reference image
 const DEFAULT_SAFETY_ITEMS = [
   {
-    feature: 'CCTV Surveillance',
-    details: 'Implemented to ensure resident security and emergency preparedness.',
+    feature: '24/7 CCTV Surveillance',
+    details: 'Round-the-clock video monitoring across common areas and entry points.',
     icon: Video,
   },
   {
-    feature: 'Security Guard',
-    details: 'Implemented to ensure resident security and emergency preparedness.',
+    feature: 'Security Guard & Warden',
+    details: 'On-duty personnel ensuring resident safety and emergency preparedness.',
     icon: UserCheck,
   },
   {
     feature: 'Fire Safety Equipment',
-    details: 'Implemented to ensure resident security and emergency preparedness.',
+    details: 'Certified fire extinguishers and safety equipment installed on every floor.',
     icon: Flame,
   },
 ]
@@ -58,12 +56,10 @@ const getSafetyIcon = (featureName: string): LucideIcon => {
 export function SafetyGrid({
   safetyFeatures = [],
   title = "Safety & Security",
-  subtitle = "Multi-layered protection protocols and round-the-clock monitoring ensuring a safe and reassuring environment.",
-  tagline = "DESIGNED FOR COMPLETE PEACE OF MIND",
+  subtitle = "Multi-layered protection protocols ensuring complete safety and peace of mind.",
 }: SafetyGridProps) {
   const available = safetyFeatures.filter(s => s.available)
 
-  // Map real safety features or use the 3 reference items if empty
   const displayItems = available.length >= 3
     ? available.map(s => ({
         feature: s.feature,
@@ -81,20 +77,17 @@ export function SafetyGrid({
 
   return (
     <div className="w-full">
-      {/* Header section matching reference image */}
-      <div className="text-center mb-6 sm:mb-8">
-        <span className="text-[10px] font-mono font-bold tracking-[0.24em] text-[#3932d8] uppercase">
-          {tagline}
-        </span>
-        <h2 className="mt-1.5 text-2xl sm:text-3xl font-black tracking-tight text-[#111827]">
+      {/* ── Minimal Section Header ── */}
+      <div className="text-center mb-8 sm:mb-10">
+        <h2 className="text-2xl sm:text-3xl font-medium tracking-tight text-[#111827]">
           {title}
         </h2>
-        <p className="mt-2 text-xs sm:text-sm text-gray-500 max-w-md mx-auto leading-relaxed">
+        <p className="mt-2 text-xs sm:text-sm text-gray-500 max-w-lg mx-auto leading-relaxed">
           {subtitle}
         </p>
       </div>
 
-      {/* Cards grid matching reference image (3-column compact layout) */}
+      {/* ── Minimal Grid ── */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5 max-w-5xl mx-auto px-4">
         {displayItems.map((item, idx) => {
           const Icon = item.icon
@@ -104,32 +97,19 @@ export function SafetyGrid({
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.25, delay: idx * 0.06 }}
-              className="flex flex-col justify-between rounded-2xl border border-gray-200/80 bg-white p-4 sm:p-5 shadow-2xs hover:border-[#3932d8]/30 hover:shadow-md transition-all duration-200 group cursor-default"
+              transition={{ duration: 0.2, delay: idx * 0.04 }}
+              className="flex items-start gap-4 p-5 rounded-2xl border border-gray-200/70 bg-white hover:border-gray-300 hover:shadow-2xs transition-all"
             >
-              <div>
-                {/* Soft rounded icon box */}
-                <div className="mb-3.5 flex h-10 w-10 items-center justify-center rounded-xl bg-[#f4f4f6] text-[#3932d8] group-hover:scale-105 transition-transform duration-200">
-                  <Icon className="h-5 w-5" strokeWidth={1.8} />
-                </div>
-
-                {/* Feature Title */}
-                <h3 className="text-base font-bold text-[#111827] tracking-tight">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gray-100 text-[#111827]">
+                <Icon className="h-5 w-5" strokeWidth={1.75} />
+              </div>
+              <div className="min-w-0 flex-1">
+                <h3 className="text-sm font-medium text-[#111827] tracking-tight">
                   {item.feature}
                 </h3>
-
-                {/* Feature Details */}
-                <p className="mt-1.5 text-xs text-gray-500 leading-relaxed font-normal">
+                <p className="mt-1 text-xs text-gray-500 leading-relaxed">
                   {item.details}
                 </p>
-              </div>
-
-              {/* Card Footer Divider */}
-              <div className="mt-4 border-t border-gray-100 pt-3 flex items-center justify-between text-[10px] font-mono">
-                <span className="text-gray-400 font-medium">Standard Protocol</span>
-                <span className="inline-flex items-center gap-1 text-[#10b981] font-bold">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#10b981]" /> Active
-                </span>
               </div>
             </motion.div>
           )
@@ -138,3 +118,5 @@ export function SafetyGrid({
     </div>
   )
 }
+
+
