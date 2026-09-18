@@ -14,7 +14,6 @@
     "@fontsource/poppins": "^5.2.7",
     "@fontsource/space-mono": "^5.2.9",
     "@hookform/resolvers": "^5.2.2",
-    "@next/swc-win32-x64-msvc": "^16.1.6",
     "@types/bcryptjs": "^2.4.6",
     "@types/jsonwebtoken": "^9.0.10",
     "bcryptjs": "^3.0.3",
