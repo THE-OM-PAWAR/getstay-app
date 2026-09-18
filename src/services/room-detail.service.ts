@@ -49,6 +49,7 @@ export interface RoomDetailData {
     slug: string;
     name: string;
     city?: string;
+    accommodationType?: string;
     coverImage?: string;
   }>;
 }
@@ -94,23 +95,27 @@ export async function getRoomById(roomId: string): Promise<RoomDetailData | null
       hostel: { $ne: room.hostelId },
       isOnlinePresenceEnabled: true,
     })
-      .select('slug basicInfo media hostel')
+      .select('slug basicInfo propertyDetails media hostel')
       .limit(4)
       .lean();
 
-    return {
+    const serializedData: RoomDetailData = {
       _id: room._id.toString(),
       name: room.name,
       description: room.description,
       rent: room.rent,
-      images: room.images || [],
+      images: (room.images || []).map((img: any) => ({
+        url: img.url,
+        title: img.title || '',
+        isCover: Boolean(img.isCover),
+      })),
       components: components.map(c => ({
         _id: c._id.toString(),
         name: c.name,
         description: c.description,
       })),
       hostel: {
-        _id: room.hostelId,
+        _id: room.hostelId?.toString() || '',
         slug: hostelProfile.slug || '',
         name: hostelProfile.basicInfo.name,
         city: hostelProfile.basicInfo.city,
@@ -140,9 +145,12 @@ export async function getRoomById(roomId: string): Promise<RoomDetailData | null
           slug: h.slug || '',
           name: h.basicInfo.name,
           city: h.basicInfo.city,
-          coverImage: h.media?.photos?.[0]?.url,
+          accommodationType: h.propertyDetails?.accommodationType || 'boys',
+          coverImage: h.media?.photos?.[0]?.url || h.media?.banner?.url,
         })),
     };
+
+    return JSON.parse(JSON.stringify(serializedData));
   } catch (error) {
     console.error('Error fetching room by ID:', error);
     return null;
